@@ -5,6 +5,12 @@ import { z } from "zod";
 
 import { userSchema } from "../user";
 
+export const sectionMappingSchema = z.object({
+  sectionID: idSchema,
+  resumeID: idSchema,
+  order: z.number(),
+});
+
 export const resumeSchema = z.object({
   id: idSchema,
   title: z.string(),
@@ -14,6 +20,7 @@ export const resumeSchema = z.object({
   locked: z.boolean().default(false),
   userId: idSchema,
   user: userSchema.optional(),
+  sectionsMapping: z.array(sectionMappingSchema).optional(),
   createdAt: dateSchema,
   updatedAt: dateSchema,
 });

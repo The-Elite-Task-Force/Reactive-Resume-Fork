@@ -66,10 +66,16 @@ export class ResumeService {
 
   findOne(id: string, userId?: string) {
     if (userId) {
-      return this.prisma.resume.findUniqueOrThrow({ where: { userId_id: { userId, id } } });
+      return this.prisma.resume.findUniqueOrThrow({
+        include: { SectionCVMapping: true },
+        where: { userId_id: { userId, id } },
+      });
     }
 
-    return this.prisma.resume.findUniqueOrThrow({ where: { id } });
+    return this.prisma.resume.findUniqueOrThrow({
+      include: { SectionCVMapping: true },
+      where: { id },
+    });
   }
 
   async findOneStatistics(id: string) {
