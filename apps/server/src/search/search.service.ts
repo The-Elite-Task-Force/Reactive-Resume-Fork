@@ -8,8 +8,31 @@ CREATE TABLE searchIndex (
 */
 
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { PrismaService } from "nestjs-prisma";
+import OpenAI from "openai";
 
-import { PrismaService } from '@/prisma/prisma.service';
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY, 
+});
+
+export async function getEmbedding(text: string): Promise<number[]> {
+  try {
+    const response = await openai.embeddings.create({
+      model: "text-embedding-ada-002",
+      input: text,
+    });
+
+    if (response.data && response.data[0].embedding.length > 0) {
+      return response.data[0].embedding
+    } else {
+      throw new Error("No embedding returned from OpenAI");
+    }
+  } catch (error) {
+    console.error("Error getting embedding from OpenAI:", error);
+    throw error;
+  }
+}
 
 
 @Injectable()
@@ -17,13 +40,18 @@ export class SearchService {
   constructor(private readonly prisma: PrismaService) {}
 
   async searchUsers(searchQuery: string, k: number) {
+
+
     try {
-      // Perform the search using pgvector
-      const searchResults = await this.prisma.$queryRaw`
+      // Get the embedding for the search query
+      const searchQueryEmbedding = await getEmbedding(searchQuery);
+
+     
+      const searchResults: { userId: string }[] = await this.prisma.$queryRaw`
         SELECT "userId"
         FROM searchIndex
-        WHERE embedding <-> ${searchQuery} < 0.5
-        ORDER BY embedding <-> ${searchQuery}
+        WHERE embedding <-> ${searchQueryEmbedding} < 0.5
+        ORDER BY embedding <-> ${searchQueryEmbedding}
         LIMIT ${k};
       `;
 
@@ -40,8 +68,10 @@ export class SearchService {
       });
 
       return users;
+
     } catch (error) {
-      throw new InternalServerErrorException(error);
-    }
+        console.error("Error searching users:", error);
+        throw new InternalServerErrorException(error);
+    }      
   }
 }
