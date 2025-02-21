@@ -45,8 +45,7 @@ export class SearchService {
     try {
       // Get the embedding for the search query
       const searchQueryEmbedding = await getEmbedding(searchQuery);
-
-     
+      
       const searchResults: { userId: string }[] = await this.prisma.$queryRaw`
         SELECT "userId"
         FROM searchIndex
@@ -74,4 +73,29 @@ export class SearchService {
         throw new InternalServerErrorException(error);
     }      
   }
+
+
+  updateSearchIndex(userId: string, document: string) {
+
+    console.log("Updating search index for user:", userId);
+    
+    // Get the embedding for the document
+    getEmbedding(document)
+      .then((embedding) => {
+
+        this.prisma.$queryRaw`
+          INSERT INTO searchIndex (document, "userId", embedding)
+          VALUES (${document}, ${userId}, ${embedding})
+          ON CONFLICT ("userId") DO UPDATE
+          SET document = EXCLUDED.document, embedding = EXCLUDED.embedding;
+        `;
+      }
+    )
+      .catch((error) => {
+        console.error("Error updating search index:", error);
+      });
+    
+    
+    }
+
 }
