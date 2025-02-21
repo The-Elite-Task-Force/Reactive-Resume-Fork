@@ -11,31 +11,36 @@ import {
   Post,
   UseGuards,
 } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
-import { User as UserEntity } from "@prisma/client";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import {ApiTags} from "@nestjs/swagger";
+import {User as UserEntity} from "@prisma/client";
+import {PrismaClientKnownRequestError} from "@prisma/client/runtime/library";
 import {
   CreateResumeDto,
   importResumeSchema,
   ResumeDto,
   UpdateResumeDto,
 } from "@reactive-resume/dto";
-import { resumeDataSchema } from "@reactive-resume/schema";
-import { ErrorMessage } from "@reactive-resume/utils";
-import { zodToJsonSchema } from "zod-to-json-schema";
+import {resumeDataSchema} from "@reactive-resume/schema";
+import {ErrorMessage} from "@reactive-resume/utils";
+import {zodToJsonSchema} from "zod-to-json-schema";
 
-import { User } from "@/server/user/decorators/user.decorator";
+import {User} from "@/server/user/decorators/user.decorator";
 
-import { OptionalGuard } from "../auth/guards/optional.guard";
-import { TwoFactorGuard } from "../auth/guards/two-factor.guard";
-import { Resume } from "./decorators/resume.decorator";
-import { ResumeGuard } from "./guards/resume.guard";
-import { ResumeService } from "./resume.service";
-import { SearchService } from "../search/search.service";
+import {OptionalGuard} from "../auth/guards/optional.guard";
+import {TwoFactorGuard} from "../auth/guards/two-factor.guard";
+import {SearchService} from "../search/search.service";
+import {Resume} from "./decorators/resume.decorator";
+import {ResumeGuard} from "./guards/resume.guard";
+import {ResumeService} from "./resume.service";
+
 @ApiTags("Resume")
 @Controller("resume")
 export class ResumeController {
-  constructor(private readonly resumeService: ResumeService) {}
+  constructor(
+    private readonly resumeService: ResumeService,
+    private readonly searchService: SearchService,
+  ) {
+  }
 
   @Get("schema")
   getSchema() {
@@ -129,7 +134,7 @@ export class ResumeController {
     try {
       const url = await this.resumeService.printResume(resume, userId);
 
-      return { url };
+      return {url};
     } catch (error) {
       Logger.error(error);
       throw new InternalServerErrorException(error);
@@ -142,7 +147,7 @@ export class ResumeController {
     try {
       const url = await this.resumeService.printPreview(resume);
 
-      return { url };
+      return {url};
     } catch (error) {
       Logger.error(error);
       throw new InternalServerErrorException(error);
@@ -153,17 +158,14 @@ export class ResumeController {
   @UseGuards(TwoFactorGuard)
   async setDefault(@User() user: UserEntity, @Param("id") id: string) {
     try {
-      await this.resumeService.setDefault(user.id, id);
-      try{
-         
-        const searchService = new SearchService(p);
-        await searchService.updateSearchIndex(user.id, id);
-      }
-      catch(error){
+      const resume = this.resumeService.setDefault(user.id, id);
+      try {
+        this.searchService.updateSearchIndex(user);
+      } catch (error) {
         Logger.error(error);
         throw new InternalServerErrorException(error);
       }
-      return { message: "Resume set as profile successfully" };
+      return {message: 'Resume set as profile successfully'};
     } catch (error) {
       Logger.error(error);
       throw new InternalServerErrorException(error);
