@@ -1,9 +1,8 @@
 import type { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
 
-import { ResumeController } from "../resume.controller";
-import { ResumeService } from "../resume.service";
-import { mockUserWithoutPRI } from "./mocks/mocks";
+import { ResumeController } from "../resume/resume.controller";
+import { ResumeService } from "../resume/resume.service";
 
 const mockResumeService = {
   create: jest.fn(),
