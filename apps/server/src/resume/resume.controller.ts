@@ -12,13 +12,13 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
-import { User as UserEntity } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import {
   CreateResumeDto,
   importResumeSchema,
   ResumeDto,
   UpdateResumeDto,
+  UserWithSecrets,
 } from "@reactive-resume/dto";
 import { resumeDataSchema } from "@reactive-resume/schema";
 import { ErrorMessage } from "@reactive-resume/utils";
@@ -44,7 +44,7 @@ export class ResumeController {
 
   @Post()
   @UseGuards(TwoFactorGuard)
-  async create(@User() user: UserEntity, @Body() createResumeDto: CreateResumeDto) {
+  async create(@User() user: UserWithSecrets, @Body() createResumeDto: CreateResumeDto) {
     try {
       return await this.resumeService.create(user.id, createResumeDto);
     } catch (error) {
@@ -59,7 +59,7 @@ export class ResumeController {
 
   @Post("import")
   @UseGuards(TwoFactorGuard)
-  async import(@User() user: UserEntity, @Body() importResumeDto: unknown) {
+  async import(@User() user: UserWithSecrets, @Body() importResumeDto: unknown) {
     try {
       const result = importResumeSchema.parse(importResumeDto);
       return await this.resumeService.import(user.id, result);
@@ -75,7 +75,7 @@ export class ResumeController {
 
   @Get()
   @UseGuards(TwoFactorGuard)
-  findAll(@User() user: UserEntity) {
+  findAll(@User() user: UserWithSecrets) {
     return this.resumeService.findAll(user.id);
   }
 
@@ -104,7 +104,7 @@ export class ResumeController {
   @Patch(":id")
   @UseGuards(TwoFactorGuard)
   update(
-    @User() user: UserEntity,
+    @User() user: UserWithSecrets,
     @Param("id") id: string,
     @Body() updateResumeDto: UpdateResumeDto,
   ) {
@@ -113,13 +113,13 @@ export class ResumeController {
 
   @Patch(":id/lock")
   @UseGuards(TwoFactorGuard)
-  lock(@User() user: UserEntity, @Param("id") id: string, @Body("set") set = true) {
+  lock(@User() user: UserWithSecrets, @Param("id") id: string, @Body("set") set = true) {
     return this.resumeService.lock(user.id, id, set);
   }
 
   @Delete(":id")
   @UseGuards(TwoFactorGuard)
-  remove(@User() user: UserEntity, @Param("id") id: string) {
+  remove(@User() user: UserWithSecrets, @Param("id") id: string) {
     return this.resumeService.remove(user.id, id);
   }
 
@@ -151,7 +151,7 @@ export class ResumeController {
 
   @Patch(":id/setDefault")
   @UseGuards(TwoFactorGuard)
-  async setDefault(@User() user: UserEntity, @Param("id") id: string) {
+  async setDefault(@User() user: UserWithSecrets, @Param("id") id: string) {
     try {
       await this.resumeService.setDefault(user.id, id);
       return { message: "Resume set as profile successfully" };
