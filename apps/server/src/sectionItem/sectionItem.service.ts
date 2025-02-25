@@ -82,22 +82,22 @@ export class SectionItemService {
         orderBy: { updatedAt: "desc" },
       });
 
-      return [
-        ...basics,
-        ...profiles,
-        ...experiences,
-        ...education,
-        ...skills,
-        ...languages,
-        ...awards,
-        ...certifications,
-        ...interests,
-        ...projects,
-        ...publications,
-        ...volunteering,
-        ...references,
-        ...custom,
-      ];
+      return {
+        basics: basics,
+        profiles: profiles,
+        experiences: experiences,
+        education: education,
+        skills: skills,
+        languages: languages,
+        awards: awards,
+        certifications: certifications,
+        interests: interests,
+        projects: projects,
+        publications: publications,
+        volunteering: volunteering,
+        references: references,
+        custom: custom,
+      };
     } catch (error) {
       Logger.error(error);
       throw new InternalServerErrorException(error);
