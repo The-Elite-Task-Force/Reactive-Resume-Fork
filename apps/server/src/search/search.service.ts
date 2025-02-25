@@ -7,9 +7,9 @@ CREATE TABLE searchIndex (
 );
 */
 
-import {Injectable, InternalServerErrorException} from "@nestjs/common";
-import {User as UserEntity} from "@prisma/client";
-import {PrismaService} from "nestjs-prisma";
+import { Injectable, InternalServerErrorException } from "@nestjs/common";
+import { User as UserEntity } from "@prisma/client";
+import { PrismaService } from "nestjs-prisma";
 import OpenAI from "openai";
 
 const openai = new OpenAI({
@@ -37,8 +37,7 @@ export async function getEmbedding(text: string): Promise<number[]> {
 
 @Injectable()
 export class SearchService {
-  constructor(private readonly prisma: PrismaService) {
-  }
+  constructor(private readonly prisma: PrismaService) {}
 
   async searchUsers(searchQuery: string, k: number) {
     try {
@@ -50,10 +49,10 @@ export class SearchService {
       FROM searchIndex
       WHERE embedding <-> ${searchQueryEmbedding}::vector < 1
       ORDER BY embedding <-> ${searchQueryEmbedding}::vector
-      LIMIT ${k};
+      LIMIT ${Number(k)};
     `;
 
-      console .log("Search results:", searchResults);
+      console.log("Search results:", searchResults);
       // Extract user IDs from the search results
       const userIds = searchResults.map((result: { userId: string }) => result.userId);
 
@@ -79,7 +78,7 @@ export class SearchService {
       throw new InternalServerErrorException("User does not have a profile resume");
     }
     const documentId = user.profileResumeId;
-    const {data} = await this.prisma.resume.findUniqueOrThrow({where: {id: documentId}});
+    const { data } = await this.prisma.resume.findUniqueOrThrow({ where: { id: documentId } });
     if (!data) {
       throw new InternalServerErrorException("Resume not found");
     }
