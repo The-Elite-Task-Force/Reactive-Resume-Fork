@@ -1,28 +1,23 @@
 import type { SearchResultDto } from "@reactive-resume/dto";
 import React from "react";
 
-type SearchResultItemProps = {
+interface SearchResultItemProps {
   item: SearchResultDto;
-};
+}
 
 const SearchResultItem: React.FC<SearchResultItemProps> = ({ item }) => {
   return (
     <div className="relative h-[61px] w-[592px] overflow-hidden rounded-[23px] bg-[#eff3ff] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
       <div className="absolute left-[8px] top-[5px] h-[50px] w-[51px]">
         <div className="absolute left-0 top-0 h-[50px] w-[51px] rounded-full bg-[#d9d9d9]" />
-        {item.picture ? (
-          <img
-            className="absolute left-[-51px] top-0 h-[104px] w-[121px]"
-            src={item.picture}
-            alt={item.name}
-          />
-        ) : (
-          <img
-            className="absolute left-[-51px] top-0 h-[104px] w-[121px]"
-            src="https://img.freepik.com/premium-vector/profile-icon-vector-illustration-design-template_827767-5831.jpg?w=740" //PlaceHolderSVG for no profile Picture
-            alt={item.name}
-          />
-        )}
+        <img
+          className="absolute left-[-51px] top-0 h-[104px] w-[121px]"
+          src={
+            item.picture ||
+            "https://img.freepik.com/premium-vector/profile-icon-vector-illustration-design-template_827767-5831.jpg?w=740"
+          }
+          alt={item.name}
+        />
       </div>
       <div className="absolute left-[96.03px] top-0 w-[348.95px] font-['Poppins'] text-xl font-normal text-black">
         {item.name}
@@ -60,6 +55,26 @@ const SearchResultItem: React.FC<SearchResultItemProps> = ({ item }) => {
             strokeLinejoin="round"
           />
         </svg>
+      </div>
+      <div data-svg-wrapper className="absolute left-[526px] top-[4px]">
+        <svg
+          width="53"
+          height="53"
+          viewBox="0 0 53 53"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M21.8125 19.6667H19.0003C17.2501 19.6667 16.3744 19.6667 15.7059 20.0179C15.1179 20.3268 14.6402 20.8194 14.3406 21.4257C14 22.1149 14 23.0179 14 24.8225V33.8448C14 35.6494 14 36.5512 14.3406 37.2405C14.6402 37.8468 15.1179 38.3402 15.7059 38.6491C16.3738 39 17.2484 39 18.9952 39L34.0048 39C35.7516 39 36.625 39 37.2928 38.6491C37.8808 38.3402 38.3601 37.8468 38.6597 37.2405C39 36.5519 39 35.6513 39 33.8502V24.8172C39 23.0162 39 22.1143 38.6597 21.4257C38.3601 20.8194 37.8808 20.3268 37.2928 20.0179C36.6243 19.6667 35.7505 19.6667 34.0003 19.6667H21.8125ZM21.8125 19.6667V15.0269C21.8125 12.2507 23.8438 10 26.3495 10C27.637 10 28.7981 10.5942 29.6239 11.5485"
+            stroke="black"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
+      <div className="absolute left-[98px] top-[34px] h-[22px] w-[177px] font-['Poppins'] text-base font-normal text-black/90">
+        {item.username}
       </div>
     </div>
   );

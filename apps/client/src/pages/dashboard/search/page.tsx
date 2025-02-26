@@ -5,6 +5,8 @@ import { useState } from "react";
 
 import { useSearch } from "@/client/services/search/search";
 
+import SearchResultItem from "./search-result";
+
 export const SearchPage = () => {
   const [query, setQuery] = useState("");
   const [k, setK] = useState(10); // Default number of search results
@@ -43,7 +45,9 @@ export const SearchPage = () => {
         {data && data.length > 0 ? (
           <ul>
             {data.map((item: SearchResultDto, index: number) => (
-              <li key={index}>{item.name}</li> // Adjust the property to display as needed
+              <li key={index}>
+                <SearchResultItem item={item} />
+              </li>
             ))}
           </ul>
         ) : (
