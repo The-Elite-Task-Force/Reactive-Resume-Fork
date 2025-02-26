@@ -53,10 +53,10 @@ import { UserModule } from "./user/user.module";
     }),
   ],
   providers: [
-    {
-      provide: APP_PIPE,
-      useClass: ZodValidationPipe,
-    },
+    // {
+    //   provide: APP_PIPE,
+    //   useClass: ZodValidationPipe,
+    // },
     {
       provide: APP_INTERCEPTOR,
       useValue: new RavenInterceptor({
