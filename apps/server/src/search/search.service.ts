@@ -1,22 +1,14 @@
-/*
-CREATE TABLE searchIndex (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    document TEXT,
-    "userId" TEXT NOT NULL REFERENCES "User"(id) ON DELETE CASCADE,
-    embedding vector(1536) NOT NULL  -- 1536 is the OpenAI embedding size, adjust as needed
-);
-*/
-
 import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { User as UserEntity } from "@prisma/client";
 import { PrismaService } from "nestjs-prisma";
 import OpenAI from "openai";
+import { SearchResultDto } from "@reactive-resume/dto";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-//Function to get the embedding for a given text
+// Function to get the embedding for a given text
 export async function getEmbedding(text: string): Promise<number[]> {
   try {
     const response = await openai.embeddings.create({
@@ -58,13 +50,16 @@ export class SearchService {
 
       console.log("User IDs:", userIds);
       // Retrieve users based on the search results
-      return await this.prisma.user.findMany({
+      const users = await this.prisma.user.findMany({
         where: {
           id: {
             in: userIds,
           },
         },
       });
+
+      // Transform the retrieved users into instances of SearchResultDto
+      return users.map((user) => new SearchResultDto(user));
     } catch (error) {
       console.error("Error searching users:", error);
       throw new InternalServerErrorException(error);
@@ -84,7 +79,7 @@ export class SearchService {
     }
     const document = data.toString();
     // Get the embedding for the document
-    //Then search in database
+    // Then search in database
 
     getEmbedding(document)
       .then((embedding) => {

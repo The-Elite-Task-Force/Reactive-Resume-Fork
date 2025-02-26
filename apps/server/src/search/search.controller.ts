@@ -1,7 +1,7 @@
 import { Controller, Get, InternalServerErrorException, Query } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { SearchService } from "./search.service";
-
+import type { SearchResultDto } from "@reactive-resume/dto";
 
 @ApiTags("Search")
 @Controller("search")

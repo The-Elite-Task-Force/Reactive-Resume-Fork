@@ -1,6 +1,8 @@
 import { t } from "@lingui/macro";
+import type { SearchResultDto } from "@reactive-resume/dto";
 import { Button, Input } from "@reactive-resume/ui";
 import { useState } from "react";
+
 import { useSearch } from "@/client/services/search/search";
 
 export const SearchPage = () => {
@@ -10,7 +12,7 @@ export const SearchPage = () => {
   const { data, isLoading, error, refetch } = useSearch(query, k);
 
   const handleSearch = () => {
-    refetch();
+    void refetch();
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -26,10 +28,12 @@ export const SearchPage = () => {
         <Input
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          onKeyUp={handleKeyPress}
           placeholder={t`Enter your search query`}
           className="mr-2 flex-grow"
+          onChange={(e) => {
+            setQuery(e.target.value);
+          }}
+          onKeyUp={handleKeyPress}
         />
         <Button onClick={handleSearch}>{t`Search`}</Button>
       </div>
@@ -38,8 +42,8 @@ export const SearchPage = () => {
         {error && <p>{t`Error: ${error.message}`}</p>}
         {data && data.length > 0 ? (
           <ul>
-            {data.map((item, index) => (
-              <li key={index}>{item}</li>
+            {data.map((item: SearchResultDto, index: number) => (
+              <li key={index}>{item.name}</li> // Adjust the property to display as needed
             ))}
           </ul>
         ) : (
