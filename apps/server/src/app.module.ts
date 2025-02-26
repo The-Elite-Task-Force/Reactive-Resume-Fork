@@ -53,6 +53,8 @@ import { UserModule } from "./user/user.module";
     }),
   ],
   providers: [
+    // TODO - Re-Implement ZodValidationPipe. It broke the publisher and volunteer section creations because it restructed the data while between the back- and frontend.
+
     // {
     //   provide: APP_PIPE,
     //   useClass: ZodValidationPipe,
