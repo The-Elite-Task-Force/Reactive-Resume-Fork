@@ -1,5 +1,9 @@
 import { createBrowserRouter, createRoutesFromElements, Navigate, Route } from "react-router";
 
+import { ErrorPage } from "@/client/pages/dashboard/publicpage/error";
+import { publicLoader, PublicResumePage } from "@/client/pages/dashboard/publicpage/page";
+import { publicProfileLoader, PublicProfilePage } from "@/client/pages/profilepage/page";
+
 import { BackupOtpPage } from "../pages/auth/backup-otp/page";
 import { ForgotPasswordPage } from "../pages/auth/forgot-password/page";
 import { AuthLayout } from "../pages/auth/layout";
@@ -16,8 +20,6 @@ import { SearchPage } from "../pages/dashboard/search/page";
 import { SettingsPage } from "../pages/dashboard/settings/page";
 import { HomeLayout } from "../pages/home/layout";
 import { HomePage } from "../pages/home/page";
-import { ErrorPage } from "../pages/public/error";
-import { publicLoader, PublicResumePage } from "../pages/public/page";
 import { Providers } from "../providers";
 import { AuthGuard } from "./guards/auth";
 import { GuestGuard } from "./guards/guest";
@@ -60,9 +62,12 @@ export const routes = createRoutesFromElements(
         <Route index element={<Navigate replace to="/auth/login" />} />
       </Route>
 
-      <Route path="dashboard">
-        <Route element={<AuthGuard />}>
-          <Route element={<DashboardLayout />}>
+      <Route element={<DashboardLayout />}>
+        <Route path="publicprofile">
+          <Route path=":username" loader={publicProfileLoader} element={<PublicProfilePage />} />
+        </Route>
+        <Route path="dashboard">
+          <Route element={<AuthGuard />}>
             <Route path="resumes" element={<ResumesPage />} />
             <Route path="settings" element={<SettingsPage />} />
             <Route path="search" element={<SearchPage />} /> {/* Add the new search route */}
