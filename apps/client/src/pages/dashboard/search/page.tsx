@@ -9,9 +9,9 @@ import SearchResultItem from "./search-result";
 
 export const SearchPage = () => {
   const [query, setQuery] = useState("");
-  const [k, setK] = useState(10); // Default number of search results
+  const [totalResults, setTotalResults] = useState(10); // Default number of search results
 
-  const { data, isLoading, error, refetch } = useSearch(query, k);
+  const { data, isLoading, error, refetch } = useSearch(query, totalResults);
 
   const handleSearch = () => {
     void refetch();

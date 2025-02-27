@@ -29,7 +29,7 @@
     "prisma:migrate": "pnpm exec prisma migrate deploy",
     "prisma:migrate:dev": "pnpm exec prisma migrate dev",
     "prisma:migrate:reset": "pnpm exec prisma migrate reset",
-    "prisma:all": "del-cli 'tools/prisma/migrations/*/' && pnpm exec prisma generate && pnpm exec prisma migrate reset && pnpm exec prisma migrate dev && node tools/apply-vector-migration.js",
+    "prisma:all": "del-cli tools/prisma/migrations/*/ && pnpm exec prisma generate && pnpm exec prisma migrate reset && pnpm exec prisma migrate dev && node tools/scripts/apply-vector-migration.js",
     "messages:extract": "pnpm exec lingui extract --clean --overwrite"
   },
   "devDependencies": {
