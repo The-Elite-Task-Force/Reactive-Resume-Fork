@@ -1,16 +1,17 @@
 import type { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
+import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 
 import { ResumeController } from "../resume/resume.controller";
 import { ResumeService } from "../resume/resume.service";
 
 const mockResumeService = {
-  create: jest.fn(),
-  import: jest.fn(),
-  findAll: jest.fn(),
-  update: jest.fn(),
-  remove: jest.fn(),
-  setDefault: jest.fn(),
+  create: vi.fn(),
+  import: vi.fn(),
+  findAll: vi.fn(),
+  update: vi.fn(),
+  remove: vi.fn(),
+  setDefault: vi.fn(),
 };
 /*
 describe("ResumeController", () => {
@@ -69,7 +70,7 @@ describe("basic math test", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should return 2 when adding 1 + 1", () => {
