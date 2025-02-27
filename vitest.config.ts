@@ -3,6 +3,8 @@ import { defineConfig } from "vite";
 export default defineConfig({
   // @ts-ignore
   test: {
+    globals: true,
+    environment: "jsdom",
     alias: {
       // @ts-ignore
       "@/artboard/*": new URL("./apps/artboard/src*", import.meta.url).pathname,

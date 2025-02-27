@@ -1,9 +1,10 @@
 import type { TestingModule } from "@nestjs/testing";
 import { Test } from "@nestjs/testing";
-import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
+import { vi } from "vitest";
 
 import { ResumeController } from "../resume/resume.controller";
 import { ResumeService } from "../resume/resume.service";
+import { mockUserWithoutPRI } from "./mocks/mocks";
 
 const mockResumeService = {
   create: vi.fn(),
@@ -13,7 +14,7 @@ const mockResumeService = {
   remove: vi.fn(),
   setDefault: vi.fn(),
 };
-/*
+
 describe("ResumeController", () => {
   let controller: ResumeController;
 
@@ -27,7 +28,7 @@ describe("ResumeController", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("setDefault", () => {
@@ -39,7 +40,7 @@ describe("ResumeController", () => {
         message: "Resume set as profile successfully",
       });
 
-      expect(await controller.setDefault(user, profileResumeId)).toEqual({
+      await expect(await controller.setDefault(user, profileResumeId)).toEqual({
         message: "Resume set as profile successfully",
       });
     });
@@ -48,14 +49,15 @@ describe("ResumeController", () => {
       const user = mockUserWithoutPRI;
       const profileResumeId = "resumeId";
 
-      mockResumeService.setDefault.mockRejectedValue(new Error("Failed to set resume as profile"));
+      const error = new Error("Failed to set resume as profile");
+      mockResumeService.setDefault.mockRejectedValue(error);
 
-      await expect(controller.setDefault(user, profileResumeId)).rejects.toThrow(
+      await expect(await controller.setDefault(user, profileResumeId)).rejects.toThrow(
         "Failed to set resume as profile",
       );
     });
   });
-}); */
+});
 
 describe("basic math test", () => {
   let controller: ResumeController;
