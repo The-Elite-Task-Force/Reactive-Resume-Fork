@@ -1,32 +1,21 @@
-import type { TestingModule } from "@nestjs/testing";
-import { Test } from "@nestjs/testing";
 import { vi } from "vitest";
 
 import { ResumeController } from "../resume/resume.controller";
-import { ResumeService } from "../resume/resume.service";
 import { mockUserWithoutPRI } from "./mocks/mocks";
 
-const mockResumeService = {
-  create: vi.fn(),
-  import: vi.fn(),
-  findAll: vi.fn(),
-  update: vi.fn(),
-  remove: vi.fn(),
-  setDefault: vi.fn(),
-};
+describe("ResumeController", async () => {
+  ///
+  /// To mock we can't use the standard import. Instead, use vi.importMock.
+  /// You can use both the mocked version and the production version in the same scope if
+  /// you rename on of the import types using 'as'
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+  const { ResumeService } = await vi.importMock<typeof import("../resume/resume.service")>(
+    "../resume/resume.service",
+  );
+  // @ts-expect-error We mock return values so we don't need to parse to the constructor
+  const mockResumeService = new ResumeService();
 
-describe("ResumeController", () => {
-  let controller: ResumeController;
-
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [ResumeController],
-      providers: [{ provide: ResumeService, useValue: mockResumeService }],
-    }).compile();
-
-    controller = module.get<ResumeController>(ResumeController);
-  });
-
+  const controller: ResumeController = new ResumeController(mockResumeService);
   afterEach(() => {
     vi.clearAllMocks();
   });
@@ -36,11 +25,13 @@ describe("ResumeController", () => {
       const user = mockUserWithoutPRI;
       const profileResumeId = "resumeId";
 
-      mockResumeService.setDefault.mockResolvedValue({
+      // @ts-expect-error The object returned gives error but still works.
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      vi.mocked(mockResumeService.setDefault).mockResolvedValue({
         message: "Resume set as profile successfully",
       });
 
-      await expect(await controller.setDefault(user, profileResumeId)).toEqual({
+      expect(await controller.setDefault(user, profileResumeId)).toEqual({
         message: "Resume set as profile successfully",
       });
     });
@@ -50,15 +41,17 @@ describe("ResumeController", () => {
       const profileResumeId = "resumeId";
 
       const error = new Error("Failed to set resume as profile");
-      mockResumeService.setDefault.mockRejectedValue(error);
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      vi.mocked(mockResumeService.setDefault).mockRejectedValue(error);
 
-      await expect(await controller.setDefault(user, profileResumeId)).rejects.toThrow(
+      await expect(controller.setDefault(user, profileResumeId)).rejects.toThrow(
         "Failed to set resume as profile",
       );
     });
   });
 });
 
+/*
 describe("basic math test", () => {
   let controller: ResumeController;
 
@@ -79,3 +72,4 @@ describe("basic math test", () => {
     expect(1 + 1).toBe(2);
   });
 });
+*/
