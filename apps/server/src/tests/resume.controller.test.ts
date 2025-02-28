@@ -1,4 +1,6 @@
-import { vi } from "vitest";
+import * as process from "node:process";
+
+import { expect, vi } from "vitest";
 
 import { ResumeController } from "../resume/resume.controller";
 import { mockUserWithoutPRI } from "./mocks/mocks";
@@ -51,19 +53,7 @@ describe("ResumeController", async () => {
   });
 });
 
-/*
 describe("basic math test", () => {
-  let controller: ResumeController;
-
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [ResumeController],
-      providers: [{ provide: ResumeService, useValue: mockResumeService }],
-    }).compile();
-
-    controller = module.get<ResumeController>(ResumeController);
-  });
-
   afterEach(() => {
     vi.clearAllMocks();
   });
@@ -72,4 +62,18 @@ describe("basic math test", () => {
     expect(1 + 1).toBe(2);
   });
 });
-*/
+
+describe(".env values", () => {
+  let postgresPort: number;
+  beforeEach(() => {
+    ///
+    /// .env file variables only work in test if they start with 'VITE_'
+    ///
+    // @ts-expect-error May be undefined.
+    postgresPort = +process.env.VITE_POSTGRES_PORT;
+  });
+
+  it("should return postgres port", () => {
+    expect(postgresPort).toBe(5432);
+  });
+});
