@@ -14,6 +14,7 @@ import {
 import { ApiTags } from "@nestjs/swagger";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import {
+  APILinkResumeToItemDto,
   CreateResumeDto,
   importResumeSchema,
   ResumeDto,
@@ -91,7 +92,7 @@ export class ResumeController {
     return this.resumeService.findOneStatistics(id);
   }
 
-  @Get("/public/:username/:slug")
+  @Get("/publicpage/:username/:slug")
   @UseGuards(OptionalGuard)
   findOneByUsernameSlug(
     @Param("username") username: string,
@@ -99,6 +100,17 @@ export class ResumeController {
     @User("id") userId: string,
   ) {
     return this.resumeService.findOneByUsernameSlug(username, slug, userId);
+  }
+
+  @Get("public/:username")
+  @UseGuards(OptionalGuard)
+  async publicProfileResume(@Param("username") username: string) {
+    try {
+      return await this.resumeService.findOnePublicByUsername(username);
+    } catch (error) {
+      Logger.error(error);
+      throw new InternalServerErrorException(error);
+    }
   }
 
   @Patch(":id")
@@ -155,6 +167,19 @@ export class ResumeController {
     try {
       await this.resumeService.setDefault(user.id, id);
       return { message: "Resume set as profile successfully" };
+    } catch (error) {
+      Logger.error(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  @Post(":id/link")
+  @UseGuards(TwoFactorGuard)
+  async linkResumeToItem(@Param("id") id: string, @Body() link: APILinkResumeToItemDto) {
+    const { format, itemId, order } = link;
+    try {
+      await this.resumeService.linkResumeToItem({ resumeId: id, itemId, order }, format);
+      return { message: "Resume and item linked succesfully" };
     } catch (error) {
       Logger.error(error);
       throw new InternalServerErrorException(error);
