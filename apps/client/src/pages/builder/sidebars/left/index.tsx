@@ -16,13 +16,14 @@ import type {
   Volunteer,
 } from "@reactive-resume/schema";
 import { Button, ScrollArea, Separator } from "@reactive-resume/ui";
-import { Fragment, useRef } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import { Link } from "react-router";
 
 import { Icon } from "@/client/components/icon";
 import { UserAvatar } from "@/client/components/user-avatar";
 import { UserOptions } from "@/client/components/user-options";
 import { useResumeStore } from "@/client/stores/resume";
+import { useSectionsStore } from "@/client/stores/section";
 
 import { BasicsSection } from "./sections/basics";
 import { SectionBase } from "./sections/shared/section-base";
@@ -39,6 +40,17 @@ export const LeftSidebar = () => {
     const section = containterRef.current?.querySelector(selector);
     section?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const sections = useSectionsStore((state) => state.sections);
+  const setValue = useResumeStore((state) => state.setValue);
+  // console.log("Here");
+  // console.log(sections?.profiles);
+
+  useEffect(() => {
+    setValue("sections", sections);
+  }, [sections]);
+
+  const resume = useResumeStore((state) => state.resume);
 
   return (
     <div className="flex bg-secondary-accent/30">

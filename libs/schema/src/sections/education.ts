@@ -11,6 +11,8 @@ export const educationSchema = itemSchema.extend({
   date: z.string(),
   summary: z.string(),
   url: urlSchema,
+  degree: z.string(),
+  courses: z.record(z.string(), z.any()),
 });
 
 // Type
@@ -19,7 +21,6 @@ export type Education = z.infer<typeof educationSchema>;
 // Defaults
 export const defaultEducation: Education = {
   ...defaultItem,
-  id: "",
   institution: "",
   studyType: "",
   area: "",
@@ -27,4 +28,6 @@ export const defaultEducation: Education = {
   date: "",
   summary: "",
   url: defaultUrl,
+  degree: "",
+  courses: {},
 };

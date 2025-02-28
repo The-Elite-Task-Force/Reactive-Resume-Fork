@@ -8,6 +8,7 @@ import {
   interestSchema,
   languageSchema,
   profileSchema,
+  projectSchema,
   publicationSchema,
   referenceSchema,
   skillSchema,
@@ -50,6 +51,7 @@ export const sectionSchema = z.object({
     awardSchema,
     certificationSchema,
     interestSchema,
+    projectSchema,
     profileSchema,
     publicationSchema,
     volunteerSchema,
@@ -59,4 +61,22 @@ export const sectionSchema = z.object({
   updatedAt: dateSchema,
 });
 
+export const jsonSectionsSchema = z.object({
+  basics: basicsSchema.optional(),
+  experiences: z.array(experienceSchema).optional(),
+  educations: z.array(educationSchema).optional(),
+  skills: z.array(skillSchema).optional(),
+  languages: z.array(languageSchema).optional(),
+  awards: z.array(awardSchema).optional(),
+  certifications: z.array(certificationSchema).optional(),
+  interests: z.array(interestSchema).optional(),
+  projects: z.array(projectSchema).optional(),
+  profiles: z.array(profileSchema).optional(),
+  publications: z.array(publicationSchema).optional(),
+  volunteers: z.array(volunteerSchema).optional(),
+  references: z.array(referenceSchema).optional(),
+  customs: z.array(customSectionSchema).optional(),
+});
+
+export class SectionsDto extends createZodDto(jsonSectionsSchema) {}
 export class SectionItemDto extends createZodDto(sectionSchema) {}

@@ -127,7 +127,7 @@ model WorkItem {
   url                   Json?
   summary               String?
   date                  String?
-  updatedAt             DateTime                @updatedAt
+  updatedAt             String?
   company               String?
   location              String?
   ResumeWorkItemMapping ResumeWorkItemMapping[]
@@ -144,7 +144,7 @@ model AwardItem {
   url                    Json?
   summary                String?
   date                   String?
-  updatedAt              DateTime                 @updatedAt
+  updatedAt              String?
   ResumeAwardItemMapping ResumeAwardItemMapping[]
 
   @@unique([userId, id])
@@ -160,7 +160,7 @@ model SkillItem {
   level                  Int?
   keywords               Json?
   levelNum               Int?
-  updatedAt              DateTime                 @updatedAt
+  updatedAt              String?
   ResumeSkillItemMapping ResumeSkillItemMapping[]
 
   @@unique([userId, id])
@@ -177,7 +177,7 @@ model ProjectItem {
   description              String?
   keywords                 Json?
   date                     String?
-  updatedAt                DateTime                   @updatedAt
+  updatedAt                String?
   ResumeProjectItemMapping ResumeProjectItemMapping[]
 
   @@unique([userId, id])
@@ -197,7 +197,7 @@ model EducationItem {
   url                        Json?
   date                       String?
   studyType                  String?
-  updatedAt                  DateTime                     @updatedAt
+  updatedAt                  String?
   ResumeEducationItemMapping ResumeEducationItemMapping[]
 
   @@unique([userId, id])
@@ -210,7 +210,7 @@ model InterestItem {
   user                      User                        @relation(fields: [userId], references: [id], onDelete: Cascade)
   name                      String?
   keywords                  Json?
-  updatedAt                 DateTime                    @updatedAt
+  updatedAt                 String?
   ResumeInterestItemMapping ResumeInterestItemMapping[]
 
   @@unique([userId, id])
@@ -225,7 +225,7 @@ model LanguageItem {
   description               String?
   level                     Int?
   levelNum                  Int?
-  updatedAt                 DateTime                    @updatedAt
+  updatedAt                 String?
   ResumeLanguageItemMapping ResumeLanguageItemMapping[]
 
   @@unique([userId, id])
@@ -242,7 +242,7 @@ model VolunteerItem {
   summary                    String?
   date                       String?
   location                   String?
-  updatedAt                  DateTime                     @updatedAt
+  updatedAt                  String?
   ResumeVolunteerItemMapping ResumeVolunteerItemMapping[]
 
   @@unique([userId, id])
@@ -260,7 +260,7 @@ model ReferenceItem {
   summary                    String?
   url                        Json?
   relationship               String?
-  updatedAt                  DateTime                     @updatedAt
+  updatedAt                  String?
   ResumeReferenceItemMapping ResumeReferenceItemMapping[]
 
   @@unique([userId, id])
@@ -276,7 +276,7 @@ model PublicationItem {
   url                          Json?
   summary                      String?
   date                         String?
-  updatedAt                    DateTime                       @updatedAt
+  updatedAt                    String?
   ResumePublicationItemMapping ResumePublicationItemMapping[]
 
   @@unique([userId, id])
@@ -292,7 +292,7 @@ model CertificationItem {
   url                            Json?
   summary                        String?
   date                           String?
-  updatedAt                      DateTime                         @updatedAt
+  updatedAt                      String?
   ResumeCertificationItemMapping ResumeCertificationItemMapping[]
 
   @@unique([userId, id])
@@ -306,7 +306,7 @@ model ProfileItem {
   network                  String?
   url                      Json?
   username                 String?
-  updatedAt                DateTime                   @updatedAt
+  updatedAt                String?
   icon                     String?
   description              String?
   ResumeProfileItemMapping ResumeProfileItemMapping[]
@@ -322,13 +322,14 @@ model BasicsItem {
   email                   String?
   phone                   String?
   headline                String?
-  summary                 Json?
+  summary                 String?
   birthdate               String?
   website                 String?
   profiles                Json?
   location                String?
-  photo                   Json?
-  updatedAt               DateTime                  @updatedAt
+  customFields            Json?
+  picture                 Json?
+  updatedAt               String?
   ResumeBasicsItemMapping ResumeBasicsItemMapping[]
 
   @@unique([userId, id])
@@ -347,7 +348,7 @@ model CustomItem {
   summary                 Json?
   keywords                Json?
   url                     Json?
-  updatedAt               DateTime                  @updatedAt
+  updatedAt               String?
   ResumeCustomItemMapping ResumeCustomItemMapping[]
 
   @@unique([userId, id])
@@ -513,7 +514,7 @@ model Team {
   name      String
   //Owner of the team
   userId    String
-  updatedAt DateTime @updatedAt
+  updatedAt String? 
 
   TeamsMapping TeamsMapping[]
 
@@ -547,7 +548,7 @@ model CompanyMapping {
 model Company {
   id        String   @id @default(cuid())
   name      String
-  updatedAt DateTime @updatedAt
+  updatedAt String? 
 
   CompanyMapping CompanyMapping[]
 }
@@ -555,7 +556,7 @@ model Company {
 model Role {
   id        String   @id @default(cuid())
   name      String
-  updatedAt DateTime @updatedAt
+  updatedAt String? 
 
   CompanyMapping CompanyMapping[]
 }

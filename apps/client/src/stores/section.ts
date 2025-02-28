@@ -1,13 +1,13 @@
-import type { SectionItemDto } from "@reactive-resume/dto";
+import type { SectionsDto } from "@reactive-resume/dto";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 type SectionsState = {
-  sections: SectionItemDto[] | null;
+  sections: SectionsDto | null;
 };
 
 type SectionsActions = {
-  setSections: (sections: SectionItemDto[] | null) => void;
+  setSections: (sections: SectionsDto | null) => void;
 };
 
 export const useSectionsStore = create<SectionsState & SectionsActions>()(
