@@ -12,11 +12,13 @@ import type {
   publicationSchema,
   referenceSchema,
   skillSchema,
+  summarySchema,
   volunteerSchema,
 } from "@reactive-resume/schema";
 import type { z } from "zod";
 
 type BasicsItem = z.infer<typeof basicsSchema>;
+type SummaryItem = z.infer<typeof summarySchema>;
 type ProfileItem = z.infer<typeof profileSchema>;
 type ExperienceItem = z.infer<typeof experienceSchema>;
 type EducationItem = z.infer<typeof educationSchema>;
@@ -33,6 +35,7 @@ type CustomSectionItem = z.infer<typeof customSectionSchema>;
 
 export type SectionTypes =
   | BasicsItem
+  | SummaryItem
   | ProfileItem
   | ExperienceItem
   | EducationItem

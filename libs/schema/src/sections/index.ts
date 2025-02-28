@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { basicsSchema } from "../basics";
 import type { FilterKeys } from "../shared";
 import { idSchema } from "../shared";
 import { awardSchema } from "./award";
@@ -14,6 +15,7 @@ import { projectSchema } from "./project";
 import { publicationSchema } from "./publication";
 import { referenceSchema } from "./reference";
 import { skillSchema } from "./skill";
+import { summarySchema } from "./summary";
 import { volunteerSchema } from "./volunteer";
 
 // Schema
@@ -55,9 +57,13 @@ export const customSchema = sectionSchema.extend({
 });
 
 export const sectionsSchema = z.object({
-  summary: sectionSchema.extend({
+  basics: sectionSchema.extend({
+    id: z.literal("basics"),
+    items: z.array(basicsSchema),
+  }),
+  summaries: sectionSchema.extend({
     id: z.literal("summary"),
-    content: z.string().default(""),
+    items: z.array(summarySchema),
   }),
   awards: sectionSchema.extend({
     id: z.literal("awards"),
@@ -67,15 +73,15 @@ export const sectionsSchema = z.object({
     id: z.literal("certifications"),
     items: z.array(certificationSchema),
   }),
-  education: sectionSchema.extend({
+  educations: sectionSchema.extend({
     id: z.literal("education"),
     items: z.array(educationSchema),
   }),
-  experience: sectionSchema.extend({
+  experiences: sectionSchema.extend({
     id: z.literal("experience"),
     items: z.array(experienceSchema),
   }),
-  volunteer: sectionSchema.extend({
+  volunteers: sectionSchema.extend({
     id: z.literal("volunteer"),
     items: z.array(volunteerSchema),
   }),
@@ -107,7 +113,7 @@ export const sectionsSchema = z.object({
     id: z.literal("skills"),
     items: z.array(skillSchema),
   }),
-  custom: z.record(z.string(), customSchema),
+  customs: z.record(z.string(), customSchema),
 });
 
 // Detailed Types
@@ -127,12 +133,13 @@ export const defaultSection: Section = {
 };
 
 export const defaultSections: Sections = {
-  summary: { ...defaultSection, id: "summary", name: "Summary", content: "" },
+  basics: { ...defaultSection, id: "basics", name: "Basics", items: [] },
+  summaries: { ...defaultSection, id: "summary", name: "Summary", items: [] },
   awards: { ...defaultSection, id: "awards", name: "Awards", items: [] },
   certifications: { ...defaultSection, id: "certifications", name: "Certifications", items: [] },
-  education: { ...defaultSection, id: "education", name: "Education", items: [] },
-  experience: { ...defaultSection, id: "experience", name: "Experience", items: [] },
-  volunteer: { ...defaultSection, id: "volunteer", name: "Volunteering", items: [] },
+  educations: { ...defaultSection, id: "education", name: "Education", items: [] },
+  experiences: { ...defaultSection, id: "experience", name: "Experience", items: [] },
+  volunteers: { ...defaultSection, id: "volunteer", name: "Volunteering", items: [] },
   interests: { ...defaultSection, id: "interests", name: "Interests", items: [] },
   languages: { ...defaultSection, id: "languages", name: "Languages", items: [] },
   profiles: { ...defaultSection, id: "profiles", name: "Profiles", items: [] },
@@ -140,7 +147,7 @@ export const defaultSections: Sections = {
   publications: { ...defaultSection, id: "publications", name: "Publications", items: [] },
   references: { ...defaultSection, id: "references", name: "References", items: [] },
   skills: { ...defaultSection, id: "skills", name: "Skills", items: [] },
-  custom: {},
+  customs: {},
 };
 
 export * from "./award";
@@ -155,4 +162,5 @@ export * from "./project";
 export * from "./publication";
 export * from "./reference";
 export * from "./skill";
+export * from "./summary";
 export * from "./volunteer";

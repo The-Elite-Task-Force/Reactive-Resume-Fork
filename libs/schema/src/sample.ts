@@ -32,7 +32,7 @@ export const sampleResume: ResumeData = {
     },
   },
   sections: {
-    summary: {
+    summaries: {
       name: "Summary",
       columns: 1,
       separateLinks: true,
@@ -84,7 +84,7 @@ export const sampleResume: ResumeData = {
         },
       ],
     },
-    education: {
+    educations: {
       name: "Education",
       columns: 1,
       separateLinks: true,
@@ -110,7 +110,7 @@ export const sampleResume: ResumeData = {
         },
       ],
     },
-    experience: {
+    experiences: {
       name: "Experience",
       columns: 1,
       separateLinks: true,
@@ -152,7 +152,7 @@ export const sampleResume: ResumeData = {
         },
       ],
     },
-    volunteer: {
+    volunteers: {
       name: "Volunteering",
       columns: 1,
       separateLinks: true,
@@ -321,7 +321,7 @@ export const sampleResume: ResumeData = {
         },
       ],
     },
-    custom: {},
+    customs: {},
   },
   metadata: {
     template: "glalie",

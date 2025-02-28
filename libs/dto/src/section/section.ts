@@ -1,4 +1,4 @@
-import { customSectionSchema, idSchema } from "@reactive-resume/schema";
+import { customSectionSchema, idSchema, summarySchema } from "@reactive-resume/schema";
 import {
   awardSchema,
   basicsSchema,
@@ -22,9 +22,10 @@ import { userSchema } from "../user";
 
 export enum SectionFormat {
   Basics = "basics",
+  Summaries = "summaries",
   Profiles = "profiles",
-  Experience = "experience",
-  Education = "education",
+  Experiences = "experiences",
+  Educations = "educations",
   Skills = "skills",
   Languages = "languages",
   Awards = "awards",
@@ -32,50 +33,54 @@ export enum SectionFormat {
   Interests = "interests",
   Projects = "projects",
   Publications = "publications",
-  Volunteering = "volunteering",
+  Volunteers = "volunteers",
   References = "references",
-  Custom = "custom",
+  Customs = "customs",
 }
+
+export const AllSectionSchemas = z.union([
+  basicsSchema,
+  summarySchema,
+  experienceSchema,
+  educationSchema,
+  skillSchema,
+  languageSchema,
+  awardSchema,
+  certificationSchema,
+  interestSchema,
+  projectSchema,
+  profileSchema,
+  publicationSchema,
+  volunteerSchema,
+  referenceSchema,
+  customSectionSchema,
+]);
 
 export const sectionSchema = z.object({
   id: idSchema,
   format: z.nativeEnum(SectionFormat),
   userId: idSchema,
   user: userSchema,
-  data: z.union([
-    basicsSchema,
-    experienceSchema,
-    educationSchema,
-    skillSchema,
-    languageSchema,
-    awardSchema,
-    certificationSchema,
-    interestSchema,
-    projectSchema,
-    profileSchema,
-    publicationSchema,
-    volunteerSchema,
-    referenceSchema,
-    customSectionSchema,
-  ]),
+  data: AllSectionSchemas,
   updatedAt: dateSchema,
 });
 
 export const jsonSectionsSchema = z.object({
-  basics: basicsSchema.optional(),
-  experiences: z.array(experienceSchema).optional(),
-  educations: z.array(educationSchema).optional(),
-  skills: z.array(skillSchema).optional(),
-  languages: z.array(languageSchema).optional(),
-  awards: z.array(awardSchema).optional(),
-  certifications: z.array(certificationSchema).optional(),
-  interests: z.array(interestSchema).optional(),
-  projects: z.array(projectSchema).optional(),
-  profiles: z.array(profileSchema).optional(),
-  publications: z.array(publicationSchema).optional(),
-  volunteers: z.array(volunteerSchema).optional(),
-  references: z.array(referenceSchema).optional(),
-  customs: z.array(customSectionSchema).optional(),
+  basics: z.array(basicsSchema),
+  summaries: z.array(summarySchema),
+  experiences: z.array(experienceSchema),
+  educations: z.array(educationSchema),
+  skills: z.array(skillSchema),
+  languages: z.array(languageSchema),
+  awards: z.array(awardSchema),
+  certifications: z.array(certificationSchema),
+  interests: z.array(interestSchema),
+  projects: z.array(projectSchema),
+  profiles: z.array(profileSchema),
+  publications: z.array(publicationSchema),
+  volunteers: z.array(volunteerSchema),
+  references: z.array(referenceSchema),
+  customs: z.array(customSectionSchema),
 });
 
 export class SectionsDto extends createZodDto(jsonSectionsSchema) {}

@@ -1,54 +1,28 @@
-﻿import {
-  awardSchema,
-  basicsSchema,
-  certificationSchema,
-  customSectionSchema,
-  educationSchema,
-  experienceSchema,
-  interestSchema,
-  languageSchema,
-  profileSchema,
-  publicationSchema,
-  referenceSchema,
-  skillSchema,
-  volunteerSchema,
-} from "@reactive-resume/schema";
-import { createZodDto } from "nestjs-zod/dto";
+﻿import { createZodDto } from "nestjs-zod/dto";
 import { z } from "zod";
+
+import { AllSectionSchemas, SectionFormat } from "./section";
 
 export const createSectionSchema = z.object({
   format: z.enum([
-    "basics",
-    "profiles",
-    "experience",
-    "education",
-    "skills",
-    "languages",
-    "awards",
-    "certifications",
-    "interests",
-    "projects",
-    "publications",
-    "volunteering",
-    "references",
-    "custom",
+    SectionFormat.Basics,
+    SectionFormat.Summaries,
+    SectionFormat.Experiences,
+    SectionFormat.Educations,
+    SectionFormat.Skills,
+    SectionFormat.Languages,
+    SectionFormat.Awards,
+    SectionFormat.Certifications,
+    SectionFormat.Interests,
+    SectionFormat.Profiles,
+    SectionFormat.Projects,
+    SectionFormat.Volunteers,
+    SectionFormat.Publications,
+    SectionFormat.References,
+    SectionFormat.Customs,
   ]),
 
-  data: z.union([
-    basicsSchema,
-    experienceSchema,
-    educationSchema,
-    skillSchema,
-    languageSchema,
-    awardSchema,
-    certificationSchema,
-    interestSchema,
-    profileSchema,
-    publicationSchema,
-    volunteerSchema,
-    referenceSchema,
-    customSectionSchema,
-  ]),
+  data: AllSectionSchemas,
 });
 
 export class CreateSectionItemDto extends createZodDto(createSectionSchema) {}

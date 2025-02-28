@@ -12,6 +12,7 @@ import {
   publicationSchema,
   referenceSchema,
   skillSchema,
+  summarySchema,
   volunteerSchema,
 } from "@reactive-resume/schema";
 
@@ -67,6 +68,10 @@ export function parseVolunteerData(data: SectionTypes) {
 
 export function parseReferenceData(data: SectionTypes) {
   return referenceSchema.parse(data);
+}
+
+export function parseSummaryData(data: SectionTypes) {
+  return summarySchema.parse(data);
 }
 
 export function parseCustomData(data: SectionTypes) {

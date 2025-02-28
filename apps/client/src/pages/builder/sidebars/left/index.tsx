@@ -34,7 +34,7 @@ export const LeftSidebar = () => {
   const containterRef = useRef<HTMLDivElement | null>(null);
 
   const addSection = useResumeStore((state) => state.addSection);
-  const customSections = useResumeStore((state) => state.resume.data.sections.custom);
+  const customSections = useResumeStore((state) => state.resume.data.sections.customs);
 
   const scrollIntoView = (selector: string) => {
     const section = containterRef.current?.querySelector(selector);
@@ -43,14 +43,12 @@ export const LeftSidebar = () => {
 
   const sections = useSectionsStore((state) => state.sections);
   const setValue = useResumeStore((state) => state.setValue);
-  // console.log("Here");
-  // console.log(sections?.profiles);
 
   useEffect(() => {
     setValue("sections", sections);
   }, [sections]);
 
-  const resume = useResumeStore((state) => state.resume);
+  // const resume = useResumeStore((state) => state.resume);
 
   return (
     <div className="flex bg-secondary-accent/30">
@@ -74,7 +72,7 @@ export const LeftSidebar = () => {
             }}
           />
           <SectionIcon
-            id="summary"
+            id="summaries"
             onClick={() => {
               scrollIntoView("#summary");
             }}
@@ -86,13 +84,13 @@ export const LeftSidebar = () => {
             }}
           />
           <SectionIcon
-            id="experience"
+            id="experiences"
             onClick={() => {
               scrollIntoView("#experience");
             }}
           />
           <SectionIcon
-            id="education"
+            id="educations"
             onClick={() => {
               scrollIntoView("#education");
             }}
@@ -140,7 +138,7 @@ export const LeftSidebar = () => {
             }}
           />
           <SectionIcon
-            id="volunteer"
+            id="volunteers"
             onClick={() => {
               scrollIntoView("#volunteer");
             }}
@@ -153,7 +151,7 @@ export const LeftSidebar = () => {
           />
 
           <SectionIcon
-            id="custom"
+            id="customs"
             variant="outline"
             name={t`Add a new section`}
             icon={<Plus size={14} />}
@@ -185,13 +183,13 @@ export const LeftSidebar = () => {
           />
           <Separator />
           <SectionBase<Experience>
-            id="experience"
+            id="experiences"
             title={(item) => item.company}
             description={(item) => item.position}
           />
           <Separator />
           <SectionBase<Education>
-            id="education"
+            id="educations"
             title={(item) => item.institution}
             description={(item) => item.area}
           />
@@ -244,7 +242,7 @@ export const LeftSidebar = () => {
           />
           <Separator />
           <SectionBase<Volunteer>
-            id="volunteer"
+            id="volunteers"
             title={(item) => item.organization}
             description={(item) => item.position}
           />

@@ -42,6 +42,7 @@ model User {
 
   // Section references
   basics         BasicsItem[]
+  summaries      SummaryItem[]
   profiles       ProfileItem[]
   experiences    WorkItem[]
   education      EducationItem[]
@@ -99,6 +100,7 @@ model Resume {
   ResumeReferenceItemMapping     ResumeReferenceItemMapping[]
   ResumePublicationItemMapping   ResumePublicationItemMapping[]
   ResumeCertificationItemMapping ResumeCertificationItemMapping[]
+  ResumeSummaryItemMapping       ResumeSummaryItemMapping[]
   ResumeCustomItemMapping        ResumeCustomItemMapping[]
 
   @@unique([userId, id])
@@ -336,6 +338,19 @@ model BasicsItem {
   @@index(fields: [userId])
 }
 
+model SummaryItem {
+  id                      String                    @id @default(cuid())
+  userId                  String
+  user                    User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content                 String?
+  updatedAt               String?
+
+  ResumeSummaryItemMapping ResumeSummaryItemMapping[]
+
+  @@unique([userId, id])
+  @@index(fields: [userId])
+}
+
 model CustomItem {
   id                      String                    @id @default(cuid())
   userId                  String
@@ -372,6 +387,17 @@ model ResumeBasicsItemMapping {
   basicsItemId String
   resume       Resume     @relation(fields: [resumeId], references: [id], onDelete: Cascade)
   basicsItem   BasicsItem @relation(fields: [basicsItemId], references: [id], onDelete: Cascade)
+  order        Int
+
+  @@unique([resumeId, order])
+}
+
+model ResumeSummaryItemMapping {
+  id           String     @id @default(cuid())
+  resumeId     String
+  summaryItemId String
+  resume       Resume     @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  summaryItem   SummaryItem @relation(fields: [summaryItemId], references: [id], onDelete: Cascade)
   order        Int
 
   @@unique([resumeId, order])

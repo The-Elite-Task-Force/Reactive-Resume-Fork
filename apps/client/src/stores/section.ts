@@ -3,17 +3,17 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 type SectionsState = {
-  sections: SectionsDto | null;
+  sections: SectionsDto;
 };
 
 type SectionsActions = {
-  setSections: (sections: SectionsDto | null) => void;
+  setSections: (sections: SectionsDto) => void;
 };
 
 export const useSectionsStore = create<SectionsState & SectionsActions>()(
   persist(
     (set) => ({
-      sections: null,
+      sections: {},
       setSections: (sections) => {
         set({ sections });
       },
