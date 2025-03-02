@@ -1,5 +1,11 @@
 import { t } from "@lingui/macro";
-import { FadersHorizontal, GithubLogo, MagnifyingGlass, ReadCvLogo } from "@phosphor-icons/react";
+import {
+  BuildingApartment,
+  FadersHorizontal,
+  GithubLogo,
+  MagnifyingGlass,
+  ReadCvLogo,
+} from "@phosphor-icons/react";
 import { Button, KeyboardShortcut, Separator } from "@reactive-resume/ui";
 import { cn } from "@reactive-resume/utils";
 import { motion } from "framer-motion";
@@ -88,7 +94,13 @@ export const Sidebar = ({ setOpen }: SidebarProps) => {
     setOpen?.(false);
   });
 
-  const sidebarItems: SidebarItem[] = [
+  useKeyboardShortcut(["shift", "c"], () => {
+    void navigate("/dashboard/companies");
+    setOpen?.(false);
+  });
+
+  // Define all SideBar Items that are NOT needed to be seen when logged in here
+  const commonSideBarItems: SidebarItem[] = [
     {
       path: "/dashboard/resumes",
       name: t`Resumes`,
@@ -107,7 +119,26 @@ export const Sidebar = ({ setOpen }: SidebarProps) => {
       shortcut: "⇧F",
       icon: <MagnifyingGlass />,
     },
+    {
+      path: "/dashboard/companies",
+      name: t`Companies`,
+      shortcut: "⇧C",
+      icon: <BuildingApartment />,
+    },
   ];
+  // Define all SideBar Items that ARE needed to be logged in to be seen here
+  let userSideBarItems: SidebarItem[] = [];
+  if (user !== undefined) {
+    userSideBarItems = [
+      {
+        path: "/publicprofile/" + user.username,
+        name: t`Profile Page`,
+        shortcut: "⇧P",
+        icon: <UserAvatar />,
+      },
+      ...commonSideBarItems,
+    ];
+  }
 
   return (
     <div className="flex h-full flex-col gap-y-4">
@@ -120,42 +151,7 @@ export const Sidebar = ({ setOpen }: SidebarProps) => {
       </div>
       <Separator className="opacity-50" />
       <div className="grid gap-y-2">
-        {(user === undefined
-          ? [
-              {
-                path: "/dashboard/resumes",
-                name: t`Resumes`,
-                shortcut: "⇧R",
-                icon: <ReadCvLogo />,
-              },
-              {
-                path: "/dashboard/settings",
-                name: t`Settings`,
-                shortcut: "⇧S",
-                icon: <FadersHorizontal />,
-              },
-            ]
-          : [
-              {
-                path: "/publicprofile/" + user.username,
-                name: t`Profile Page`,
-                shortcut: "⇧P",
-                icon: <UserAvatar />,
-              },
-              {
-                path: "/dashboard/resumes",
-                name: t`Resumes`,
-                shortcut: "⇧R",
-                icon: <ReadCvLogo />,
-              },
-              {
-                path: "/dashboard/settings",
-                name: t`Settings`,
-                shortcut: "⇧S",
-                icon: <FadersHorizontal />,
-              },
-            ]
-        ).map((item) => (
+        {(user === undefined ? commonSideBarItems : userSideBarItems).map((item) => (
           <SidebarItem {...item} key={item.path} onClick={() => setOpen?.(false)} />
         ))}
       </div>

@@ -1,8 +1,7 @@
 import { createBrowserRouter, createRoutesFromElements, Navigate, Route } from "react-router";
 
+import { CompanyPage } from "@/client/pages/dashboard/companies/page";
 import { ErrorPage } from "@/client/pages/dashboard/publicpage/error";
-import { publicLoader, PublicResumePage } from "@/client/pages/dashboard/publicpage/page";
-import { publicProfileLoader, PublicProfilePage } from "@/client/pages/profilepage/page";
 
 import { BackupOtpPage } from "../pages/auth/backup-otp/page";
 import { ForgotPasswordPage } from "../pages/auth/forgot-password/page";
@@ -20,10 +19,13 @@ import { SearchPage } from "../pages/dashboard/search/page";
 import { SettingsPage } from "../pages/dashboard/settings/page";
 import { HomeLayout } from "../pages/home/layout";
 import { HomePage } from "../pages/home/page";
+import { PublicProfilePage } from "../pages/profilepage/page";
 import { Providers } from "../providers";
 import { AuthGuard } from "./guards/auth";
 import { GuestGuard } from "./guards/guest";
 import { authLoader } from "./loaders/auth";
+import { publicProfileLoader } from "./loaders/public";
+
 export const routes = createRoutesFromElements(
   <Route element={<Providers />}>
     <Route errorElement={<ErrorPage />}>
@@ -62,12 +64,10 @@ export const routes = createRoutesFromElements(
         <Route index element={<Navigate replace to="/auth/login" />} />
       </Route>
 
-      <Route element={<DashboardLayout />}>
-        <Route path="publicprofile">
-          <Route path=":username" loader={publicProfileLoader} element={<PublicProfilePage />} />
-        </Route>
-        <Route path="dashboard">
-          <Route element={<AuthGuard />}>
+      <Route path="dashboard">
+        <Route element={<AuthGuard />}>
+          <Route element={<DashboardLayout />}>
+            <Route path="companies" element={<CompanyPage />} />
             <Route path="resumes" element={<ResumesPage />} />
             <Route path="settings" element={<SettingsPage />} />
             <Route path="search" element={<SearchPage />} /> {/* Add the new search route */}
@@ -88,7 +88,7 @@ export const routes = createRoutesFromElements(
 
       {/* Public Routes */}
       <Route path=":username">
-        <Route path=":slug" loader={publicLoader} element={<PublicResumePage />} />
+        <Route path=":username" loader={publicProfileLoader} element={<PublicProfilePage />} />
       </Route>
     </Route>
   </Route>,
