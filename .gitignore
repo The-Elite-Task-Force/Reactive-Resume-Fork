@@ -56,3 +56,7 @@ apps/client/src/locales/*/messages.*js
 
 # Coverage html report
 VitestCoverage
+
+# Whitelist specific migration file
+!tools/prisma/migrations/99999999999999_pgvector_migration/
+
