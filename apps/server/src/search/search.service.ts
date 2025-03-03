@@ -14,7 +14,6 @@ export async function getEmbedding(text: string): Promise<number[]> {
     model: "text-embedding-ada-002",
     input: text,
   });
-
   if (response.data && response.data[0].embedding.length > 0) {
     return response.data[0].embedding;
   } else {

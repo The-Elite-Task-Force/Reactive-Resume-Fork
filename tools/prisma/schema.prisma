@@ -542,7 +542,7 @@ model CompanyMapping {
   company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
   roleId    String?
   role      Role?   @relation(fields: [roleId], references: [id], onDelete: Cascade)
-
+  acceptedInvitation Boolean @default(true)
   @@unique([userId, companyId])
 }
 
@@ -552,7 +552,7 @@ model Company {
   ownerId   String
   owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   updatedAt DateTime @updatedAt
-
+  picture   String?
   CompanyMapping CompanyMapping[]
 }
 

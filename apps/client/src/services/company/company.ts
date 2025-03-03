@@ -10,6 +10,11 @@ export const fetchCompanies = async () => {
   return response.data;
 };
 
+export const fetchCompany = async (companyId: string) => {
+  const response = await axios.get<CompanyDto>(`/company/${companyId}`);
+  return response.data;
+};
+
 export const useCompanies = () => {
   const {
     error,
@@ -19,13 +24,24 @@ export const useCompanies = () => {
     queryKey: COMPANIES_KEY,
     queryFn: fetchCompanies,
   });
-
   return { companies, loading, error };
 };
 
 export const setDefault = async (data: { companyId: string; userId: string }) => {
   const response = await axios.patch(`/company/${data.companyId}/setDefault`, {
     userId: data.userId,
+  });
+  return response.data;
+};
+
+export const removeUserFromCompany = async (data: { companyId: string; userId: string }) => {
+  const response = await axios.delete(`/company/${data.companyId}/removeUser/${data.userId}`);
+  return response.data;
+};
+
+export const inviteUserToCompany = async (data: { companyId: string; username: string }) => {
+  const response = await axios.post(`/company/${data.companyId}/invite`, {
+    username: data.username,
   });
   return response.data;
 };

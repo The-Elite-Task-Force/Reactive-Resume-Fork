@@ -3,11 +3,12 @@ import { dateSchema } from "@reactive-resume/utils";
 import { createZodDto } from "nestjs-zod/dto";
 import { z } from "zod";
 
-export const companySchema = z.object({
+export const employeeSchema = z.object({
   id: idSchema,
-  name: z.string(),
-  ownerId: idSchema,
+  email: z.string(),
+  username: z.string(),
+  role: z.array(z.string()).nullable(),
   updatedAt: dateSchema,
 });
 
-export class CompanyDto extends createZodDto(companySchema) {}
+export class EmployeeDto extends createZodDto(employeeSchema) {}
