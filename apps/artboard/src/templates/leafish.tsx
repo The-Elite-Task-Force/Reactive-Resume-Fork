@@ -2,12 +2,14 @@ import type {
   Award,
   Certification,
   CustomSection,
+  CustomSectionGroup,
   Interest,
   Language,
   Project,
   Publication,
   Reference,
   SectionKey,
+  SectionWithItem,
   Skill,
   URL,
 } from "@reactive-resume/schema";
@@ -19,11 +21,11 @@ import React, { Fragment } from "react";
 import { BrandIcon } from "../components/brand-icon";
 import { Picture } from "../components/picture";
 import { useArtboardStore } from "../store/artboard";
-import type { SectionProps, TemplateProps } from "../types/template";
+import type { TemplateProps } from "../types/template";
 
 const Header = () => {
   const basics = useArtboardStore((state) => state.resume.basics);
-  const section = useArtboardStore((state) => state.resume.sections.summaries);
+  const section = useArtboardStore((state) => state.resume.sections.summary);
   const profiles = useArtboardStore((state) => state.resume.sections.profiles);
   const primaryColor = useArtboardStore((state) => state.resume.metadata.theme.primary);
 
@@ -168,6 +170,16 @@ const LinkedEntity = ({ name, url, separateLinks, className }: LinkedEntityProps
   );
 };
 
+type SectionProps<T> = {
+  section: SectionWithItem<T> | CustomSectionGroup;
+  children?: (item: T) => React.ReactNode;
+  className?: string;
+  urlKey?: keyof T;
+  levelKey?: keyof T;
+  summaryKey?: keyof T;
+  keywordsKey?: keyof T;
+};
+
 const Section = <T,>({
   section,
   children,
@@ -219,7 +231,7 @@ const Section = <T,>({
 };
 
 const Experience = () => {
-  const section = useArtboardStore((state) => state.resume.sections.experiences);
+  const section = useArtboardStore((state) => state.resume.sections.experience);
 
   return (
     <Section<Experience> section={section} urlKey="url" summaryKey="summary">
@@ -241,7 +253,7 @@ const Experience = () => {
 };
 
 const Education = () => {
-  const section = useArtboardStore((state) => state.resume.sections.educations);
+  const section = useArtboardStore((state) => state.resume.sections.education);
 
   return (
     <Section<Education> section={section} urlKey="url" summaryKey="summary">
@@ -342,7 +354,7 @@ const Publications = () => {
 };
 
 const Volunteer = () => {
-  const section = useArtboardStore((state) => state.resume.sections.volunteers);
+  const section = useArtboardStore((state) => state.resume.sections.volunteer);
 
   return (
     <Section<Volunteer> section={section} urlKey="url" summaryKey="summary">
@@ -422,7 +434,7 @@ const References = () => {
 };
 
 const Custom = ({ id }: { id: string }) => {
-  const section = useArtboardStore((state) => state.resume.sections.customs[id]);
+  const section = useArtboardStore((state) => state.resume.sections.custom[id]);
 
   return (
     <Section<CustomSection>
@@ -452,10 +464,10 @@ const Custom = ({ id }: { id: string }) => {
 
 const mapSectionToComponent = (section: SectionKey) => {
   switch (section) {
-    case "experiences": {
+    case "experience": {
       return <Experience />;
     }
-    case "educations": {
+    case "education": {
       return <Education />;
     }
     case "awards": {
@@ -473,7 +485,7 @@ const mapSectionToComponent = (section: SectionKey) => {
     case "publications": {
       return <Publications />;
     }
-    case "volunteers": {
+    case "volunteer": {
       return <Volunteer />;
     }
     case "languages": {
