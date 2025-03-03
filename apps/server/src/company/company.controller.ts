@@ -38,6 +38,17 @@ export class CompanyController {
     }
   }
 
+  @Get(":id")
+  @UseGuards(TwoFactorGuard)
+  async getById(@User() user: UserEntity, @Param("id") id: string) {
+    try {
+      return await this.companyService.getCompanyById(id);
+    } catch (error) {
+      Logger.log(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   @Post()
   @UseGuards(TwoFactorGuard)
   async create(@User() user: UserEntity, @Body() createCompanyDto: CreateCompanyDto) {

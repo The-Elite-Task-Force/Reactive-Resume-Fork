@@ -17,6 +17,12 @@ export class CompanyService {
     });
   }
 
+  async getCompanyById(id: string): Promise<CompanyDto> {
+    return this.prisma.company.findUniqueOrThrow({
+      where: { id },
+    });
+  }
+
   async getById(id: string): Promise<CompanyWithEmployees> {
     const company = await this.prisma.company.findUnique({
       where: { id },
