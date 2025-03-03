@@ -43,10 +43,16 @@ export const LeftSidebar = () => {
 
   const sections = useSectionsStore((state) => state.sections);
   const setValue = useResumeStore((state) => state.setValue);
+  const alue = useResumeStore((state) => state.resume.data);
 
   useEffect(() => {
-    setValue("sections", sections);
-  }, [sections]);
+    // Map sections from sectionsStore to the corresponding sections in resumeStore
+    for (const [key, section] of Object.entries(sections)) {
+      setValue(`sections.${key}.items`, section);
+    }
+  }, [sections, setValue]);
+
+  console.log(alue)
 
   // const resume = useResumeStore((state) => state.resume);
 

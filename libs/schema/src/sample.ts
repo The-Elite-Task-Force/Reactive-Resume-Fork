@@ -32,14 +32,58 @@ export const sampleResume: ResumeData = {
     },
   },
   sections: {
+    basics: {
+      name: "Basics",
+      columns: 1,
+      separateLinks: true,
+      id: "basics",
+      items: [
+        {
+          id: "ngkjdnfglksjdfnglkjsndfg",
+          userId: "ngkjdnfglksjdfnglkjsndfg",
+          updatedAt: "",
+          name: "John Doe",
+          headline: "Creative and Innovative Web Developer",
+          email: "john.doe@gmail.com",
+          phone: "(555) 123-4567",
+          location: "Pleasantville, CA 94588",
+          birthdate: "May 11, 1984",
+          summary: "SummeryText",
+          profiles: {},
+          website: "https://johndoe.com",
+          url: {
+            label: "",
+            href: "https://johndoe.me/",
+          },
+          customFields: [],
+          picture: {
+            url: "https://i.imgur.com/HgwyOuJ.jpg",
+            size: 120,
+            aspectRatio: 1,
+            borderRadius: 0,
+            effects: {
+              hidden: false,
+              border: false,
+              grayscale: false,
+            },
+          },
+        },
+      ],
+    },
     summaries: {
       name: "Summary",
       columns: 1,
       separateLinks: true,
-
       id: "summary",
-      content:
-        "<p>Innovative Web Developer with 5 years of experience in building impactful and user-friendly websites and applications. Specializes in <strong>front-end technologies</strong> and passionate about modern web standards and cutting-edge development techniques. Proven track record of leading successful projects from concept to deployment.</p>",
+      items: [
+        {
+          id: "summary-1",
+          userId: "user-123",
+          updatedAt: new Date().toISOString(), // Ensure this is a valid timestamp
+          content:
+            "<p>Innovative Web Developer with 5 years of experience in building impactful and user-friendly websites and applications. Specializes in <strong>front-end technologies</strong> and passionate about modern web standards and cutting-edge development techniques. Proven track record of leading successful projects from concept to deployment.</p>",
+        },
+      ],
     },
     awards: {
       name: "Awards",

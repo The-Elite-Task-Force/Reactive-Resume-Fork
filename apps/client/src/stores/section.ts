@@ -13,7 +13,7 @@ type SectionsActions = {
 export const useSectionsStore = create<SectionsState & SectionsActions>()(
   persist(
     (set) => ({
-      sections: {},
+      sections: {} as SectionsDto,
       setSections: (sections) => {
         set({ sections });
       },
