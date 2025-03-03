@@ -123,6 +123,7 @@ export class SectionItemService {
       return {
         basics,
         profiles,
+        summaries,
         experiences,
         educations,
         skills,

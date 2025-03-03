@@ -43,7 +43,6 @@ export const LeftSidebar = () => {
 
   const sections = useSectionsStore((state) => state.sections);
   const setValue = useResumeStore((state) => state.setValue);
-  const alue = useResumeStore((state) => state.resume.data);
 
   useEffect(() => {
     // Map sections from sectionsStore to the corresponding sections in resumeStore
@@ -53,8 +52,6 @@ export const LeftSidebar = () => {
   }, [sections, setValue]);
 
   console.log(sections)
-
-  // const resume = useResumeStore((state) => state.resume);
 
   return (
     <div className="flex bg-secondary-accent/30">
