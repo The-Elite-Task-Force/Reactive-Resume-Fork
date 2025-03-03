@@ -43,8 +43,6 @@ export const SectionBase = <T extends SectionItem>({ id, title, description }: P
     get(state.resume.data.sections, id),
   ) as SectionWithItem<T>;
 
-  console.log("here", section);
-
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
