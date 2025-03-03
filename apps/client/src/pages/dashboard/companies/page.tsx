@@ -10,7 +10,7 @@ import { CompanyListView } from "@/client/pages/dashboard/companies/_layouts/lis
 
 type Layout = "grid" | "list";
 
-export const CompanyPage = () => {
+export const CompaniesPage = () => {
   const [layout, setLayout] = useState<Layout>("grid");
 
   return (
