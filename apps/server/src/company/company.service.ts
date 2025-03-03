@@ -3,6 +3,7 @@ import {
   CompanyDto,
   CompanyWithEmployees,
   CreateCompanyDto,
+  EmployeeDto,
   UpdateCompanyDto,
 } from "@reactive-resume/dto";
 import { PrismaService } from "nestjs-prisma";
@@ -74,11 +75,19 @@ export class CompanyService {
     });
   }
 
-  async getEmployees(companyId: string) {
-    return this.prisma.companyMapping.findMany({
+  async getEmployees(companyId: string): Promise<EmployeeDto[]> {
+    const mappings = await this.prisma.companyMapping.findMany({
       where: { companyId, acceptedInvitation: true },
-      include: { user: true },
+      include: { user: true, role: true },
     });
+
+    return mappings.map((mapping) => ({
+      id: mapping.user.id,
+      email: mapping.user.email,
+      username: mapping.user.username,
+      role: mapping.role ? [mapping.role.name] : null,
+      updatedAt: mapping.user.updatedAt,
+    }));
   }
 
   async inviteUserToCompany(companyId: string, username: string) {

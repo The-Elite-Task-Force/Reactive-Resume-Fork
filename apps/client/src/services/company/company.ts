@@ -1,4 +1,4 @@
-import type { CompanyDto } from "@reactive-resume/dto";
+import type { CompanyDto, EmployeeDto } from "@reactive-resume/dto";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 
@@ -43,5 +43,12 @@ export const inviteUserToCompany = async (data: { companyId: string; username: s
   const response = await axios.post(`/company/${data.companyId}/invite`, {
     username: data.username,
   });
+  return response.data;
+};
+
+export const fetchEmployees = async (companyId: string) => {
+  const response = await axios.get<EmployeeDto[], AxiosResponse<EmployeeDto[]>>(
+    `/company/${companyId}/employees`,
+  );
   return response.data;
 };
