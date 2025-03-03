@@ -22,10 +22,10 @@ import { userSchema } from "../user";
 
 export enum SectionFormat {
   Basics = "basics",
-  Summaries = "summaries",
+  Summary = "summaries",
   Profiles = "profiles",
-  Experiences = "experiences",
-  Educations = "educations",
+  Experience = "experiences",
+  Education = "educations",
   Skills = "skills",
   Languages = "languages",
   Awards = "awards",
@@ -33,9 +33,9 @@ export enum SectionFormat {
   Interests = "interests",
   Projects = "projects",
   Publications = "publications",
-  Volunteers = "volunteers",
+  Volunteering = "volunteers",
   References = "references",
-  Customs = "customs",
+  Custom = "customs",
 }
 
 export const AllSectionSchemas = z.union([

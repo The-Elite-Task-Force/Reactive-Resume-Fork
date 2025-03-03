@@ -5,7 +5,7 @@ import { idSchema } from "./id";
 // Schema
 export const itemSchema = z.object({
   id: idSchema,
-  userId: idSchema,
+  userId: z.string(),
   updatedAt: z.string(),
 });
 

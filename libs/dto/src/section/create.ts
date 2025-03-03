@@ -6,9 +6,9 @@ import { AllSectionSchemas, SectionFormat } from "./section";
 export const createSectionSchema = z.object({
   format: z.enum([
     SectionFormat.Basics,
-    SectionFormat.Summaries,
-    SectionFormat.Experiences,
-    SectionFormat.Educations,
+    SectionFormat.Summary,
+    SectionFormat.Experience,
+    SectionFormat.Education,
     SectionFormat.Skills,
     SectionFormat.Languages,
     SectionFormat.Awards,
@@ -16,10 +16,10 @@ export const createSectionSchema = z.object({
     SectionFormat.Interests,
     SectionFormat.Profiles,
     SectionFormat.Projects,
-    SectionFormat.Volunteers,
+    SectionFormat.Volunteering,
     SectionFormat.Publications,
     SectionFormat.References,
-    SectionFormat.Customs,
+    SectionFormat.Custom,
   ]),
 
   data: AllSectionSchemas,

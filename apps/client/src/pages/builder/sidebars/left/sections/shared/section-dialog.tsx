@@ -77,7 +77,6 @@ export const SectionDialog = <T extends SectionItem>({
     const sectionFormat: SectionFormat = SectionFormat[sectionName as keyof typeof SectionFormat];
 
     if (isCreate || isDuplicate) {
-      console.log('create')
       const dto = await createSectionItem({
         format: sectionFormat,
         data: values,
