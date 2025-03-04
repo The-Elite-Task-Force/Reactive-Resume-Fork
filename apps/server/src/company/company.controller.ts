@@ -14,7 +14,7 @@ import {
 import { ApiTags } from "@nestjs/swagger";
 import { User as UserEntity } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { CreateCompanyDto, UpdateCompanyDto } from "@reactive-resume/dto";
+import { CreateCompanyDto, CreateCompanyMappingDto, UpdateCompanyDto } from "@reactive-resume/dto";
 import { ERROR_MESSAGE } from "@reactive-resume/utils";
 
 import { TwoFactorGuard } from "@/server/auth/guards/two-factor.guard";
@@ -116,6 +116,16 @@ export class CompanyController {
     } catch (error) {
       Logger.log(error);
       throw new InternalServerErrorException(error);
+    }
+  }
+  @Post("invite")
+  @UseGuards(TwoFactorGuard)
+  async linkUserToCompany(@Body() data: CreateCompanyMappingDto) {
+    try {
+      await this.companyService.inviteUserToCompany(data);
+      return { message: "User invited successfully" };
+    } catch (error) {
+      throw new BadRequestException(error.message);
     }
   }
 }

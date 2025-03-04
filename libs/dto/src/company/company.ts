@@ -13,4 +13,17 @@ export const companySchema = z.object({
   updatedAt: dateSchema,
 });
 
+export enum COMPANY_STATUS {
+  PENDING = "PENDING",
+  ACCEPTED = "ACCEPTED",
+  REJECTED = "REJECTED",
+  TERMINATED = "TERMINATED",
+}
+
+export const CreateCompanyMappingSchema = z.object({
+  companyId: idSchema,
+  userId: z.string(),
+});
+
 export class CompanyDto extends createZodDto(companySchema) {}
+export class CreateCompanyMappingDto extends createZodDto(CreateCompanyMappingSchema) {}

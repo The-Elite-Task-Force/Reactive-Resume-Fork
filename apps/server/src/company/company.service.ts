@@ -3,6 +3,7 @@ import {
   CompanyDto,
   CompanyWithEmployees,
   CreateCompanyDto,
+  CreateCompanyMappingDto,
   EmployeeDto,
   UpdateCompanyDto,
 } from "@reactive-resume/dto";
@@ -14,7 +15,7 @@ export class CompanyService {
 
   async getCompanyByOwnerId(id: string): Promise<CompanyDto[]> {
     return this.prisma.company.findMany({
-      where: { ownerId: id },
+      where: { owner  Id: id },
     });
   }
 
@@ -92,19 +93,6 @@ export class CompanyService {
     }));
   }
 
-  async inviteUserToCompany(companyId: string, username: string) {
-    const user = await this.prisma.user.findUnique({ where: { username } });
-    if (!user) {
-      throw new NotFoundException(`User with username ${username} not found`);
-    }
-    return this.prisma.companyMapping.create({
-      data: {
-        userId: user.id,
-        companyId,
-      },
-    });
-  }
-
   async removeUserFromCompany(companyId: string, username: string) {
     const user = await this.prisma.user.findUnique({
       where: { username: username },
@@ -116,5 +104,26 @@ export class CompanyService {
     return this.prisma.companyMapping.delete({
       where: { userId_companyId: { userId: user.id, companyId } },
     });
+  }
+
+  async inviteUserToCompany(createCompanyMappingDto: CreateCompanyMappingDto) {
+    try {
+      await this.prisma.companyMapping.create({
+        data: {
+          company: { connect: { id: createCompanyMappingDto.companyId } },
+          user: { connect: { id: createCompanyMappingDto.userId } },
+          invitedAt: new Date(),
+        },
+      });
+    } catch (error) {
+      if (
+        error.code === "P2002" &&
+        error.meta.target.includes("userId") &&
+        error.meta.target.includes("companyId")
+      ) {
+        throw new Error("User has already been invited to this company.");
+      }
+      throw error;
+    }
   }
 }
