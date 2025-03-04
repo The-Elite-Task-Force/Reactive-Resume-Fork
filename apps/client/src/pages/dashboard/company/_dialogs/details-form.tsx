@@ -17,7 +17,7 @@ import {
 } from "@reactive-resume/ui";
 import { cn } from "@reactive-resume/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 
@@ -34,6 +34,8 @@ type Props = {
 };
 
 export const DetailsForm = ({ companyState, setCompanyState }: Props) => {
+  const [error, setError] = useState<string | null>(null);
+
   const { updateCompany, loading } = useUpdateCompany();
   const { uploadImage, loading: isUploading } = useUploadImage();
 
@@ -67,10 +69,15 @@ export const DetailsForm = ({ companyState, setCompanyState }: Props) => {
 
   const onSubmit = async (data: UpdateCompanyDto) => {
     if (!companyState) return;
+    setError(null);
 
-    // @ts-ignore
-    setCompanyState(await updateCompany(data));
-    form.reset(data);
+    try {
+      const updatedCompany = await updateCompany(data);
+      setCompanyState && setCompanyState(updatedCompany);
+      form.reset(updatedCompany);
+    } catch {
+      setError("Failed to update company. Please try again.");
+    }
   };
 
   const onSelectImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
