@@ -1,5 +1,10 @@
 import { t } from "@lingui/macro";
-import type { CompanyDto, CreateCompanyMappingDto } from "@reactive-resume/dto";
+import type {
+  activeInvitationsDTO,
+  COMPANY_STATUS,
+  CompanyDto,
+  CreateCompanyMappingDto,
+} from "@reactive-resume/dto";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 
@@ -41,4 +46,27 @@ export const inviteToCompany = async (data: CreateCompanyMappingDto) => {
     }
     return t`An unexpected error occurred`;
   }
+};
+
+export const getActiveInvitations = async (userId: string) => {
+  try {
+    const response = await axios.get<{ activeInvitations: activeInvitationsDTO[] }, AxiosResponse>(
+      `/company/activeInvitations/${userId}`,
+    );
+
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error("An unexpected error occurred");
+  }
+};
+
+export const changeEmploymentStatus = async (companyMappingId: string, status: COMPANY_STATUS) => {
+  const response = await axios.patch(`/company/changeEmploymentStatus`, {
+    companyMappingId,
+    status,
+  });
+  return response.data;
 };

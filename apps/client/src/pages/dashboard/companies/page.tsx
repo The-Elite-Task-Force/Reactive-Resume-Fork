@@ -1,17 +1,39 @@
+/* eslint-disable lingui/no-unlocalized-strings */
 import { t } from "@lingui/macro";
 import { List, SquaresFour } from "@phosphor-icons/react";
+import type { activeInvitationsDTO } from "@reactive-resume/dto";
 import { ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger } from "@reactive-resume/ui";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 
 import { CompanyGridView } from "@/client/pages/dashboard/companies/_layouts/grid";
 import { CompanyListView } from "@/client/pages/dashboard/companies/_layouts/list";
+import { getActiveInvitations } from "@/client/services/company";
+import { useAuthStore } from "@/client/stores/auth";
+
+import Invitation from "../_components/invitation";
 
 type Layout = "grid" | "list";
 
 export const CompanyPage = () => {
   const [layout, setLayout] = useState<Layout>("grid");
+  // const [invitations, setInvitations] = useState<activeInvitationsDTO[]>();
+  const [invitations, setInvitations] = useState<activeInvitationsDTO[]>();
+  const { user } = useAuthStore();
+
+  useEffect(() => {
+    const fetchInvitations = async () => {
+      if (user) {
+        const data = await getActiveInvitations(user.id);
+        setInvitations(data);
+      }
+    };
+
+    void fetchInvitations();
+  }, [user]);
+
+  if (!user) return;
 
   return (
     <div>
@@ -48,6 +70,22 @@ export const CompanyPage = () => {
           </TabsList>
         </div>
 
+        {invitations && (
+          <div className="flex flex-col items-center p-6">
+            <h1 className="mb-6 text-3xl font-bold text-white">Active Invitations</h1>
+            <div className="max-w-lg">
+              {invitations.length > 0 &&
+                invitations.map((invite: activeInvitationsDTO) => (
+                  <Invitation
+                    key={invite.id}
+                    companyMappingId={invite.id}
+                    invitedAt={invite.invitedAt}
+                    companyName={invite.company.name}
+                  />
+                ))}
+            </div>
+          </div>
+        )}
         <ScrollArea
           allowOverflow
           className="h-[calc(100vh-140px)] overflow-visible lg:h-[calc(100vh-88px)]"
