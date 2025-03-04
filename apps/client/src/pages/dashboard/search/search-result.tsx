@@ -1,10 +1,14 @@
 import { EnvelopeSimple, Plus } from "@phosphor-icons/react";
 import type { SearchResultDto } from "@reactive-resume/dto";
 import React from "react";
-interface SearchResultItemProps {
-  item: SearchResultDto;
-}
 
+import { DMCompInviter } from "@/client/pages/dashboard/companies/dm-invite";
+
+type SearchResultItemProps = {
+  item: SearchResultDto;
+};
+
+// const SearchResultItem: React.FC<SearchResultItemProps> = ({ item }) => {
 const SearchResultItem: React.FC<SearchResultItemProps> = ({ item }) => {
   return (
     <div className="mb-4 flex items-center rounded-lg bg-white p-4 shadow-md">
@@ -12,7 +16,7 @@ const SearchResultItem: React.FC<SearchResultItemProps> = ({ item }) => {
         <img
           className="size-16 rounded-full"
           src={
-            item.picture ||
+            item.picture ??
             "https://img.freepik.com/premium-vector/profile-icon-vector-illustration-design-template_827767-5831.jpg?w=740"
           }
           alt={item.name}
@@ -29,6 +33,9 @@ const SearchResultItem: React.FC<SearchResultItemProps> = ({ item }) => {
         </button>
         <button className="p-2 text-gray-500 hover:text-gray-700">
           <Plus size={24} />
+        </button>
+        <button className="p-2 text-gray-500 hover:text-gray-700">
+          <DMCompInviter invitedUserId={item.id} />
         </button>
       </div>
     </div>

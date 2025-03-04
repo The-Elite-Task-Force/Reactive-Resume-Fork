@@ -1,4 +1,5 @@
-import type { CompanyDto } from "@reactive-resume/dto";
+import { t } from "@lingui/macro";
+import type { CompanyDto, CreateCompanyMappingDto } from "@reactive-resume/dto";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 
@@ -28,4 +29,16 @@ export const setDefault = async (data: { companyId: string; userId: string }) =>
     userId: data.userId,
   });
   return response.data;
+};
+
+export const inviteToCompany = async (data: CreateCompanyMappingDto) => {
+  try {
+    const response = await axios.post(`/company/invite`, data);
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    return t`An unexpected error occurred`;
+  }
 };

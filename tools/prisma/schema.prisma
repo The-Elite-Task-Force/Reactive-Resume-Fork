@@ -536,14 +536,29 @@ model TeamsMapping {
 
 model CompanyMapping {
   id        String  @id @default(cuid())
+
   userId    String
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   companyId String
   company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
   roleId    String?
   role      Role?   @relation(fields: [roleId], references: [id], onDelete: Cascade)
 
+  status          CompanyMembershipStatus @default(PENDING)
+  invitedAt       String
+  acceptedAt      DateTime?
+  quitAt          DateTime?
+
   @@unique([userId, companyId])
+}
+
+enum CompanyMembershipStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  TERMINATED
 }
 
 model Company {

@@ -1,5 +1,10 @@
 import { Injectable } from "@nestjs/common";
-import { CompanyDto, CreateCompanyDto, UpdateCompanyDto } from "@reactive-resume/dto";
+import {
+  CompanyDto,
+  CreateCompanyDto,
+  CreateCompanyMappingDto,
+  UpdateCompanyDto,
+} from "@reactive-resume/dto";
 import { PrismaService } from "nestjs-prisma";
 
 @Injectable()
@@ -32,5 +37,26 @@ export class CompanyService {
     return this.prisma.company.delete({
       where: { id, ownerId: user },
     });
+  }
+
+  async inviteUserToCompany(createCompanyMappingDto: CreateCompanyMappingDto) {
+    try {
+      await this.prisma.companyMapping.create({
+        data: {
+          company: { connect: { id: createCompanyMappingDto.companyId } },
+          user: { connect: { id: createCompanyMappingDto.userId } },
+          invitedAt: new Date(),
+        },
+      });
+    } catch (error) {
+      if (
+        error.code === "P2002" &&
+        error.meta.target.includes("userId") &&
+        error.meta.target.includes("companyId")
+      ) {
+        throw new Error("User has already been invited to this company.");
+      }
+      throw error;
+    }
   }
 }
