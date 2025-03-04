@@ -2,7 +2,7 @@ import { EnvelopeSimple, Plus } from "@phosphor-icons/react";
 import type { SearchResultDto } from "@reactive-resume/dto";
 import React from "react";
 
-import { DMCompInviter } from "@/client/pages/dashboard/companies/dm-invite";
+import { DropdownCompanyInviter } from "@/client/pages/dashboard/companies/dm-invite";
 
 type SearchResultItemProps = {
   item: SearchResultDto;
@@ -35,7 +35,7 @@ const SearchResultItem: React.FC<SearchResultItemProps> = ({ item }) => {
           <Plus size={24} />
         </button>
         <button className="p-2 text-gray-500 hover:text-gray-700">
-          <DMCompInviter invitedUserId={item.id} />
+          <DropdownCompanyInviter invitedUserId={item.id} />
         </button>
       </div>
     </div>

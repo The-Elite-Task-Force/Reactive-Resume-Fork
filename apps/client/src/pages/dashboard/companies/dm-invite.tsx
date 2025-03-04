@@ -14,7 +14,7 @@ type Props = {
   invitedUserId: string;
 };
 
-export const DMCompInviter = ({ invitedUserId }: Props) => {
+export const DropdownCompanyInviter = ({ invitedUserId }: Props) => {
   const { user } = useAuthStore();
 
   const { companies, loading, error } = useCompanies();
