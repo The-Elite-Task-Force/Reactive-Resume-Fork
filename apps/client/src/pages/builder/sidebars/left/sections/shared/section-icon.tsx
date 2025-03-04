@@ -29,7 +29,7 @@ const getSectionIcon = (id: SectionKey, props: IconProps = {}) => {
     case "basics": {
       return <User size={18} {...props} />;
     }
-    case "summaries": {
+    case "summary": {
       return <Article size={18} {...props} />;
     }
     case "awards": {
@@ -38,10 +38,10 @@ const getSectionIcon = (id: SectionKey, props: IconProps = {}) => {
     case "profiles": {
       return <ShareNetwork size={18} {...props} />;
     }
-    case "experiences": {
+    case "experience": {
       return <Briefcase size={18} {...props} />;
     }
-    case "educations": {
+    case "education": {
       return <GraduationCap size={18} {...props} />;
     }
     case "certifications": {
@@ -53,7 +53,7 @@ const getSectionIcon = (id: SectionKey, props: IconProps = {}) => {
     case "languages": {
       return <Translate size={18} {...props} />;
     }
-    case "volunteers": {
+    case "volunteer": {
       return <HandHeart size={18} {...props} />;
     }
     case "projects": {

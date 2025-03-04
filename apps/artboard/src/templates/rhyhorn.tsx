@@ -202,7 +202,7 @@ const Section = <T,>({
 };
 
 const Summary = () => {
-  const section = useArtboardStore((state) => state.resume.sections.summaries);
+  const section = useArtboardStore((state) => state.resume.sections.summary);
 
   if (section.items.length === 0) return null;
 
@@ -239,7 +239,7 @@ const Profiles = () => {
 };
 
 const Experience = () => {
-  const section = useArtboardStore((state) => state.resume.sections.experiences);
+  const section = useArtboardStore((state) => state.resume.sections.experience);
 
   return (
     <Section<Experience> section={section} urlKey="url" summaryKey="summary">
@@ -266,7 +266,7 @@ const Experience = () => {
 };
 
 const Education = () => {
-  const section = useArtboardStore((state) => state.resume.sections.educations);
+  const section = useArtboardStore((state) => state.resume.sections.education);
 
   return (
     <Section<Education> section={section} urlKey="url" summaryKey="summary">
@@ -391,7 +391,7 @@ const Publications = () => {
 };
 
 const Volunteer = () => {
-  const section = useArtboardStore((state) => state.resume.sections.volunteers);
+  const section = useArtboardStore((state) => state.resume.sections.volunteer);
 
   return (
     <Section<Volunteer> section={section} urlKey="url" summaryKey="summary">
@@ -479,7 +479,7 @@ const References = () => {
 };
 
 const Custom = ({ id }: { id: string }) => {
-  const section = useArtboardStore((state) => state.resume.sections.customs[id]);
+  const section = useArtboardStore((state) => state.resume.sections.custom[id]);
 
   return (
     <Section<CustomSection>
@@ -515,13 +515,13 @@ const mapSectionToComponent = (section: SectionKey) => {
     case "profiles": {
       return <Profiles />;
     }
-    case "summaries": {
+    case "summary": {
       return <Summary />;
     }
-    case "experiences": {
+    case "experience": {
       return <Experience />;
     }
-    case "educations": {
+    case "education": {
       return <Education />;
     }
     case "awards": {
@@ -539,7 +539,7 @@ const mapSectionToComponent = (section: SectionKey) => {
     case "publications": {
       return <Publications />;
     }
-    case "volunteers": {
+    case "volunteer": {
       return <Volunteer />;
     }
     case "languages": {

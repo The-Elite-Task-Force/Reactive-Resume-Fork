@@ -61,7 +61,7 @@ export const sectionsSchema = z.object({
     id: z.literal("basics"),
     items: z.array(basicsSchema),
   }),
-  summaries: sectionSchema.extend({
+  summary: sectionSchema.extend({
     id: z.literal("summary"),
     items: z.array(summarySchema),
   }),
@@ -73,15 +73,15 @@ export const sectionsSchema = z.object({
     id: z.literal("certifications"),
     items: z.array(certificationSchema),
   }),
-  educations: sectionSchema.extend({
+  education: sectionSchema.extend({
     id: z.literal("education"),
     items: z.array(educationSchema),
   }),
-  experiences: sectionSchema.extend({
+  experience: sectionSchema.extend({
     id: z.literal("experience"),
     items: z.array(experienceSchema),
   }),
-  volunteers: sectionSchema.extend({
+  volunteer: sectionSchema.extend({
     id: z.literal("volunteer"),
     items: z.array(volunteerSchema),
   }),
@@ -113,7 +113,7 @@ export const sectionsSchema = z.object({
     id: z.literal("skills"),
     items: z.array(skillSchema),
   }),
-  customs: z.record(z.string(), customSchema),
+  custom: z.record(z.string(), customSchema),
 });
 
 // Detailed Types
@@ -134,12 +134,12 @@ export const defaultSection: Section = {
 
 export const defaultSections: Sections = {
   basics: { ...defaultSection, id: "basics", name: "Basics", items: [] },
-  summaries: { ...defaultSection, id: "summary", name: "Summary", items: [] },
+  summary: { ...defaultSection, id: "summary", name: "Summary", items: [] },
   awards: { ...defaultSection, id: "awards", name: "Awards", items: [] },
   certifications: { ...defaultSection, id: "certifications", name: "Certifications", items: [] },
-  educations: { ...defaultSection, id: "education", name: "Education", items: [] },
-  experiences: { ...defaultSection, id: "experience", name: "Experience", items: [] },
-  volunteers: { ...defaultSection, id: "volunteer", name: "Volunteering", items: [] },
+  education: { ...defaultSection, id: "education", name: "Education", items: [] },
+  experience: { ...defaultSection, id: "experience", name: "Experience", items: [] },
+  volunteer: { ...defaultSection, id: "volunteer", name: "Volunteering", items: [] },
   interests: { ...defaultSection, id: "interests", name: "Interests", items: [] },
   languages: { ...defaultSection, id: "languages", name: "Languages", items: [] },
   profiles: { ...defaultSection, id: "profiles", name: "Profiles", items: [] },
@@ -147,7 +147,7 @@ export const defaultSections: Sections = {
   publications: { ...defaultSection, id: "publications", name: "Publications", items: [] },
   references: { ...defaultSection, id: "references", name: "References", items: [] },
   skills: { ...defaultSection, id: "skills", name: "Skills", items: [] },
-  customs: {},
+  custom: {},
 };
 
 export * from "./award";

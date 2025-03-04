@@ -22,10 +22,10 @@ import { userSchema } from "../user";
 
 export enum SectionFormat {
   Basics = "basics",
-  Summary = "summaries",
+  Summary = "summary",
   Profiles = "profiles",
-  Experience = "experiences",
-  Education = "educations",
+  Experience = "experience",
+  Education = "education",
   Skills = "skills",
   Languages = "languages",
   Awards = "awards",
@@ -33,9 +33,9 @@ export enum SectionFormat {
   Interests = "interests",
   Projects = "projects",
   Publications = "publications",
-  Volunteering = "volunteers",
+  Volunteering = "volunteer",
   References = "references",
-  Custom = "customs",
+  Custom = "custom",
 }
 
 export const AllSectionSchemas = z.union([
@@ -67,9 +67,9 @@ export const sectionSchema = z.object({
 
 export const jsonSectionsSchema = z.object({
   basics: z.array(basicsSchema),
-  summaries: z.array(summarySchema),
-  experiences: z.array(experienceSchema),
-  educations: z.array(educationSchema),
+  summary: z.array(summarySchema),
+  experience: z.array(experienceSchema),
+  education: z.array(educationSchema),
   skills: z.array(skillSchema),
   languages: z.array(languageSchema),
   awards: z.array(awardSchema),
@@ -78,9 +78,9 @@ export const jsonSectionsSchema = z.object({
   projects: z.array(projectSchema),
   profiles: z.array(profileSchema),
   publications: z.array(publicationSchema),
-  volunteers: z.array(volunteerSchema),
+  volunteer: z.array(volunteerSchema),
   references: z.array(referenceSchema),
-  customs: z.array(customSectionSchema),
+  custom: z.array(customSectionSchema),
 });
 
 export class SectionsDto extends createZodDto(jsonSectionsSchema) {}

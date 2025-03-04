@@ -31,7 +31,7 @@ const formSchema = customSectionSchema;
 type FormValues = z.infer<typeof formSchema>;
 
 export const CustomSectionDialog = () => {
-  const { payload } = useDialog<CustomSection>("customs");
+  const { payload } = useDialog<CustomSection>("custom");
 
   const form = useForm<FormValues>({
     defaultValues: defaultCustomSection,

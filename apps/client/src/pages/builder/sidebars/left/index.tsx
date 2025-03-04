@@ -16,14 +16,14 @@ import type {
   Volunteer,
 } from "@reactive-resume/schema";
 import { Button, ScrollArea, Separator } from "@reactive-resume/ui";
-import { Fragment, useEffect, useRef } from "react";
+import { Fragment, useRef } from "react";
 import { Link } from "react-router";
 
 import { Icon } from "@/client/components/icon";
 import { UserAvatar } from "@/client/components/user-avatar";
 import { UserOptions } from "@/client/components/user-options";
+import { useMapSectionsToResume } from "@/client/hooks/use-map-sections-to-resume";
 import { useResumeStore } from "@/client/stores/resume";
-import { useSectionsStore } from "@/client/stores/section";
 
 import { BasicsSection } from "./sections/basics";
 import { SectionBase } from "./sections/shared/section-base";
@@ -34,24 +34,14 @@ export const LeftSidebar = () => {
   const containterRef = useRef<HTMLDivElement | null>(null);
 
   const addSection = useResumeStore((state) => state.addSection);
-  const customSections = useResumeStore((state) => state.resume.data.sections.customs);
+  const customSections = useResumeStore((state) => state.resume.data.sections.custom);
 
   const scrollIntoView = (selector: string) => {
     const section = containterRef.current?.querySelector(selector);
     section?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const sections = useSectionsStore((state) => state.sections);
-  const setValue = useResumeStore((state) => state.setValue);
-
-  useEffect(() => {
-    // Map sections from sectionsStore to the corresponding sections in resumeStore
-    for (const [key, section] of Object.entries(sections)) {
-      setValue(`sections.${key}.items`, section);
-    }
-  }, [sections, setValue]);
-
-  console.log(sections)
+  useMapSectionsToResume();
 
   return (
     <div className="flex bg-secondary-accent/30">
@@ -75,7 +65,7 @@ export const LeftSidebar = () => {
             }}
           />
           <SectionIcon
-            id="summaries"
+            id="summary"
             onClick={() => {
               scrollIntoView("#summary");
             }}
@@ -87,13 +77,13 @@ export const LeftSidebar = () => {
             }}
           />
           <SectionIcon
-            id="experiences"
+            id="experience"
             onClick={() => {
               scrollIntoView("#experience");
             }}
           />
           <SectionIcon
-            id="educations"
+            id="education"
             onClick={() => {
               scrollIntoView("#education");
             }}
@@ -141,7 +131,7 @@ export const LeftSidebar = () => {
             }}
           />
           <SectionIcon
-            id="volunteers"
+            id="volunteer"
             onClick={() => {
               scrollIntoView("#volunteer");
             }}
@@ -154,7 +144,7 @@ export const LeftSidebar = () => {
           />
 
           <SectionIcon
-            id="customs"
+            id="custom"
             variant="outline"
             name={t`Add a new section`}
             icon={<Plus size={14} />}
@@ -186,13 +176,13 @@ export const LeftSidebar = () => {
           />
           <Separator />
           <SectionBase<Experience>
-            id="experiences"
+            id="experience"
             title={(item) => item.company}
             description={(item) => item.position}
           />
           <Separator />
           <SectionBase<Education>
-            id="educations"
+            id="education"
             title={(item) => item.institution}
             description={(item) => item.area}
           />
@@ -245,7 +235,7 @@ export const LeftSidebar = () => {
           />
           <Separator />
           <SectionBase<Volunteer>
-            id="volunteers"
+            id="volunteer"
             title={(item) => item.organization}
             description={(item) => item.position}
           />

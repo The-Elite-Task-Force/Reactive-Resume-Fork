@@ -29,7 +29,7 @@ export const EducationDialog = () => {
   });
 
   return (
-    <SectionDialog<FormValues> id="educations" form={form} defaultValues={defaultEducation}>
+    <SectionDialog<FormValues> id="education" form={form} defaultValues={defaultEducation}>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <FormField
           name="institution"

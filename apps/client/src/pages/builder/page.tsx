@@ -5,8 +5,10 @@ import { Helmet } from "react-helmet-async";
 import type { LoaderFunction } from "react-router";
 import { redirect } from "react-router";
 
+import { useMapSectionsToResume } from "@/client/hooks/use-map-sections-to-resume";
 import { queryClient } from "@/client/libs/query-client";
 import { findResumeById } from "@/client/services/resume";
+import { useSections } from "@/client/services/section/sections";
 import { useBuilderStore } from "@/client/stores/builder";
 import { useResumeStore } from "@/client/stores/resume";
 
@@ -16,6 +18,10 @@ export const BuilderPage = () => {
 
   const resume = useResumeStore((state) => state.resume);
   const title = useResumeStore((state) => state.resume.title);
+
+  useSections();
+
+  useMapSectionsToResume();
 
   const syncResumeToArtboard = useCallback(() => {
     setImmediate(() => {

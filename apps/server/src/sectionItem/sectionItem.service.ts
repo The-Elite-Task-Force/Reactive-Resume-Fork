@@ -47,7 +47,7 @@ export class SectionItemService {
         where: { userId },
         orderBy: { updatedAt: "desc" },
       });
-      const summaries = await this.prisma.summaryItem.findMany({
+      const summary = await this.prisma.summaryItem.findMany({
         where: { userId },
         orderBy: { updatedAt: "desc" },
       });
@@ -55,11 +55,11 @@ export class SectionItemService {
         where: { userId },
         orderBy: { updatedAt: "desc" },
       });
-      const experiences = await this.prisma.workItem.findMany({
+      const experience = await this.prisma.workItem.findMany({
         where: { userId },
         orderBy: { updatedAt: "desc" },
       });
-      const educations = await this.prisma.educationItem.findMany({
+      const education = await this.prisma.educationItem.findMany({
         where: { userId },
         orderBy: { updatedAt: "desc" },
       });
@@ -91,7 +91,7 @@ export class SectionItemService {
         where: { userId },
         orderBy: { updatedAt: "desc" },
       });
-      const volunteers = await this.prisma.volunteerItem.findMany({
+      const volunteer = await this.prisma.volunteerItem.findMany({
         where: { userId },
         orderBy: { updatedAt: "desc" },
       });
@@ -99,16 +99,16 @@ export class SectionItemService {
         where: { userId },
         orderBy: { updatedAt: "desc" },
       });
-      const customs = await this.prisma.customItem.findMany({
+      const custom = await this.prisma.customItem.findMany({
         where: { userId },
         orderBy: { updatedAt: "desc" },
       });
 
       if (basics.length === 0) basics.push(defaultBasics);
-      if (summaries.length === 0) summaries.push(defaultSummary);
+      if (summary.length === 0) summary.push(defaultSummary);
       if (profiles.length === 0) profiles.push(defaultProfile);
-      if (experiences.length === 0) experiences.push(defaultExperience);
-      if (educations.length === 0) educations.push(defaultEducation);
+      if (experience.length === 0) experience.push(defaultExperience);
+      if (education.length === 0) education.push(defaultEducation);
       if (skills.length === 0) skills.push(defaultSkill);
       if (languages.length === 0) languages.push(defaultLanguage);
       if (awards.length === 0) awards.push(defaultAward);
@@ -116,16 +116,16 @@ export class SectionItemService {
       if (interests.length === 0) interests.push(defaultInterest);
       if (projects.length === 0) projects.push(defaultProject);
       if (publications.length === 0) publications.push(defaultPublication);
-      if (volunteers.length === 0) volunteers.push(defaultVolunteer);
+      if (volunteer.length === 0) volunteer.push(defaultVolunteer);
       if (references.length === 0) references.push(defaultReference);
-      if (customs.length === 0) customs.push(defaultCustomSection);
+      if (custom.length === 0) custom.push(defaultCustomSection);
 
       return {
         basics,
         profiles,
-        summaries,
-        experiences,
-        educations,
+        summary,
+        experience,
+        education,
         skills,
         languages,
         awards,
@@ -133,9 +133,9 @@ export class SectionItemService {
         interests,
         projects,
         publications,
-        volunteers,
+        volunteer,
         references,
-        customs,
+        custom,
       };
     } catch (error) {
       Logger.error(error);
