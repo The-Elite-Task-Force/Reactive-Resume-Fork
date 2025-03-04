@@ -2,11 +2,11 @@ import type { CompanyDto, EmployeeDto } from "@reactive-resume/dto";
 import { useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
 
-import { DetailsForm } from "@/client/pages/dashboard/company/details-form";
+import { DetailsForm } from "@/client/pages/dashboard/company/_dialogs/details-form";
 import { fetchEmployees } from "@/client/services/company/company";
 
-import EmployeeList from "./employeeList";
-import InviteUserForm from "./InviteUserForm";
+import InviteUserForm from "./_dialogs/InviteUserForm";
+import EmployeeList from "./_layouts/employeeList";
 
 export const CompanyPage = () => {
   const [employees, setEmployees] = useState<EmployeeDto[]>([]);

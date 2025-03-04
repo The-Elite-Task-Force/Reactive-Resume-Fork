@@ -1,4 +1,4 @@
-export enum ErrorMessage {
+export enum ERROR_MESSAGE {
   InvalidCredentials = "InvalidCredentials",
   UserAlreadyExists = "UserAlreadyExists",
   SecretsNotFound = "SecretsNotFound",

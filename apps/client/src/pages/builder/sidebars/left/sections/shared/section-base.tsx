@@ -16,7 +16,7 @@ import {
 } from "@dnd-kit/sortable";
 import { t } from "@lingui/macro";
 import { Plus } from "@phosphor-icons/react";
-//import { SectionFormat } from "@reactive-resume/dto";
+//import { SECTION_FORMAT } from "@reactive-resume/dto";
 import type { SectionItem, SectionKey, SectionWithItem } from "@reactive-resume/schema";
 import { Button } from "@reactive-resume/ui";
 import { cn } from "@reactive-resume/utils";
@@ -94,7 +94,7 @@ export const SectionBase = <T extends SectionItem>({ id, title, description }: P
 
   /*const onLinkItemToResume = async (item: T) => {
     await linkResumeToItem(resumeId, {
-      format: SectionFormat.Education,
+      format: SECTION_FORMAT.Education,
       itemId: item.id,
       order: 1,
     });

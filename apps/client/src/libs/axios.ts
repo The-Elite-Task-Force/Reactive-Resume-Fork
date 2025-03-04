@@ -1,5 +1,5 @@
 import { t } from "@lingui/macro";
-import type { ErrorMessage } from "@reactive-resume/utils";
+import type { ERROR_MESSAGE } from "@reactive-resume/utils";
 import { deepSearchAndParseDates } from "@reactive-resume/utils";
 import _axios from "axios";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
@@ -21,7 +21,7 @@ axios.interceptors.response.use(
     return { ...response, data: transformedResponse };
   },
   (error) => {
-    const message = error.response?.data.message as ErrorMessage;
+    const message = error.response?.data.message as ERROR_MESSAGE;
     const description = translateError(message);
 
     if (description) {

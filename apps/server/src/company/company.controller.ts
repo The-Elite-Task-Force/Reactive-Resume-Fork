@@ -15,7 +15,7 @@ import { ApiTags } from "@nestjs/swagger";
 import { User as UserEntity } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { CreateCompanyDto, UpdateCompanyDto } from "@reactive-resume/dto";
-import { ErrorMessage } from "@reactive-resume/utils";
+import { ERROR_MESSAGE } from "@reactive-resume/utils";
 
 import { TwoFactorGuard } from "@/server/auth/guards/two-factor.guard";
 import { CompanyService } from "@/server/company/company.service";
@@ -56,7 +56,7 @@ export class CompanyController {
       return await this.companyService.create(user.id, createCompanyDto);
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError && error.code === "P2002") {
-        throw new BadRequestException(ErrorMessage.CompanyNameAlreadyExists);
+        throw new BadRequestException(ERROR_MESSAGE.CompanyNameAlreadyExists);
       }
 
       Logger.error(error);

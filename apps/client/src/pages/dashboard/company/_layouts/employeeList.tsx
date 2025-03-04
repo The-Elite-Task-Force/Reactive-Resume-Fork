@@ -1,6 +1,6 @@
 import type { EmployeeDto } from "@reactive-resume/dto";
 
-import EmployeeCard from "./employeeCard";
+import EmployeeCard from "../employeeCard";
 
 type EmployeeListProps = {
   employees: EmployeeDto[];

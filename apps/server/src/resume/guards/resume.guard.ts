@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable, NotFoundException } from "@nestjs/common";
 import { UserWithSecrets } from "@reactive-resume/dto";
-import { ErrorMessage } from "@reactive-resume/utils";
+import { ERROR_MESSAGE } from "@reactive-resume/utils";
 import { Request } from "express";
 
 import { ResumeService } from "../resume.service";
@@ -30,13 +30,13 @@ export class ResumeGuard implements CanActivate {
         if (user && user.id === resume.userId) {
           request.payload = { resume };
         } else {
-          throw new NotFoundException(ErrorMessage.ResumeNotFound);
+          throw new NotFoundException(ERROR_MESSAGE.ResumeNotFound);
         }
       }
 
       return true;
     } catch {
-      throw new NotFoundException(ErrorMessage.ResumeNotFound);
+      throw new NotFoundException(ERROR_MESSAGE.ResumeNotFound);
     }
   }
 }

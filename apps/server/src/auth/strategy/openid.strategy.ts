@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, Logger } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { User } from "@prisma/client";
-import { ErrorMessage, generateRandomName, processUsername } from "@reactive-resume/utils";
+import { ERROR_MESSAGE, generateRandomName, processUsername } from "@reactive-resume/utils";
 import { Profile, Strategy, StrategyOptions } from "passport-openidconnect";
 
 import { UserService } from "@/server/user/user.service";
@@ -44,14 +44,14 @@ export class OpenIDStrategy extends PassportStrategy(Strategy, "openid") {
 
     let user: User | null = null;
 
-    if (!email) throw new BadRequestException(ErrorMessage.InvalidCredentials);
+    if (!email) throw new BadRequestException(ERROR_MESSAGE.InvalidCredentials);
 
     try {
       user =
         (await this.userService.findOneByIdentifier(email)) ??
         (username ? await this.userService.findOneByIdentifier(username) : null);
 
-      if (!user) throw new BadRequestException(ErrorMessage.InvalidCredentials);
+      if (!user) throw new BadRequestException(ERROR_MESSAGE.InvalidCredentials);
 
       done(null, user);
     } catch {
@@ -71,7 +71,7 @@ export class OpenIDStrategy extends PassportStrategy(Strategy, "openid") {
       } catch (error) {
         Logger.error(error);
 
-        throw new BadRequestException(ErrorMessage.UserAlreadyExists);
+        throw new BadRequestException(ERROR_MESSAGE.UserAlreadyExists);
       }
     }
   }

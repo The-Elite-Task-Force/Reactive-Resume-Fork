@@ -22,7 +22,7 @@ import {
   UpdateResumeDto,
 } from "@reactive-resume/dto";
 import { resumeDataSchema } from "@reactive-resume/schema";
-import { ErrorMessage } from "@reactive-resume/utils";
+import { ERROR_MESSAGE } from "@reactive-resume/utils";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
 import { User } from "@/server/user/decorators/user.decorator";
@@ -54,7 +54,7 @@ export class ResumeController {
       return await this.resumeService.create(user.id, createResumeDto);
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError && error.code === "P2002") {
-        throw new BadRequestException(ErrorMessage.ResumeSlugAlreadyExists);
+        throw new BadRequestException(ERROR_MESSAGE.ResumeSlugAlreadyExists);
       }
 
       Logger.error(error);
@@ -70,7 +70,7 @@ export class ResumeController {
       return await this.resumeService.import(user.id, result);
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError && error.code === "P2002") {
-        throw new BadRequestException(ErrorMessage.ResumeSlugAlreadyExists);
+        throw new BadRequestException(ERROR_MESSAGE.ResumeSlugAlreadyExists);
       }
 
       Logger.error(error);
@@ -169,7 +169,7 @@ export class ResumeController {
   @UseGuards(TwoFactorGuard)
   async setDefault(@User() user: UserEntity, @Param("id") id: string) {
     try {
-      const resume = this.resumeService.setDefault(user.id, id);
+      user = await this.resumeService.setDefault(user.id, id);
       try {
         await this.searchService.updateSearchIndex(user);
       } catch (error) {

@@ -12,7 +12,7 @@ import {
 } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { User as UserEntity } from "@prisma/client";
-import { CreateSectionItemDto, SectionFormat, UpdateSectionItemDto } from "@reactive-resume/dto";
+import { CreateSectionItemDto, SECTION_FORMAT, UpdateSectionItemDto } from "@reactive-resume/dto";
 import { sectionSchemaWithData } from "@reactive-resume/schema";
 import zodToJsonSchema from "zod-to-json-schema";
 
@@ -64,7 +64,7 @@ export class SectionItemController {
 
   @Delete(":id")
   @UseGuards(TwoFactorGuard)
-  async delete(@User() user: UserEntity, @Param("id") id: string, @Body() format: SectionFormat) {
+  async delete(@User() user: UserEntity, @Param("id") id: string, @Body() format: SECTION_FORMAT) {
     try {
       return await this.sectionItemService.deleteSectionItem(format, id);
     } catch (error) {

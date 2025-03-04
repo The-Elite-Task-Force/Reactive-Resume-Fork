@@ -8,6 +8,9 @@ export const referenceSchema = itemSchema.extend({
   description: z.string(),
   summary: z.string(),
   url: urlSchema,
+  email: z.string(),
+  phone: z.string(),
+  relationship: z.string(),
 });
 
 // Type
@@ -20,4 +23,7 @@ export const defaultReference: Reference = {
   description: "",
   summary: "",
   url: defaultUrl,
+  email: "",
+  phone: "",
+  relationship: "",
 };

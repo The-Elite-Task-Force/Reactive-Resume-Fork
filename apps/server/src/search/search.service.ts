@@ -4,40 +4,49 @@ import { SearchResultDto } from "@reactive-resume/dto";
 import { PrismaService } from "nestjs-prisma";
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-// Function to get the embedding for a given text
-export async function getEmbedding(text: string): Promise<number[]> {
-  const response = await openai.embeddings.create({
-    model: "text-embedding-ada-002",
-    input: text,
-  });
-  if (response.data && response.data[0].embedding.length > 0) {
-    return response.data[0].embedding;
-  } else {
-    throw new Error("No embedding returned from OpenAI");
-  }
-}
-
 @Injectable()
 export class SearchService {
-  constructor(private readonly prisma: PrismaService) {}
+  openai: OpenAI;
+
+  constructor(private readonly prisma: PrismaService) {
+    this.openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+  }
+
+  // Function to get the embedding for a given text
+  async getEmbedding(text: string): Promise<number[]> {
+    const response = await this.openai.embeddings.create({
+      model: "text-embedding-ada-002",
+      input: text,
+    });
+
+    if (response.data && response.data[0].embedding.length > 0) {
+      return response.data[0].embedding;
+    } else {
+      throw new Error("No embedding returned from OpenAI");
+    }
+  }
 
   async searchUsers(searchQuery: string, totalResults: number) {
     try {
       // Get the embedding for the search query
-      const searchQueryEmbedding = await getEmbedding(searchQuery);
+      const searchQueryEmbedding = await this.getEmbedding(searchQuery);
 
-      const searchResults: { userId: string }[] = await this.prisma.$queryRaw`
-      SELECT "userId"
-      FROM searchIndex
-      WHERE embedding <-> ${searchQueryEmbedding}::vector < 1
-      ORDER BY embedding <-> ${searchQueryEmbedding}::vector
-      LIMIT ${Number(totalResults)};
-    `;
-
+      let searchResults: { userId: string }[];
+      try {
+        searchResults = await this.prisma.$queryRaw`
+          SELECT "userId"
+          FROM searchIndex
+          WHERE embedding <-> ${searchQueryEmbedding}::vector < 1
+          ORDER BY embedding <-> ${searchQueryEmbedding}::vector
+          LIMIT ${Number(totalResults)};
+        `;
+      } catch (queryError) {
+        throw new InternalServerErrorException(
+          `Failed to execute search query: ${queryError.message}`,
+        );
+      }
       // Extract user IDs from the search results
       const userIds = searchResults.map((result: { userId: string }) => result.userId);
 
@@ -67,18 +76,19 @@ export class SearchService {
     if (!data) {
       throw new InternalServerErrorException("Resume not found");
     }
-    const document = data.toString();
+    const document = JSON.stringify(data);
+
     // Get the embedding for the document
     // Then search in database
 
-    getEmbedding(document)
+    this.getEmbedding(document)
       .then((embedding) => {
         return this.prisma.$queryRaw`
-      INSERT INTO searchindex (document, "userId", embedding)
-      VALUES (${document}, ${user.id}, ${embedding})
-      ON CONFLICT ("userId") DO UPDATE
-      SET document = EXCLUDED.document, embedding = EXCLUDED.embedding;
-    `;
+          INSERT INTO searchindex (document, "userId", embedding)
+          VALUES (${document}, ${user.id}, ${embedding}) ON CONFLICT ("userId") DO
+          UPDATE
+            SET document = EXCLUDED.document, embedding = EXCLUDED.embedding;
+        `;
       })
       .catch((error: unknown) => {
         throw new InternalServerErrorException(error);

@@ -22,6 +22,7 @@ import { Link } from "react-router";
 import { Icon } from "@/client/components/icon";
 import { UserAvatar } from "@/client/components/user-avatar";
 import { UserOptions } from "@/client/components/user-options";
+import { useMapSectionsToResume } from "@/client/hooks/use-map-sections-to-resume";
 import { useResumeStore } from "@/client/stores/resume";
 
 import { BasicsSection } from "./sections/basics";
@@ -39,6 +40,8 @@ export const LeftSidebar = () => {
     const section = containterRef.current?.querySelector(selector);
     section?.scrollIntoView({ behavior: "smooth" });
   };
+
+  useMapSectionsToResume();
 
   return (
     <div className="flex bg-secondary-accent/30">

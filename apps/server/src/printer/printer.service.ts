@@ -2,7 +2,7 @@ import { HttpService } from "@nestjs/axios";
 import { Injectable, InternalServerErrorException, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { ResumeDto } from "@reactive-resume/dto";
-import { ErrorMessage } from "@reactive-resume/utils";
+import { ERROR_MESSAGE } from "@reactive-resume/utils";
 import retry from "async-retry";
 import { PDFDocument } from "pdf-lib";
 import { connect } from "puppeteer";
@@ -38,7 +38,7 @@ export class PrinterService {
       });
     } catch (error) {
       throw new InternalServerErrorException(
-        ErrorMessage.InvalidBrowserConnection,
+        ERROR_MESSAGE.InvalidBrowserConnection,
         (error as Error).message,
       );
     }
@@ -205,7 +205,7 @@ export class PrinterService {
       this.logger.error(error);
 
       throw new InternalServerErrorException(
-        ErrorMessage.ResumePrinterError,
+        ERROR_MESSAGE.ResumePrinterError,
         (error as Error).message,
       );
     }

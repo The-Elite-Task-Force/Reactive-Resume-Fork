@@ -11,7 +11,7 @@ import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { AuthProvidersDto, LoginDto, RegisterDto, UserWithSecrets } from "@reactive-resume/dto";
-import { ErrorMessage } from "@reactive-resume/utils";
+import { ERROR_MESSAGE } from "@reactive-resume/utils";
 import * as bcryptjs from "bcryptjs";
 import { authenticator } from "otplib";
 
@@ -41,7 +41,7 @@ export class AuthService {
     const isValid = await this.compare(password, hashedPassword);
 
     if (!isValid) {
-      throw new BadRequestException(ErrorMessage.InvalidCredentials);
+      throw new BadRequestException(ERROR_MESSAGE.InvalidCredentials);
     }
   }
 
@@ -116,10 +116,10 @@ export class AuthService {
       // Do not `await` this function, otherwise the user will have to wait for the email to be sent before the response is returned
       void this.sendVerificationEmail(user.email);
 
-      return user as UserWithSecrets;
+      return user;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError && error.code === "P2002") {
-        throw new BadRequestException(ErrorMessage.UserAlreadyExists);
+        throw new BadRequestException(ERROR_MESSAGE.UserAlreadyExists);
       }
 
       Logger.error(error);
@@ -132,7 +132,7 @@ export class AuthService {
       const user = await this.userService.findOneByIdentifierOrThrow(identifier);
 
       if (!user.secrets?.password) {
-        throw new BadRequestException(ErrorMessage.OAuthUser);
+        throw new BadRequestException(ERROR_MESSAGE.OAuthUser);
       }
 
       await this.validatePassword(password, user.secrets.password);
@@ -140,7 +140,7 @@ export class AuthService {
 
       return user;
     } catch {
-      throw new BadRequestException(ErrorMessage.InvalidCredentials);
+      throw new BadRequestException(ERROR_MESSAGE.InvalidCredentials);
     }
   }
 
@@ -164,7 +164,7 @@ export class AuthService {
     const user = await this.userService.findOneByIdentifierOrThrow(email);
 
     if (!user.secrets?.password) {
-      throw new BadRequestException(ErrorMessage.OAuthUser);
+      throw new BadRequestException(ERROR_MESSAGE.OAuthUser);
     }
 
     await this.validatePassword(currentPassword, user.secrets.password);
@@ -252,7 +252,7 @@ export class AuthService {
     const storedToken = user.secrets?.verificationToken;
 
     if (!storedToken || storedToken !== token) {
-      throw new BadRequestException(ErrorMessage.InvalidVerificationToken);
+      throw new BadRequestException(ERROR_MESSAGE.InvalidVerificationToken);
     }
 
     await this.userService.updateByEmail(user.email, {
@@ -267,7 +267,7 @@ export class AuthService {
     const user = await this.userService.findOneByIdentifierOrThrow(email);
 
     if (user.twoFactorEnabled) {
-      throw new BadRequestException(ErrorMessage.TwoFactorAlreadyEnabled);
+      throw new BadRequestException(ERROR_MESSAGE.TwoFactorAlreadyEnabled);
     }
 
     const secret = authenticator.generateSecret();
@@ -285,12 +285,12 @@ export class AuthService {
 
     // If the user already has 2FA enabled, throw an error
     if (user.twoFactorEnabled) {
-      throw new BadRequestException(ErrorMessage.TwoFactorAlreadyEnabled);
+      throw new BadRequestException(ERROR_MESSAGE.TwoFactorAlreadyEnabled);
     }
 
     // If the user doesn't have a 2FA secret set, throw an error
     if (!user.secrets?.twoFactorSecret) {
-      throw new BadRequestException(ErrorMessage.TwoFactorNotEnabled);
+      throw new BadRequestException(ERROR_MESSAGE.TwoFactorNotEnabled);
     }
 
     const verified = authenticator.verify({
@@ -299,7 +299,7 @@ export class AuthService {
     });
 
     if (!verified) {
-      throw new BadRequestException(ErrorMessage.InvalidTwoFactorCode);
+      throw new BadRequestException(ERROR_MESSAGE.InvalidTwoFactorCode);
     }
 
     // Create backup codes and store them in the database
@@ -318,7 +318,7 @@ export class AuthService {
 
     // If the user doesn't have 2FA enabled, throw an error
     if (!user.twoFactorEnabled) {
-      throw new BadRequestException(ErrorMessage.TwoFactorNotEnabled);
+      throw new BadRequestException(ERROR_MESSAGE.TwoFactorNotEnabled);
     }
 
     await this.userService.updateByEmail(email, {
@@ -332,7 +332,7 @@ export class AuthService {
 
     // If the user doesn't have 2FA enabled, or does not have a 2FA secret set, throw an error
     if (!user.twoFactorEnabled || !user.secrets?.twoFactorSecret) {
-      throw new BadRequestException(ErrorMessage.TwoFactorNotEnabled);
+      throw new BadRequestException(ERROR_MESSAGE.TwoFactorNotEnabled);
     }
 
     const verified = authenticator.verify({
@@ -341,7 +341,7 @@ export class AuthService {
     });
 
     if (!verified) {
-      throw new BadRequestException(ErrorMessage.InvalidTwoFactorCode);
+      throw new BadRequestException(ERROR_MESSAGE.InvalidTwoFactorCode);
     }
 
     return user;
@@ -352,13 +352,13 @@ export class AuthService {
 
     // If the user doesn't have 2FA enabled, or does not have a 2FA secret set, throw an error
     if (!user.twoFactorEnabled || !user.secrets?.twoFactorSecret) {
-      throw new BadRequestException(ErrorMessage.TwoFactorNotEnabled);
+      throw new BadRequestException(ERROR_MESSAGE.TwoFactorNotEnabled);
     }
 
     const verified = user.secrets.twoFactorBackupCodes.includes(code);
 
     if (!verified) {
-      throw new BadRequestException(ErrorMessage.InvalidTwoFactorBackupCode);
+      throw new BadRequestException(ERROR_MESSAGE.InvalidTwoFactorBackupCode);
     }
 
     // Remove the used backup code from the database

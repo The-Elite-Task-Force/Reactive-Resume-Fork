@@ -24,7 +24,7 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ employee }) => {
 
   const handleViewProfile = () => {
     // Redirect to the public profile page
-    navigate(`/publicprofile/${employee.username}`);
+    void navigate(`/publicprofile/${employee.username}`);
   };
 
   useEffect(() => {
