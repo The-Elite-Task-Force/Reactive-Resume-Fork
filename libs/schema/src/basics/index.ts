@@ -1,10 +1,10 @@
 import { z } from "zod";
 
-import { defaultUrl, urlSchema } from "../shared";
+import { defaultItem, defaultUrl, itemSchema, urlSchema } from "../shared";
 import { customFieldSchema } from "./custom";
 
 // Schema
-export const basicsSchema = z.object({
+export const basicsSchema = itemSchema.extend({
   name: z.string(),
   headline: z.string(),
   email: z.literal("").or(z.string().email()),
@@ -12,6 +12,10 @@ export const basicsSchema = z.object({
   location: z.string(),
   url: urlSchema,
   customFields: z.array(customFieldSchema),
+  birthdate: z.string(),
+  summary: z.string(),
+  profiles: z.record(z.string()),
+  website: z.string(),
   picture: z.object({
     url: z.string(),
     size: z.number().default(64),
@@ -30,13 +34,18 @@ export type Basics = z.infer<typeof basicsSchema>;
 
 // Defaults
 export const defaultBasics: Basics = {
+  ...defaultItem,
   name: "",
   headline: "",
   email: "",
   phone: "",
   location: "",
+  summary: "",
+  profiles: {},
+  website: "",
   url: defaultUrl,
   customFields: [],
+  birthdate: "",
   picture: {
     url: "",
     size: 64,

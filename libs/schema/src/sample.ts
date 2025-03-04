@@ -2,11 +2,18 @@ import type { ResumeData } from "./index";
 
 export const sampleResume: ResumeData = {
   basics: {
+    id: "ngkjdnfglksjdfnglkjsndfg",
+    userId: "ngkjdnfglksjdfnglkjsndfg",
+    updatedAt: "",
     name: "John Doe",
     headline: "Creative and Innovative Web Developer",
     email: "john.doe@gmail.com",
     phone: "(555) 123-4567",
     location: "Pleasantville, CA 94588",
+    birthdate: "May 11, 1984",
+    summary: "SummeryText",
+    profiles: {},
+    website: "https://johndoe.com",
     url: {
       label: "",
       href: "https://johndoe.me/",
@@ -25,14 +32,58 @@ export const sampleResume: ResumeData = {
     },
   },
   sections: {
+    basics: {
+      name: "Basics",
+      columns: 1,
+      separateLinks: true,
+      id: "basics",
+      items: [
+        {
+          id: "ngkjdnfglksjdfnglkjsndfg",
+          userId: "ngkjdnfglksjdfnglkjsndfg",
+          updatedAt: "",
+          name: "John Doe",
+          headline: "Creative and Innovative Web Developer",
+          email: "john.doe@gmail.com",
+          phone: "(555) 123-4567",
+          location: "Pleasantville, CA 94588",
+          birthdate: "May 11, 1984",
+          summary: "SummeryText",
+          profiles: {},
+          website: "https://johndoe.com",
+          url: {
+            label: "",
+            href: "https://johndoe.me/",
+          },
+          customFields: [],
+          picture: {
+            url: "https://i.imgur.com/HgwyOuJ.jpg",
+            size: 120,
+            aspectRatio: 1,
+            borderRadius: 0,
+            effects: {
+              hidden: false,
+              border: false,
+              grayscale: false,
+            },
+          },
+        },
+      ],
+    },
     summary: {
       name: "Summary",
       columns: 1,
       separateLinks: true,
-
       id: "summary",
-      content:
-        "<p>Innovative Web Developer with 5 years of experience in building impactful and user-friendly websites and applications. Specializes in <strong>front-end technologies</strong> and passionate about modern web standards and cutting-edge development techniques. Proven track record of leading successful projects from concept to deployment.</p>",
+      items: [
+        {
+          id: "summary-1",
+          userId: "user-123",
+          updatedAt: new Date().toISOString(), // Ensure this is a valid timestamp
+          content:
+            "<p>Innovative Web Developer with 5 years of experience in building impactful and user-friendly websites and applications. Specializes in <strong>front-end technologies</strong> and passionate about modern web standards and cutting-edge development techniques. Proven track record of leading successful projects from concept to deployment.</p>",
+        },
+      ],
     },
     awards: {
       name: "Awards",
@@ -51,7 +102,8 @@ export const sampleResume: ResumeData = {
       items: [
         {
           id: "spdhh9rrqi1gvj0yqnbqunlo",
-
+          userId: "ngkjdnfglksjdfnglkjsndfg",
+          updatedAt: "",
           name: "Full-Stack Web Development",
           issuer: "CodeAcademy",
           date: "2020",
@@ -63,7 +115,8 @@ export const sampleResume: ResumeData = {
         },
         {
           id: "n838rddyqv47zexn6cxauwqp",
-
+          userId: "ngkjdnfglksjdfnglkjsndfg",
+          updatedAt: "",
           name: "AWS Certified Developer",
           issuer: "Amazon Web Services",
           date: "2019",
@@ -84,7 +137,10 @@ export const sampleResume: ResumeData = {
       items: [
         {
           id: "yo3p200zo45c6cdqc6a2vtt3",
-
+          userId: "ngkjdnfglksjdfnglkjsndfg",
+          updatedAt: "",
+          degree: "Bachelor",
+          courses: {},
           institution: "University of California",
           studyType: "Bachelor's in Computer Science",
           area: "Berkeley, CA",
@@ -107,7 +163,9 @@ export const sampleResume: ResumeData = {
       items: [
         {
           id: "lhw25d7gf32wgdfpsktf6e0x",
-
+          userId: "ngkjdnfglksjdfnglkjsndfg",
+          updatedAt: "",
+          name: "Rodrick",
           company: "Creative Solutions Inc.",
           position: "Senior Web Developer",
           location: "San Francisco, CA",
@@ -121,6 +179,9 @@ export const sampleResume: ResumeData = {
         },
         {
           id: "r6543lil53ntrxmvel53gbtm",
+          userId: "ngkjdnfglksjdfnglkjsndfg",
+          updatedAt: "",
+          name: "Harry",
 
           company: "TechAdvancers",
           position: "Web Developer",
@@ -168,7 +229,9 @@ export const sampleResume: ResumeData = {
       items: [
         {
           id: "cnbk5f0aeqvhx69ebk7hktwd",
-
+          userId: "ngkjdnfglksjdfnglkjsndfg",
+          updatedAt: "",
+          description: "description",
           network: "LinkedIn",
           username: "johndoe",
           icon: "linkedin",
@@ -179,7 +242,9 @@ export const sampleResume: ResumeData = {
         },
         {
           id: "ukl0uecvzkgm27mlye0wazlb",
-
+          userId: "ngkjdnfglksjdfnglkjsndfg",
+          updatedAt: "",
+          description: "description",
           network: "GitHub",
           username: "johndoe",
           icon: "github",
@@ -199,7 +264,8 @@ export const sampleResume: ResumeData = {
       items: [
         {
           id: "yw843emozcth8s1ubi1ubvlf",
-
+          userId: "ngkjdnfglksjdfnglkjsndfg",
+          updatedAt: "",
           name: "E-Commerce Platform",
           description: "Project Lead",
           date: "",
@@ -213,7 +279,8 @@ export const sampleResume: ResumeData = {
         },
         {
           id: "ncxgdjjky54gh59iz2t1xi1v",
-
+          userId: "ngkjdnfglksjdfnglkjsndfg",
+          updatedAt: "",
           name: "Interactive Dashboard",
           description: "Frontend Developer",
           date: "",
@@ -244,7 +311,11 @@ export const sampleResume: ResumeData = {
       items: [
         {
           id: "f2sv5z0cce6ztjl87yuk8fak",
-
+          userId: "ngkjdnfglksjdfnglkjsndfg",
+          updatedAt: "",
+          email: "ref@gmail.com",
+          phone: "34892378",
+          relationship: "kngfdj",
           name: "Available upon request",
           description: "",
           summary: "",
@@ -264,7 +335,9 @@ export const sampleResume: ResumeData = {
       items: [
         {
           id: "hn0keriukh6c0ojktl9gsgjm",
-
+          userId: "ngkjdnfglksjdfnglkjsndfg",
+          updatedAt: "",
+          levelNum: 0,
           name: "Web Technologies",
           description: "Advanced",
           level: 0,
@@ -272,7 +345,9 @@ export const sampleResume: ResumeData = {
         },
         {
           id: "r8c3y47vykausqrgmzwg5pur",
-
+          userId: "ngkjdnfglksjdfnglkjsndfg",
+          updatedAt: "",
+          levelNum: 0,
           name: "Web Frameworks",
           description: "Intermediate",
           level: 0,
@@ -280,7 +355,9 @@ export const sampleResume: ResumeData = {
         },
         {
           id: "b5l75aseexqv17quvqgh73fe",
-
+          userId: "ngkjdnfglksjdfnglkjsndfg",
+          updatedAt: "",
+          levelNum: 0,
           name: "Tools",
           description: "Intermediate",
           level: 0,

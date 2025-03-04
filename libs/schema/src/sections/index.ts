@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { basicsSchema } from "../basics";
 import type { FilterKeys } from "../shared";
 import { idSchema } from "../shared";
 import { awardSchema } from "./award";
@@ -14,6 +15,7 @@ import { projectSchema } from "./project";
 import { publicationSchema } from "./publication";
 import { referenceSchema } from "./reference";
 import { skillSchema } from "./skill";
+import { summarySchema } from "./summary";
 import { volunteerSchema } from "./volunteer";
 
 // Schema
@@ -55,9 +57,13 @@ export const customSchema = sectionSchema.extend({
 });
 
 export const sectionsSchema = z.object({
+  basics: sectionSchema.extend({
+    id: z.literal("basics"),
+    items: z.array(basicsSchema),
+  }),
   summary: sectionSchema.extend({
     id: z.literal("summary"),
-    content: z.string().default(""),
+    items: z.array(summarySchema),
   }),
   awards: sectionSchema.extend({
     id: z.literal("awards"),
@@ -127,7 +133,8 @@ export const defaultSection: Section = {
 };
 
 export const defaultSections: Sections = {
-  summary: { ...defaultSection, id: "summary", name: "Summary", content: "" },
+  basics: { ...defaultSection, id: "basics", name: "Basics", items: [] },
+  summary: { ...defaultSection, id: "summary", name: "Summary", items: [] },
   awards: { ...defaultSection, id: "awards", name: "Awards", items: [] },
   certifications: { ...defaultSection, id: "certifications", name: "Certifications", items: [] },
   education: { ...defaultSection, id: "education", name: "Education", items: [] },
@@ -155,4 +162,5 @@ export * from "./project";
 export * from "./publication";
 export * from "./reference";
 export * from "./skill";
+export * from "./summary";
 export * from "./volunteer";

@@ -1,5 +1,22 @@
 import { Injectable, InternalServerErrorException, Logger } from "@nestjs/common";
 import { CreateSectionItemDto, SECTION_FORMAT, UpdateSectionItemDto } from "@reactive-resume/dto";
+import {
+  defaultAward,
+  defaultBasics,
+  defaultCertification,
+  defaultCustomSection,
+  defaultEducation,
+  defaultExperience,
+  defaultInterest,
+  defaultLanguage,
+  defaultProfile,
+  defaultProject,
+  defaultPublication,
+  defaultReference,
+  defaultSkill,
+  defaultSummary,
+  defaultVolunteer,
+} from "@reactive-resume/schema";
 import { PrismaService } from "nestjs-prisma";
 
 import {
@@ -16,6 +33,7 @@ import {
   parsePublicationData,
   parseReferenceData,
   parseSkillData,
+  parseSummaryData,
   parseVolunteerData,
 } from "../utils/section-parsers";
 
@@ -29,11 +47,15 @@ export class SectionItemService {
         where: { userId },
         orderBy: { updatedAt: "desc" },
       });
+      const summary = await this.prisma.summaryItem.findMany({
+        where: { userId },
+        orderBy: { updatedAt: "desc" },
+      });
       const profiles = await this.prisma.profileItem.findMany({
         where: { userId },
         orderBy: { updatedAt: "desc" },
       });
-      const experiences = await this.prisma.workItem.findMany({
+      const experience = await this.prisma.workItem.findMany({
         where: { userId },
         orderBy: { updatedAt: "desc" },
       });
@@ -69,7 +91,7 @@ export class SectionItemService {
         where: { userId },
         orderBy: { updatedAt: "desc" },
       });
-      const volunteering = await this.prisma.volunteerItem.findMany({
+      const volunteer = await this.prisma.volunteerItem.findMany({
         where: { userId },
         orderBy: { updatedAt: "desc" },
       });
@@ -82,21 +104,38 @@ export class SectionItemService {
         orderBy: { updatedAt: "desc" },
       });
 
+      if (basics.length === 0) basics.push(defaultBasics);
+      if (summary.length === 0) summary.push(defaultSummary);
+      if (profiles.length === 0) profiles.push(defaultProfile);
+      if (experience.length === 0) experience.push(defaultExperience);
+      if (education.length === 0) education.push(defaultEducation);
+      if (skills.length === 0) skills.push(defaultSkill);
+      if (languages.length === 0) languages.push(defaultLanguage);
+      if (awards.length === 0) awards.push(defaultAward);
+      if (certifications.length === 0) certifications.push(defaultCertification);
+      if (interests.length === 0) interests.push(defaultInterest);
+      if (projects.length === 0) projects.push(defaultProject);
+      if (publications.length === 0) publications.push(defaultPublication);
+      if (volunteer.length === 0) volunteer.push(defaultVolunteer);
+      if (references.length === 0) references.push(defaultReference);
+      if (custom.length === 0) custom.push(defaultCustomSection);
+
       return {
-        basics: basics,
-        profiles: profiles,
-        experiences: experiences,
-        education: education,
-        skills: skills,
-        languages: languages,
-        awards: awards,
-        certifications: certifications,
-        interests: interests,
-        projects: projects,
-        publications: publications,
-        volunteering: volunteering,
-        references: references,
-        custom: custom,
+        basics,
+        profiles,
+        summary,
+        experience,
+        education,
+        skills,
+        languages,
+        awards,
+        certifications,
+        interests,
+        projects,
+        publications,
+        volunteer,
+        references,
+        custom,
       };
     } catch (error) {
       Logger.error(error);
@@ -219,6 +258,15 @@ export class SectionItemService {
         case SECTION_FORMAT.References: {
           const parsedData = parseReferenceData(data);
           return await this.prisma.referenceItem.create({
+            data: {
+              ...parsedData,
+              userId: userId,
+            },
+          });
+        }
+        case SECTION_FORMAT.Summary: {
+          const parsedData = parseSummaryData(data);
+          return await this.prisma.summaryItem.create({
             data: {
               ...parsedData,
               userId: userId,
@@ -355,6 +403,13 @@ export class SectionItemService {
           });
         }
 
+        case SECTION_FORMAT.Summary: {
+          const parsedData = parseSummaryData(data);
+          return await this.prisma.referenceItem.update({
+            data: parsedData,
+            where: { userId_id: { userId, id } },
+          });
+        }
         case SECTION_FORMAT.Custom: {
           const parsedData = parseCustomData(data);
           return await this.prisma.customItem.update({
@@ -414,6 +469,9 @@ export class SectionItemService {
         }
         case SECTION_FORMAT.References: {
           return await this.prisma.referenceItem.delete({ where: { id } });
+        }
+        case SECTION_FORMAT.Summary: {
+          return await this.prisma.summaryItem.delete({ where: { id } });
         }
         case SECTION_FORMAT.Custom: {
           return await this.prisma.customItem.delete({ where: { id } });

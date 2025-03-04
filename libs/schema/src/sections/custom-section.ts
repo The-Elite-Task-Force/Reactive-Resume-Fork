@@ -11,6 +11,7 @@ export const customSectionSchema = itemSchema.extend({
   summary: z.string(),
   keywords: z.array(z.string()).default([]),
   url: urlSchema,
+  website: z.string(),
 });
 
 // Type
@@ -26,4 +27,5 @@ export const defaultCustomSection: CustomSection = {
   summary: "",
   keywords: [],
   url: defaultUrl,
+  website: "",
 };
