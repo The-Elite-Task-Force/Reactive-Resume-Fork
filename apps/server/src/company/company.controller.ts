@@ -97,17 +97,6 @@ export class CompanyController {
     }
   }
 
-  @Post(":id/invite")
-  @UseGuards(TwoFactorGuard)
-  async inviteUserToCompany(@Param("id") companyId: string, @Body("username") username: string) {
-    try {
-      return await this.companyService.inviteUserToCompany(companyId, username);
-    } catch (error) {
-      Logger.log(error);
-      throw new InternalServerErrorException(error);
-    }
-  }
-
   @Delete(":id/remove")
   @UseGuards(TwoFactorGuard)
   async removeUserFromCompany(@Param("id") companyId: string, @Body("username") username: string) {
@@ -118,6 +107,7 @@ export class CompanyController {
       throw new InternalServerErrorException(error);
     }
   }
+
   @Post("invite")
   @UseGuards(TwoFactorGuard)
   async linkUserToCompany(@Body() data: CreateCompanyMappingDto) {

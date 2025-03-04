@@ -1,7 +1,7 @@
 import { cn } from "@reactive-resume/utils";
 import { useState } from "react";
 
-import { inviteUserToCompany } from "@/client/services/company/company";
+import { inviteToCompany } from "@/client/services/company/company";
 
 type InviteUserFormProps = {
   companyId: string;
@@ -20,7 +20,7 @@ const InviteUserForm: React.FC<InviteUserFormProps> = ({ companyId }) => {
     setSuccess(false);
 
     try {
-      await inviteUserToCompany({ companyId, username });
+      await inviteToCompany({ companyId, username });
       setSuccess(true);
       setUsername("");
     } catch (err) {

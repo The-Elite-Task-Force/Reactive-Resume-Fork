@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import {
   CompanyDto,
-  CompanyWithEmployees,
   CreateCompanyDto,
   CreateCompanyMappingDto,
   EmployeeDto,
@@ -15,7 +14,7 @@ export class CompanyService {
 
   async getCompanyByOwnerId(id: string): Promise<CompanyDto[]> {
     return this.prisma.company.findMany({
-      where: { owner  Id: id },
+      where: { ownerId: id },
     });
   }
 
@@ -23,35 +22,6 @@ export class CompanyService {
     return this.prisma.company.findUniqueOrThrow({
       where: { id },
     });
-  }
-
-  async getById(id: string): Promise<CompanyWithEmployees> {
-    const company = await this.prisma.company.findUnique({
-      where: { id },
-      include: {
-        CompanyMapping: {
-          include: {
-            user: true,
-            role: true,
-          },
-        },
-      },
-    });
-
-    if (!company) {
-      throw new NotFoundException(`Company with id ${id} not found`);
-    }
-
-    return {
-      ...company,
-      employees: company.CompanyMapping.map((mapping) => ({
-        id: mapping.user.id,
-        updatedAt: mapping.user.updatedAt,
-        username: mapping.user.username,
-        email: mapping.user.email,
-        role: mapping.role ? [mapping.role.name] : null,
-      })),
-    };
   }
 
   async create(id: string, createCompanyDto: CreateCompanyDto) {
@@ -80,7 +50,7 @@ export class CompanyService {
 
   async getEmployees(companyId: string): Promise<EmployeeDto[]> {
     const mappings = await this.prisma.companyMapping.findMany({
-      where: { companyId, acceptedInvitation: true },
+      where: { companyId, status: "ACCEPTED" },
       include: { user: true, role: true },
     });
 
@@ -107,23 +77,54 @@ export class CompanyService {
   }
 
   async inviteUserToCompany(createCompanyMappingDto: CreateCompanyMappingDto) {
-    try {
-      await this.prisma.companyMapping.create({
-        data: {
-          company: { connect: { id: createCompanyMappingDto.companyId } },
-          user: { connect: { id: createCompanyMappingDto.userId } },
-          invitedAt: new Date(),
-        },
-      });
-    } catch (error) {
-      if (
-        error.code === "P2002" &&
-        error.meta.target.includes("userId") &&
-        error.meta.target.includes("companyId")
-      ) {
-        throw new Error("User has already been invited to this company.");
+    if (createCompanyMappingDto.userId) {
+      try {
+        await this.prisma.companyMapping.create({
+          data: {
+            company: { connect: { id: createCompanyMappingDto.companyId } },
+            user: { connect: { id: createCompanyMappingDto.userId } },
+            invitedAt: new Date().toISOString(),
+          },
+        });
+      } catch (error) {
+        if (
+          error.code === "P2002" &&
+          error.meta.target.includes("userId") &&
+          error.meta.target.includes("companyId")
+        ) {
+          throw new Error("User has already been invited to this company.");
+        }
+        throw error;
       }
-      throw error;
+    } else if (createCompanyMappingDto.username) {
+      const user = await this.prisma.user.findUnique({
+        where: { username: createCompanyMappingDto.username },
+      });
+      if (!user) {
+        throw new NotFoundException(
+          `User with identifier ${createCompanyMappingDto.username} not found`,
+        );
+      }
+      try {
+        await this.prisma.companyMapping.create({
+          data: {
+            company: { connect: { id: createCompanyMappingDto.companyId } },
+            user: { connect: { id: user.id } },
+            invitedAt: new Date().toISOString(),
+          },
+        });
+      } catch (error) {
+        if (
+          error.code === "P2002" &&
+          error.meta.target.includes("userId") &&
+          error.meta.target.includes("companyId")
+        ) {
+          throw new Error("User has already been invited to this company.");
+        }
+        throw error;
+      }
+    } else {
+      throw new Error("No user identifier provided");
     }
   }
 }

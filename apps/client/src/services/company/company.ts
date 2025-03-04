@@ -1,5 +1,5 @@
 import { t } from "@lingui/macro";
-import type { CompanyDto, CreateCompanyMappingDto, EmployeeDto } from "@reactive-resume/dto";
+import { CompanyDto, CreateCompanyMappingDto, EmployeeDto } from "@reactive-resume/dto";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 
@@ -56,7 +56,10 @@ export const fetchEmployees = async (companyId: string) => {
 
 export const inviteToCompany = async (data: CreateCompanyMappingDto) => {
   try {
-    const response = await axios.post(`/company/invite`, data);
+    const response = await axios.post<
+      CreateCompanyMappingDto,
+      AxiosResponse<CreateCompanyMappingDto>
+    >(`/company/invite`, data);
     return response.data;
   } catch (error) {
     if (error instanceof Error) {

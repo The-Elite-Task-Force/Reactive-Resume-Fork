@@ -605,6 +605,6 @@ model Role {
   id        String   @id @default(cuid())
   name      String
   updatedAt String? 
-
+  
   CompanyMapping CompanyMapping[]
 }

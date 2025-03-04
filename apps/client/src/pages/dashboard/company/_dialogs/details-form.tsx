@@ -174,7 +174,7 @@ export const DetailsForm = ({ companyState, setCompanyState }: Props) => {
               control={form.control}
               render={({ field }) => (
                 <FormItem className="sm:col-span-2">
-                  <FormLabel>{t`Desrciption`}</FormLabel>
+                  <FormLabel>{t`Description`}</FormLabel>
                   <FormControl>
                     <RichInput
                       {...field}

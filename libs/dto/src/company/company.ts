@@ -22,7 +22,8 @@ export enum COMPANY_STATUS {
 
 export const CreateCompanyMappingSchema = z.object({
   companyId: idSchema,
-  userId: z.string(),
+  userId: z.union([z.string(), z.undefined()]),
+  username: z.union([z.string(), z.undefined()]),
 });
 
 export class CompanyDto extends createZodDto(companySchema) {}
