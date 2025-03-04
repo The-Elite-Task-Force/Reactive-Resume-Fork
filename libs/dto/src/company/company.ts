@@ -1,7 +1,7 @@
 import { idSchema } from "@reactive-resume/schema";
-import { z } from "zod";
-import { createZodDto } from "nestjs-zod/dto";
 import { dateSchema } from "@reactive-resume/utils";
+import { createZodDto } from "nestjs-zod/dto";
+import { z } from "zod";
 
 export const companySchema = z.object({
   id: idSchema,

@@ -1,25 +1,25 @@
 ﻿import { createZodDto } from "nestjs-zod/dto";
 import { z } from "zod";
 
-import { AllSectionSchemas, SectionFormat } from "./section";
+import { AllSectionSchemas, SECTION_FORMAT } from "./section";
 
 export const createSectionSchema = z.object({
   format: z.enum([
-    SectionFormat.Basics,
-    SectionFormat.Summary,
-    SectionFormat.Experience,
-    SectionFormat.Education,
-    SectionFormat.Skills,
-    SectionFormat.Languages,
-    SectionFormat.Awards,
-    SectionFormat.Certifications,
-    SectionFormat.Interests,
-    SectionFormat.Profiles,
-    SectionFormat.Projects,
-    SectionFormat.Volunteering,
-    SectionFormat.Publications,
-    SectionFormat.References,
-    SectionFormat.Custom,
+    SECTION_FORMAT.Basics,
+    SECTION_FORMAT.Summary,
+    SECTION_FORMAT.Experience,
+    SECTION_FORMAT.Education,
+    SECTION_FORMAT.Skills,
+    SECTION_FORMAT.Languages,
+    SECTION_FORMAT.Awards,
+    SECTION_FORMAT.Certifications,
+    SECTION_FORMAT.Interests,
+    SECTION_FORMAT.Profiles,
+    SECTION_FORMAT.Projects,
+    SECTION_FORMAT.Volunteering,
+    SECTION_FORMAT.Publications,
+    SECTION_FORMAT.References,
+    SECTION_FORMAT.Custom,
   ]),
 
   data: AllSectionSchemas,
