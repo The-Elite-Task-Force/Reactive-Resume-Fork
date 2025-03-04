@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import type { EmployeeDto } from "@reactive-resume/dto";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 
 type EmployeeCardProps = {
   employee: EmployeeDto;
@@ -9,6 +10,7 @@ type EmployeeCardProps = {
 const EmployeeCard: React.FC<EmployeeCardProps> = ({ employee }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   const handleRemoveUser = () => {
     // Placeholder function for removing user
@@ -18,6 +20,11 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ employee }) => {
   const handleAssignRole = () => {
     // Placeholder function for assigning role
     console.log(`Assigning role to user: ${employee.username}`);
+  };
+
+  const handleViewProfile = () => {
+    // Redirect to the public profile page
+    navigate(`/publicprofile/${employee.username}`);
   };
 
   useEffect(() => {
@@ -65,12 +72,12 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ employee }) => {
         {dropdownOpen && (
           <ul className="absolute right-0 mt-2 w-48 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
             <li>
-              <a
-                href={`http://localhost:5173/publicprofile/${employee.username}`}
+              <button
                 className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
+                onClick={handleViewProfile}
               >
                 View Profile
-              </a>
+              </button>
             </li>
             <li>
               <button

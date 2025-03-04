@@ -47,11 +47,6 @@ export class SectionItemController {
     }
   }
 
-  @Get("/hello")
-  hello() {
-    return "Hello World!";
-  }
-
   @Patch(":id")
   @UseGuards(TwoFactorGuard)
   async update(
