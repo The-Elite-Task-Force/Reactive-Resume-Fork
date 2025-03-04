@@ -26,7 +26,7 @@ import {
   userSchema,
   UserWithSecrets,
 } from "@reactive-resume/dto";
-import { ErrorMessage } from "@reactive-resume/utils";
+import { ERROR_MESSAGE } from "@reactive-resume/utils";
 import type { Response } from "express";
 
 import { User } from "../user/decorators/user.decorator";
@@ -61,7 +61,7 @@ export class AuthController {
 
       return { accessToken, refreshToken };
     } catch (error) {
-      throw new InternalServerErrorException(error, ErrorMessage.SomethingWentWrong);
+      throw new InternalServerErrorException(error, ERROR_MESSAGE.SomethingWentWrong);
     }
   }
 
@@ -293,7 +293,7 @@ export class AuthController {
 
       return { message: "Your password has been successfully reset." };
     } catch {
-      throw new BadRequestException(ErrorMessage.InvalidResetToken);
+      throw new BadRequestException(ERROR_MESSAGE.InvalidResetToken);
     }
   }
 
@@ -306,10 +306,10 @@ export class AuthController {
     @User("emailVerified") emailVerified: boolean,
     @Query("token") token: string,
   ) {
-    if (!token) throw new BadRequestException(ErrorMessage.InvalidVerificationToken);
+    if (!token) throw new BadRequestException(ERROR_MESSAGE.InvalidVerificationToken);
 
     if (emailVerified) {
-      throw new BadRequestException(ErrorMessage.EmailAlreadyVerified);
+      throw new BadRequestException(ERROR_MESSAGE.EmailAlreadyVerified);
     }
 
     await this.authService.verifyEmail(id, token);
@@ -325,7 +325,7 @@ export class AuthController {
     @User("emailVerified") emailVerified: boolean,
   ) {
     if (emailVerified) {
-      throw new BadRequestException(ErrorMessage.EmailAlreadyVerified);
+      throw new BadRequestException(ERROR_MESSAGE.EmailAlreadyVerified);
     }
 
     await this.authService.sendVerificationEmail(email);

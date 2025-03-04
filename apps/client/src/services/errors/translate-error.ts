@@ -1,60 +1,60 @@
 import { t } from "@lingui/macro";
-import { ErrorMessage } from "@reactive-resume/utils";
+import { ERROR_MESSAGE } from "@reactive-resume/utils";
 
-export const translateError = (error: ErrorMessage) => {
+export const translateError = (error: ERROR_MESSAGE) => {
   switch (error) {
-    case ErrorMessage.InvalidCredentials: {
+    case ERROR_MESSAGE.InvalidCredentials: {
       return t`It doesn't look like a user exists with the credentials you provided.`;
     }
-    case ErrorMessage.UserAlreadyExists: {
+    case ERROR_MESSAGE.UserAlreadyExists: {
       return t`A user with this email address and/or username already exists.`;
     }
-    case ErrorMessage.SecretsNotFound: {
+    case ERROR_MESSAGE.SecretsNotFound: {
       return t`User does not have an associated 'secrets' record. Please report this issue on GitHub.`;
     }
-    case ErrorMessage.OAuthUser: {
+    case ERROR_MESSAGE.OAuthUser: {
       return t`This email address is associated with an OAuth account. Please sign in with your OAuth provider.`;
     }
-    case ErrorMessage.InvalidResetToken: {
+    case ERROR_MESSAGE.InvalidResetToken: {
       return t`It looks like the reset token you provided is invalid. Please try restarting the password reset process again.`;
     }
-    case ErrorMessage.InvalidVerificationToken: {
+    case ERROR_MESSAGE.InvalidVerificationToken: {
       return t`It looks like the verification token you provided is invalid. Please try restarting the verification process again.`;
     }
-    case ErrorMessage.EmailAlreadyVerified: {
+    case ERROR_MESSAGE.EmailAlreadyVerified: {
       return t`It looks like your email address has already been verified.`;
     }
-    case ErrorMessage.TwoFactorNotEnabled: {
+    case ERROR_MESSAGE.TwoFactorNotEnabled: {
       return t`Two-factor authentication is not enabled for this account.`;
     }
-    case ErrorMessage.TwoFactorAlreadyEnabled: {
+    case ERROR_MESSAGE.TwoFactorAlreadyEnabled: {
       return t`Two-factor authentication is already enabled for this account.`;
     }
-    case ErrorMessage.InvalidTwoFactorCode: {
+    case ERROR_MESSAGE.InvalidTwoFactorCode: {
       return t`It looks like the two-factor authentication code you provided is invalid. Please try again.`;
     }
-    case ErrorMessage.InvalidTwoFactorBackupCode: {
+    case ERROR_MESSAGE.InvalidTwoFactorBackupCode: {
       return t`It looks like the backup code you provided is invalid or used. Please try again.`;
     }
-    case ErrorMessage.InvalidBrowserConnection: {
+    case ERROR_MESSAGE.InvalidBrowserConnection: {
       return t`There was an error connecting to the browser. Please make sure 'chrome' is running and reachable.`;
     }
-    case ErrorMessage.ResumeSlugAlreadyExists: {
+    case ERROR_MESSAGE.ResumeSlugAlreadyExists: {
       return t`A resume with this slug already exists, please pick a different unique identifier.`;
     }
-    case ErrorMessage.ResumeNotFound: {
+    case ERROR_MESSAGE.ResumeNotFound: {
       return t`It looks like the resume you're looking for doesn't exist.`;
     }
-    case ErrorMessage.ResumeLocked: {
+    case ERROR_MESSAGE.ResumeLocked: {
       return t`The resume you want to update is locked, please unlock if you wish to make any changes to it.`;
     }
-    case ErrorMessage.ResumePrinterError: {
+    case ERROR_MESSAGE.ResumePrinterError: {
       return t`Something went wrong while printing your resume. Please try again later or raise an issue on GitHub.`;
     }
-    case ErrorMessage.ResumePreviewError: {
+    case ERROR_MESSAGE.ResumePreviewError: {
       return t`Something went wrong while grabbing a preview your resume. Please try again later or raise an issue on GitHub.`;
     }
-    case ErrorMessage.SomethingWentWrong: {
+    case ERROR_MESSAGE.SomethingWentWrong: {
       return t`Something went wrong while processing your request. Please try again later or raise an issue on GitHub.`;
     }
 

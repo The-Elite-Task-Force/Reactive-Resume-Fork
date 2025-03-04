@@ -1,4 +1,4 @@
-export enum ErrorMessage {
+export enum ERROR_MESSAGE {
   InvalidCredentials = "InvalidCredentials",
   UserAlreadyExists = "UserAlreadyExists",
   SecretsNotFound = "SecretsNotFound",
@@ -17,5 +17,6 @@ export enum ErrorMessage {
   ResumePrinterError = "ResumePrinterError",
   ResumePreviewError = "ResumePreviewError",
   SomethingWentWrong = "SomethingWentWrong",
+  CompanyNameAlreadyExists = "CompanyNameAlreadyExists",
   NOPUBLICRESUME = "NoPublicResume",
 }

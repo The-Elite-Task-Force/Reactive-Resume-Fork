@@ -8,7 +8,7 @@ import { CreateResumeListItem } from "./_components/create-item";
 import { ImportResumeListItem } from "./_components/import-item";
 import { ResumeListItem } from "./_components/resume-item";
 
-export const ListView = () => {
+export const ResumeListView = () => {
   const { resumes, loading } = useResumes();
 
   return (

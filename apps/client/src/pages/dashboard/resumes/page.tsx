@@ -7,8 +7,8 @@ import { Helmet } from "react-helmet-async";
 
 import { useSections } from "@/client/services/section/sections";
 
-import { GridView } from "./_layouts/grid";
-import { ListView } from "./_layouts/list";
+import { ResumeGridView } from "./_layouts/grid";
+import { ResumeListView } from "./_layouts/list";
 
 type Layout = "grid" | "list";
 
@@ -58,10 +58,10 @@ export const ResumesPage = () => {
           className="h-[calc(100vh-140px)] overflow-visible lg:h-[calc(100vh-88px)]"
         >
           <TabsContent value="grid">
-            <GridView />
+            <ResumeGridView />
           </TabsContent>
           <TabsContent value="list">
-            <ListView />
+            <ResumeListView />
           </TabsContent>
         </ScrollArea>
       </Tabs>

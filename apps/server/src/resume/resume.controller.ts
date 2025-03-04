@@ -15,19 +15,21 @@ import { ApiTags } from "@nestjs/swagger";
 import { User as UserEntity } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import {
+  APILinkResumeToItemDto,
   CreateResumeDto,
   importResumeSchema,
   ResumeDto,
   UpdateResumeDto,
 } from "@reactive-resume/dto";
 import { resumeDataSchema } from "@reactive-resume/schema";
-import { ErrorMessage } from "@reactive-resume/utils";
+import { ERROR_MESSAGE } from "@reactive-resume/utils";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
 import { User } from "@/server/user/decorators/user.decorator";
 
 import { OptionalGuard } from "../auth/guards/optional.guard";
 import { TwoFactorGuard } from "../auth/guards/two-factor.guard";
+import { SearchService } from "../search/search.service";
 import { Resume } from "./decorators/resume.decorator";
 import { ResumeGuard } from "./guards/resume.guard";
 import { ResumeService } from "./resume.service";
@@ -35,7 +37,10 @@ import { ResumeService } from "./resume.service";
 @ApiTags("Resume")
 @Controller("resume")
 export class ResumeController {
-  constructor(private readonly resumeService: ResumeService) {}
+  constructor(
+    private readonly resumeService: ResumeService,
+    private readonly searchService: SearchService,
+  ) {}
 
   @Get("schema")
   getSchema() {
@@ -49,7 +54,7 @@ export class ResumeController {
       return await this.resumeService.create(user.id, createResumeDto);
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError && error.code === "P2002") {
-        throw new BadRequestException(ErrorMessage.ResumeSlugAlreadyExists);
+        throw new BadRequestException(ERROR_MESSAGE.ResumeSlugAlreadyExists);
       }
 
       Logger.error(error);
@@ -65,7 +70,7 @@ export class ResumeController {
       return await this.resumeService.import(user.id, result);
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError && error.code === "P2002") {
-        throw new BadRequestException(ErrorMessage.ResumeSlugAlreadyExists);
+        throw new BadRequestException(ERROR_MESSAGE.ResumeSlugAlreadyExists);
       }
 
       Logger.error(error);
@@ -164,8 +169,27 @@ export class ResumeController {
   @UseGuards(TwoFactorGuard)
   async setDefault(@User() user: UserEntity, @Param("id") id: string) {
     try {
-      await this.resumeService.setDefault(user.id, id);
+      user = await this.resumeService.setDefault(user.id, id);
+      try {
+        await this.searchService.updateSearchIndex(user);
+      } catch (error) {
+        Logger.error(error);
+        throw new InternalServerErrorException(error);
+      }
       return { message: "Resume set as profile successfully" };
+    } catch (error) {
+      Logger.error(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  @Post(":id/link")
+  @UseGuards(TwoFactorGuard)
+  async linkResumeToItem(@Param("id") id: string, @Body() link: APILinkResumeToItemDto) {
+    const { format, itemId, order } = link;
+    try {
+      await this.resumeService.linkResumeToItem({ resumeId: id, itemId, order }, format);
+      return { message: "Resume and item linked succesfully" };
     } catch (error) {
       Logger.error(error);
       throw new InternalServerErrorException(error);

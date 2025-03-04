@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { Prisma, User } from "@prisma/client";
 import { UserWithSecrets } from "@reactive-resume/dto";
-import { ErrorMessage } from "@reactive-resume/utils";
+import { ERROR_MESSAGE } from "@reactive-resume/utils";
 import { PrismaService } from "nestjs-prisma";
 
 import { StorageService } from "../storage/storage.service";
@@ -20,7 +20,7 @@ export class UserService {
     });
 
     if (!user.secrets) {
-      throw new InternalServerErrorException(ErrorMessage.SecretsNotFound);
+      throw new InternalServerErrorException(ERROR_MESSAGE.SecretsNotFound);
     }
 
     return user;

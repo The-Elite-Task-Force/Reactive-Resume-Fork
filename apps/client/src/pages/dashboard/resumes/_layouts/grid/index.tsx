@@ -8,7 +8,7 @@ import { CreateResumeCard } from "./_components/create-card";
 import { ImportResumeCard } from "./_components/import-card";
 import { ResumeCard } from "./_components/resume-card";
 
-export const GridView = () => {
+export const ResumeGridView = () => {
   const { resumes, loading } = useResumes();
 
   return (

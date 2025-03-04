@@ -2,7 +2,7 @@ import { t } from "@lingui/macro";
 import { createId } from "@paralleldrive/cuid2";
 import { CopySimple, PencilSimple, Plus } from "@phosphor-icons/react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { SectionFormat } from "@reactive-resume/dto";
+import { SECTION_FORMAT } from "@reactive-resume/dto";
 import type { SectionItem, SectionWithItem } from "@reactive-resume/schema";
 import {
   AlertDialog,
@@ -33,6 +33,7 @@ import { createSectionItem } from "@/client/services/section/create";
 import type { DialogName } from "@/client/stores/dialog";
 import { useDialog } from "@/client/stores/dialog";
 import { useResumeStore } from "@/client/stores/resume";
+import { getSectionNameFromId } from "@/client/utils/section-names";
 
 type Props<T extends SectionItem> = {
   id: DialogName;
@@ -74,7 +75,8 @@ export const SectionDialog = <T extends SectionItem>({
       sectionName = "Custom";
     }
 
-    const sectionFormat: SectionFormat = SectionFormat[sectionName as keyof typeof SectionFormat];
+    const sectionFormat: SECTION_FORMAT =
+      SECTION_FORMAT[sectionName as keyof typeof SECTION_FORMAT];
 
     if (isCreate || isDuplicate) {
       const dto = await createSectionItem({
@@ -145,6 +147,8 @@ export const SectionDialog = <T extends SectionItem>({
     if (isDelete) form.reset({ ...defaultValues, ...payload.item });
   };
 
+  const sectionType = getSectionNameFromId(id);
+
   if (isDelete) {
     return (
       <AlertDialog open={isOpen} onOpenChange={close}>
@@ -187,7 +191,7 @@ export const SectionDialog = <T extends SectionItem>({
                     {isUpdate && <PencilSimple />}
                     {isDuplicate && <CopySimple />}
                     <h2>
-                      {isCreate && t`Create a new item`}
+                      {isCreate && t`Create ${sectionType} item`}
                       {isUpdate && t`Update an existing item`}
                       {isDuplicate && t`Duplicate an existing item`}
                     </h2>

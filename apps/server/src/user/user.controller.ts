@@ -13,7 +13,7 @@ import {
 import { ApiTags } from "@nestjs/swagger";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { UpdateUserDto, UserDto } from "@reactive-resume/dto";
-import { ErrorMessage } from "@reactive-resume/utils";
+import { ERROR_MESSAGE } from "@reactive-resume/utils";
 import type { Response } from "express";
 
 import { AuthService } from "../auth/auth.service";
@@ -59,7 +59,7 @@ export class UserController {
       });
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError && error.code === "P2002") {
-        throw new BadRequestException(ErrorMessage.UserAlreadyExists);
+        throw new BadRequestException(ERROR_MESSAGE.UserAlreadyExists);
       }
 
       Logger.error(error);
