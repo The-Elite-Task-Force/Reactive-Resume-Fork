@@ -58,6 +58,8 @@ export class CompanyService {
       data: {
         name: createCompanyDto.name,
         ownerId: id,
+        description: "",
+        location: "",
       },
     });
   }

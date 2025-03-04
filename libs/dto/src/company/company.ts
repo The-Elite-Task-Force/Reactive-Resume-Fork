@@ -6,6 +6,9 @@ import { z } from "zod";
 export const companySchema = z.object({
   id: idSchema,
   name: z.string(),
+  picture: z.literal("").or(z.null()).or(z.string().url()),
+  description: z.string(),
+  location: z.string(),
   ownerId: idSchema,
   updatedAt: dateSchema,
 });

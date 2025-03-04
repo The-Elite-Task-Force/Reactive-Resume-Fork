@@ -312,6 +312,7 @@ model ProfileItem {
   icon                     String?
   description              String?
   ResumeProfileItemMapping ResumeProfileItemMapping[]
+
   @@unique([userId, id])
   @@index(fields: [userId])
 }
@@ -535,24 +536,27 @@ model TeamsMapping {
 }
 
 model CompanyMapping {
-  id        String  @id @default(cuid())
-  userId    String
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  companyId String
-  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  roleId    String?
-  role      Role?   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  id                 String  @id @default(cuid())
+  userId             String
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyId          String
+  company            Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  roleId             String?
+  role               Role?   @relation(fields: [roleId], references: [id], onDelete: Cascade)
   acceptedInvitation Boolean @default(true)
+
   @@unique([userId, companyId])
 }
 
 model Company {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  ownerId   String
-  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  updatedAt DateTime @updatedAt
-  picture   String?
+  id             String           @id @default(cuid())
+  name           String           @unique
+  description    String
+  location       String
+  ownerId        String
+  owner          User             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  updatedAt      DateTime         @updatedAt
+  picture        String?
   CompanyMapping CompanyMapping[]
 }
 

@@ -1,5 +1,5 @@
 import { t } from "@lingui/macro";
-import { FolderOpen, PencilSimple, Plus, TrashSimple } from "@phosphor-icons/react";
+import { FolderOpen, PencilSimple, TrashSimple } from "@phosphor-icons/react";
 import type { CompanyDto } from "@reactive-resume/dto";
 import {
   DropdownMenu,
@@ -13,9 +13,7 @@ import dayjs from "dayjs";
 import { useNavigate } from "react-router";
 
 import { BaseCard } from "@/client/pages/dashboard/resumes/_layouts/grid/_components/base-card";
-import { useAuthStore } from "@/client/stores/auth";
 import { useDialog } from "@/client/stores/dialog";
-import { UserAvatar } from "@/client/components/user-avatar";
 
 type Props = {
   company: CompanyDto;
@@ -24,7 +22,6 @@ type Props = {
 export const CompanyCard = ({ company }: Props) => {
   const navigate = useNavigate();
   const { open } = useDialog<CompanyDto>("company");
-  const { user } = useAuthStore();
 
   const lastUpdated = dayjs().to(company.updatedAt);
 
@@ -45,7 +42,7 @@ export const CompanyCard = ({ company }: Props) => {
       <DropdownMenu>
         <DropdownMenuTrigger className="text-left">
           <BaseCard className="cursor-context-menu space-y-0">
-            <div >
+            <div>
               <div
                 className={cn(
                   "absolute inset-x-0 bottom-0 z-10 flex flex-col justify-end space-y-0.5 p-4 pt-12",

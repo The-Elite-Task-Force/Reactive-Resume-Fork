@@ -30,7 +30,7 @@ const InviteUserForm: React.FC<InviteUserFormProps> = ({ companyId }) => {
   };
 
   return (
-    <form className="rounded-lg bg-white p-6 shadow-md dark:bg-gray-800" onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-gray-100">
         Invite User to Company
       </h2>
