@@ -574,15 +574,15 @@ model CompanyMapping {
   roleId    String?
   role      Role?   @relation(fields: [roleId], references: [id], onDelete: Cascade)
 
-  status          CompanyMembershipStatus @default(PENDING)
+  status          COMPANY_STATUS @default(PENDING)
   invitedAt       String
-  acceptedAt      DateTime?
-  quitAt          DateTime?
+  respondedAt     String?
+  terminatedAt    String?
 
   @@unique([userId, companyId])
 }
 
-enum CompanyMembershipStatus {
+enum COMPANY_STATUS {
   PENDING
   ACCEPTED
   REJECTED

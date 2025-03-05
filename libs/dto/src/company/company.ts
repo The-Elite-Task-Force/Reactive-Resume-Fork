@@ -26,5 +26,18 @@ export const CreateCompanyMappingSchema = z.object({
   username: z.union([z.string(), z.undefined()]),
 });
 
+export const activeInvitationsSchema = z.object({
+  id: idSchema,
+  userId: z.string(),
+  companyId: z.string(),
+  roleId: z.string(),
+  status: z.nativeEnum(COMPANY_STATUS),
+  invitedAt: z.string(),
+  respondedAt: z.string().optional(),
+  terminatedAt: z.string().optional(),
+  company: companySchema,
+});
+
 export class CompanyDto extends createZodDto(companySchema) {}
 export class CreateCompanyMappingDto extends createZodDto(CreateCompanyMappingSchema) {}
+export class activeInvitationsDTO extends createZodDto(activeInvitationsSchema) {}

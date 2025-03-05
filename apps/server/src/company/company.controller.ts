@@ -14,7 +14,12 @@ import {
 import { ApiTags } from "@nestjs/swagger";
 import { User as UserEntity } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { CreateCompanyDto, CreateCompanyMappingDto, UpdateCompanyDto } from "@reactive-resume/dto";
+import {
+  COMPANY_STATUS,
+  CreateCompanyDto,
+  CreateCompanyMappingDto,
+  UpdateCompanyDto,
+} from "@reactive-resume/dto";
 import { ERROR_MESSAGE } from "@reactive-resume/utils";
 
 import { TwoFactorGuard } from "@/server/auth/guards/two-factor.guard";
@@ -116,6 +121,28 @@ export class CompanyController {
       return { message: "User invited successfully" };
     } catch (error) {
       throw new BadRequestException(error.message);
+    }
+  }
+
+  @Patch("changeEmploymentStatus")
+  @UseGuards(TwoFactorGuard)
+  async changeEmploymentStatus(@Body() data: { companyMappingId: string; status: COMPANY_STATUS }) {
+    try {
+      await this.companyService.changeEmploymentStatus(data.companyMappingId, data.status);
+      return { message: "Employment status updated successfully" };
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  @Get("activeInvitations/:userId")
+  @UseGuards(TwoFactorGuard)
+  async getActiveInvitations(@Param("userId") userId: string) {
+    try {
+      return await this.companyService.getActiveInvitations(userId);
+    } catch (error) {
+      Logger.log(error);
+      throw new InternalServerErrorException(error.message);
     }
   }
 }

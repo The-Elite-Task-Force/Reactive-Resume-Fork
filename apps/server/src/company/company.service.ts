@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import {
+  COMPANY_STATUS,
   CompanyDto,
   CreateCompanyDto,
   CreateCompanyMappingDto,
@@ -60,6 +61,7 @@ export class CompanyService {
       username: mapping.user.username,
       role: mapping.role ? [mapping.role.name] : null,
       updatedAt: mapping.user.updatedAt,
+      picture: mapping.user.picture,
     }));
   }
 
@@ -77,54 +79,96 @@ export class CompanyService {
   }
 
   async inviteUserToCompany(createCompanyMappingDto: CreateCompanyMappingDto) {
-    if (createCompanyMappingDto.userId) {
-      try {
-        await this.prisma.companyMapping.create({
-          data: {
-            company: { connect: { id: createCompanyMappingDto.companyId } },
-            user: { connect: { id: createCompanyMappingDto.userId } },
-            invitedAt: new Date().toISOString(),
-          },
-        });
-      } catch (error) {
-        if (
-          error.code === "P2002" &&
-          error.meta.target.includes("userId") &&
-          error.meta.target.includes("companyId")
-        ) {
-          throw new Error("User has already been invited to this company.");
-        }
-        throw error;
+    const { userId, username, companyId } = createCompanyMappingDto;
+
+    if (userId) {
+      const existingMapping = await this.prisma.companyMapping.findUnique({
+        where: {
+          userId_companyId: { userId, companyId },
+        },
+      });
+
+      if (existingMapping && existingMapping.status === COMPANY_STATUS.ACCEPTED) {
+        throw new Error("User is already part of the company.");
+      } else if (existingMapping && existingMapping.status === COMPANY_STATUS.PENDING) {
+        throw new Error("User already has a pending invite to the company.");
       }
-    } else if (createCompanyMappingDto.username) {
+
+      await this.prisma.companyMapping.upsert({
+        where: {
+          userId_companyId: { userId, companyId },
+        },
+        update: {
+          status: COMPANY_STATUS.PENDING,
+          invitedAt: new Date().toString(),
+        },
+        create: {
+          company: { connect: { id: companyId } },
+          user: { connect: { id: userId } },
+          invitedAt: new Date().toString(),
+        },
+      });
+    } else if (username) {
       const user = await this.prisma.user.findUnique({
         where: { username: createCompanyMappingDto.username },
       });
       if (!user) {
-        throw new NotFoundException(
-          `User with identifier ${createCompanyMappingDto.username} not found`,
-        );
+        throw new Error("User not found");
       }
-      try {
-        await this.prisma.companyMapping.create({
-          data: {
-            company: { connect: { id: createCompanyMappingDto.companyId } },
-            user: { connect: { id: user.id } },
-            invitedAt: new Date().toISOString(),
-          },
-        });
-      } catch (error) {
-        if (
-          error.code === "P2002" &&
-          error.meta.target.includes("userId") &&
-          error.meta.target.includes("companyId")
-        ) {
-          throw new Error("User has already been invited to this company.");
-        }
-        throw error;
+      const existingMapping = await this.prisma.companyMapping.findUnique({
+        where: {
+          userId_companyId: { userId: user.id, companyId },
+        },
+      });
+
+      if (existingMapping && existingMapping.status === COMPANY_STATUS.ACCEPTED) {
+        throw new Error("User is already part of the company.");
+      } else if (existingMapping && existingMapping.status === COMPANY_STATUS.PENDING) {
+        throw new Error("User already has a pending invite to the company.");
       }
+
+      await this.prisma.companyMapping.upsert({
+        where: {
+          userId_companyId: { userId: user.id, companyId },
+        },
+        update: {
+          status: COMPANY_STATUS.PENDING,
+          invitedAt: new Date().toString(),
+        },
+        create: {
+          company: { connect: { id: companyId } },
+          user: { connect: { id: userId } },
+          invitedAt: new Date().toString(),
+        },
+      });
     } else {
       throw new Error("No user identifier provided");
+    }
+  }
+
+  async getActiveInvitations(userId: string) {
+    try {
+      const data = await this.prisma.companyMapping.findMany({
+        where: { userId, status: COMPANY_STATUS.PENDING },
+        include: { company: true },
+      });
+
+      return data;
+    } catch (error) {
+      throw new Error(`Error occurred while fetching invitations: ${error}`);
+    }
+  }
+
+  async changeEmploymentStatus(companyMappingId: string, status: COMPANY_STATUS) {
+    try {
+      const data = await this.prisma.companyMapping.update({
+        where: { id: companyMappingId },
+        data: { status: status, respondedAt: new Date().toString() },
+      });
+
+      return data;
+    } catch (error) {
+      throw new Error(`Error occurred while fetching invitations: ${error}`);
     }
   }
 }
