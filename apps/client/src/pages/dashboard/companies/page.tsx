@@ -18,7 +18,6 @@ type Layout = "grid" | "list";
 
 export const CompanyPage = () => {
   const [layout, setLayout] = useState<Layout>("grid");
-  // const [invitations, setInvitations] = useState<activeInvitationsDTO[]>();
   const [invitations, setInvitations] = useState<activeInvitationsDTO[]>();
   const { user } = useAuthStore();
 
