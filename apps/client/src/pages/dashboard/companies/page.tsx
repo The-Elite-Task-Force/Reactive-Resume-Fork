@@ -32,8 +32,6 @@ export const CompanyPage = () => {
     void fetchInvitations();
   }, [user]);
 
-  console.log(invitations);
-
   if (!user) return;
 
   return (
