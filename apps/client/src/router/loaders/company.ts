@@ -7,16 +7,13 @@ import { fetchCompany } from "@/client/services/company";
 
 export const companyLoader: LoaderFunction<CompanyDto> = async ({ params }) => {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const id: string = params.id!;
+    if (!params.id) return redirect("/dashboard/companies");
+    const id: string = params.id;
 
     const result = await queryClient.fetchQuery({
       queryKey: ["company", { id }],
       queryFn: () => fetchCompany(id),
     });
-
-    if (!result.description) result.description = "";
-    if (!result.location) result.location = "";
 
     return result;
   } catch {

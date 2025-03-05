@@ -2,14 +2,12 @@ import type { CompanyDto } from "@reactive-resume/dto";
 import { getInitials } from "@reactive-resume/utils";
 
 type Props = {
-  company?: CompanyDto;
+  company: CompanyDto;
   size?: number;
-  className?: string;
+  className: string;
 };
 
 export const CompanyLogo = ({ company, size = 36, className }: Props) => {
-  if (!company) return null;
-
   let picture: React.ReactNode;
 
   if (company.picture) {

@@ -29,8 +29,8 @@ import { useUploadImage } from "@/client/services/storage";
 type FormValues = z.infer<typeof companySchema>;
 
 type Props = {
-  companyState?: CompanyDto;
-  setCompanyState?: (newCompany: CompanyDto) => void;
+  companyState: CompanyDto;
+  setCompanyState: (newCompany: CompanyDto) => void;
 };
 
 export const DetailsForm = ({ companyState, setCompanyState }: Props) => {
@@ -52,12 +52,10 @@ export const DetailsForm = ({ companyState, setCompanyState }: Props) => {
   });
 
   useEffect(() => {
-    companyState && onReset();
+    onReset();
   }, [companyState]);
 
   const onReset = () => {
-    if (!companyState) return;
-
     form.reset({
       id: companyState.id,
       name: companyState.name,
@@ -68,12 +66,11 @@ export const DetailsForm = ({ companyState, setCompanyState }: Props) => {
   };
 
   const onSubmit = async (data: UpdateCompanyDto) => {
-    if (!companyState) return;
     setError(null);
 
     try {
       const updatedCompany = await updateCompany(data);
-      setCompanyState && setCompanyState(updatedCompany);
+      setCompanyState(updatedCompany);
       form.reset(updatedCompany);
     } catch {
       setError("Failed to update company. Please try again.");
@@ -81,8 +78,6 @@ export const DetailsForm = ({ companyState, setCompanyState }: Props) => {
   };
 
   const onSelectImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!companyState) return;
-
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
       const response = await uploadImage(file);
@@ -120,22 +115,19 @@ export const DetailsForm = ({ companyState, setCompanyState }: Props) => {
                         </FormControl>
                         <FormMessage />
                       </FormItem>
-                      {companyState && !companyState.picture && (
-                        <>
-                          <input ref={inputRef} hidden type="file" onChange={onSelectImage} />
 
-                          <motion.button
-                            disabled={isUploading}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className={cn(buttonVariants({ size: "icon", variant: "ghost" }))}
-                            onClick={() => inputRef.current?.click()}
-                          >
-                            <UploadSimple />
-                          </motion.button>
-                        </>
-                      )}
+                      <input ref={inputRef} hidden type="file" onChange={onSelectImage} />
+
+                      <motion.button
+                        disabled={isUploading}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className={cn(buttonVariants({ size: "icon", variant: "ghost" }))}
+                        onClick={() => inputRef.current?.click()}
+                      >
+                        <UploadSimple />
+                      </motion.button>
                     </div>
                   )}
                 />
