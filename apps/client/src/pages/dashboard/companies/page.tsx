@@ -21,16 +21,18 @@ export const CompanyPage = () => {
   const [invitations, setInvitations] = useState<activeInvitationsDTO[]>();
   const { user } = useAuthStore();
 
-  useEffect(() => {
-    const fetchInvitations = async () => {
-      if (user) {
-        const data = await getActiveInvitations(user.id);
-        setInvitations(data);
-      }
-    };
+  const fetchInvitations = async () => {
+    if (user) {
+      const data = await getActiveInvitations(user.id);
+      setInvitations(data);
+    }
+  };
 
+  useEffect(() => {
     void fetchInvitations();
   }, [user]);
+
+  console.log(invitations);
 
   if (!user) return;
 
@@ -69,22 +71,23 @@ export const CompanyPage = () => {
           </TabsList>
         </div>
 
-        {invitations && (
-          <div className="flex flex-col items-center p-6">
+        {invitations && invitations.length > 0 && (
+            <div className="fixed right-0 top-0 z-50 h-full w-80 overflow-y-auto border-l border-gray-800 p-6">
             <h1 className="mb-6 text-3xl font-bold text-white">Active Invitations</h1>
             <div className="max-w-lg">
-              {invitations.length > 0 &&
-                invitations.map((invite: activeInvitationsDTO) => (
-                  <Invitation
-                    key={invite.id}
-                    companyMappingId={invite.id}
-                    invitedAt={invite.invitedAt}
-                    companyName={invite.company.name}
-                  />
-                ))}
+              {invitations.map((invite: activeInvitationsDTO) => (
+              <Invitation
+                key={invite.id}
+                companyMappingId={invite.id}
+                invitedAt={invite.invitedAt}
+                companyName={invite.company.name}
+                refreshInvitations={fetchInvitations}
+              />
+              ))}
             </div>
           </div>
         )}
+
         <ScrollArea
           allowOverflow
           className="h-[calc(100vh-140px)] overflow-visible lg:h-[calc(100vh-88px)]"

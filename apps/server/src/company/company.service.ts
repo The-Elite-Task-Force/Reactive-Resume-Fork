@@ -41,23 +41,37 @@ export class CompanyService {
   }
 
   async inviteUserToCompany(createCompanyMappingDto: CreateCompanyMappingDto) {
+    const { userId, companyId } = createCompanyMappingDto;
+
     try {
-      await this.prisma.companyMapping.create({
-        data: {
-          company: { connect: { id: createCompanyMappingDto.companyId } },
-          user: { connect: { id: createCompanyMappingDto.userId } },
+      const existingMapping = await this.prisma.companyMapping.findUnique({
+        where: {
+          userId_companyId: { userId, companyId },
+        },
+      });
+
+      if (existingMapping && existingMapping.status === COMPANY_STATUS.ACCEPTED) {
+        throw new Error("User is already part of the company.");
+      } else if (existingMapping && existingMapping.status === COMPANY_STATUS.PENDING) {
+        throw new Error("User already has a pending invite to the company.");
+      }
+
+      await this.prisma.companyMapping.upsert({
+        where: {
+          userId_companyId: { userId, companyId },
+        },
+        update: {
+          status: COMPANY_STATUS.PENDING,
+          invitedAt: new Date().toString(),
+        },
+        create: {
+          company: { connect: { id: companyId } },
+          user: { connect: { id: userId } },
           invitedAt: new Date().toString(),
         },
       });
     } catch (error) {
-      if (
-        error.code === "P2002" &&
-        error.meta.target.includes("userId") &&
-        error.meta.target.includes("companyId")
-      ) {
-        throw new Error("User has already been invited to this company.");
-      }
-      throw error;
+      throw new Error(error);
     }
   }
 
@@ -67,9 +81,7 @@ export class CompanyService {
         where: { userId, status: COMPANY_STATUS.PENDING },
         include: { company: true },
       });
-      if (data.length === 0) {
-        throw new Error("No invitations found");
-      }
+
       return data;
     } catch (error) {
       throw new Error(`Error occurred while fetching invitations: ${error}`);

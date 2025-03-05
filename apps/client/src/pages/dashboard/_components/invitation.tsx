@@ -9,11 +9,17 @@ type InviteProps = {
   companyMappingId: string;
   invitedAt: string;
   companyName: string;
+  refreshInvitations: () => Promise<void>;
 };
 
-const handleAccept = async (companyMappingId: string, status: COMPANY_STATUS) => {
+const handleResponse = async (
+  companyMappingId: string,
+  status: COMPANY_STATUS,
+  refreshInvitations: () => Promise<void>,
+) => {
   try {
     await changeEmploymentStatus(companyMappingId, status);
+    await refreshInvitations();
   } catch (error: unknown) {
     if (error instanceof Error) {
       throw error;
@@ -22,18 +28,12 @@ const handleAccept = async (companyMappingId: string, status: COMPANY_STATUS) =>
   }
 };
 
-const handleReject = async (companyMappingId: string, status: COMPANY_STATUS) => {
-  try {
-    await changeEmploymentStatus(companyMappingId, status);
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      throw error;
-    }
-    throw new Error("An unexpected error occurred");
-  }
-};
-
-const Invitation: React.FC<InviteProps> = ({ companyMappingId, invitedAt, companyName }) => {
+export const Invitation = ({
+  companyMappingId,
+  invitedAt,
+  companyName,
+  refreshInvitations,
+}: InviteProps) => {
   return (
     <div
       key={companyMappingId}
@@ -45,7 +45,7 @@ const Invitation: React.FC<InviteProps> = ({ companyMappingId, invitedAt, compan
         <button
           className="rounded-lg bg-green-900 px-4 py-2 text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
           onClick={async () => {
-            await handleAccept(companyMappingId, COMPANY_STATUS.ACCEPTED);
+            await handleResponse(companyMappingId, COMPANY_STATUS.ACCEPTED, refreshInvitations);
           }}
         >
           Accept
@@ -53,7 +53,7 @@ const Invitation: React.FC<InviteProps> = ({ companyMappingId, invitedAt, compan
         <button
           className="rounded-lg bg-red-900 px-4 py-2 text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
           onClick={async () => {
-            await handleReject(companyMappingId, COMPANY_STATUS.REJECTED);
+            await handleResponse(companyMappingId, COMPANY_STATUS.REJECTED, refreshInvitations);
           }}
         >
           Reject
