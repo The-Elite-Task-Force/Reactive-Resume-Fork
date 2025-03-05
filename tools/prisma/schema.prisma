@@ -345,6 +345,8 @@ model SummaryItem {
   id                      String                    @id @default(cuid())
   userId                  String
   user                    User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                    String?
+  description             String?
   content                 String?
   updatedAt               String?
 

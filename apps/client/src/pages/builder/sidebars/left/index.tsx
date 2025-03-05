@@ -173,8 +173,8 @@ export const LeftSidebar = () => {
           <Separator />
           <SectionBase<Summary>
             id="summary"
-            title={(item) => item.id}
-            description={(item) => item.content}
+            title={(item) => item.name}
+            description={(item) => item.description}
           />
           <Separator />
           <SectionBase<Profile>

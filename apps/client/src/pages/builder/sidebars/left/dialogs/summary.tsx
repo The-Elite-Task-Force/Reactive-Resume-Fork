@@ -7,6 +7,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  Input,
   RichInput,
 } from "@reactive-resume/ui";
 import { useForm } from "react-hook-form";
@@ -28,6 +29,33 @@ export const SummaryDialog = () => {
   return (
     <SectionDialog<FormValues> id="summary" form={form} defaultValues={defaultSummary}>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <FormField
+          name="name"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t`Name`}</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="description"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t`Description`}</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           name="content"
           control={form.control}
