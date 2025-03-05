@@ -123,9 +123,12 @@ export const SectionDialog = <T extends SectionItem>({
     if (isDelete) {
       if (!payload.item?.id) return;
 
-      await deleteSectionItem({
-        id: values.id,
-      });
+      await deleteSectionItem(
+        {
+          id: values.id,
+        },
+        sectionFormat,
+      );
 
       setValue(
         `sections.${id}.items`,
