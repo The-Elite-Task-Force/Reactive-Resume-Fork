@@ -1,4 +1,7 @@
+import { CompanyDialog } from "@/client/pages/dashboard/companies/_dialogs/company";
+
 import { AwardsDialog } from "../pages/builder/sidebars/left/dialogs/awards";
+import { BasicDialog } from "../pages/builder/sidebars/left/dialogs/basic";
 import { CertificationsDialog } from "../pages/builder/sidebars/left/dialogs/certifications";
 import { CustomSectionDialog } from "../pages/builder/sidebars/left/dialogs/custom-section";
 import { EducationDialog } from "../pages/builder/sidebars/left/dialogs/education";
@@ -10,13 +13,13 @@ import { ProjectsDialog } from "../pages/builder/sidebars/left/dialogs/projects"
 import { PublicationsDialog } from "../pages/builder/sidebars/left/dialogs/publications";
 import { ReferencesDialog } from "../pages/builder/sidebars/left/dialogs/references";
 import { SkillsDialog } from "../pages/builder/sidebars/left/dialogs/skills";
+import { SummaryDialog } from "../pages/builder/sidebars/left/dialogs/summary";
 import { VolunteerDialog } from "../pages/builder/sidebars/left/dialogs/volunteer";
 import { ImportDialog } from "../pages/dashboard/resumes/_dialogs/import";
 import { LockDialog } from "../pages/dashboard/resumes/_dialogs/lock";
 import { ResumeDialog } from "../pages/dashboard/resumes/_dialogs/resume";
 import { TwoFactorDialog } from "../pages/dashboard/settings/_dialogs/two-factor";
 import { useResumeStore } from "../stores/resume";
-import { CompanyDialog } from "@/client/pages/dashboard/companies/_dialogs/company";
 
 type Props = {
   children: React.ReactNode;
@@ -38,6 +41,8 @@ export const DialogProvider = ({ children }: Props) => {
 
         {isResumeLoaded && (
           <>
+            <BasicDialog />
+            <SummaryDialog />
             <ProfilesDialog />
             <ExperienceDialog />
             <EducationDialog />

@@ -333,6 +333,7 @@ model BasicsItem {
   location                String?
   customFields            Json?
   picture                 Json?
+  url                      Json?
   updatedAt               String?
   ResumeBasicsItemMapping ResumeBasicsItemMapping[]
 
