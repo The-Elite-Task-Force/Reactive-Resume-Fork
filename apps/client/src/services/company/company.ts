@@ -64,7 +64,10 @@ export const getActiveInvitations = async (userId: string) => {
 };
 
 export const changeEmploymentStatus = async (companyMappingId: string, status: COMPANY_STATUS) => {
-  const response = await axios.patch(`/company/changeEmploymentStatus`, {
+  const response = await axios.patch<
+    { companyMappingId: string; status: COMPANY_STATUS },
+    AxiosResponse<{ message: string }>
+  >(`/company/changeEmploymentStatus`, {
     companyMappingId,
     status,
   });

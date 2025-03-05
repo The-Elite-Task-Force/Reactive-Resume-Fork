@@ -70,17 +70,17 @@ export const CompanyPage = () => {
         </div>
 
         {invitations && invitations.length > 0 && (
-            <div className="fixed right-0 top-0 z-50 h-full w-80 overflow-y-auto border-l border-gray-800 p-6">
+          <div className="fixed right-0 top-0 z-50 h-full w-80 overflow-y-auto border-l border-gray-800 p-6">
             <h1 className="mb-6 text-3xl font-bold text-white">Active Invitations</h1>
             <div className="max-w-lg">
               {invitations.map((invite: activeInvitationsDTO) => (
-              <Invitation
-                key={invite.id}
-                companyMappingId={invite.id}
-                invitedAt={invite.invitedAt}
-                companyName={invite.company.name}
-                refreshInvitations={fetchInvitations}
-              />
+                <Invitation
+                  key={invite.id}
+                  companyMappingId={invite.id}
+                  invitedAt={invite.invitedAt}
+                  companyName={invite.company.name}
+                  refreshInvitations={fetchInvitations}
+                />
               ))}
             </div>
           </div>
