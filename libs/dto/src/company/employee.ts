@@ -9,6 +9,7 @@ export const employeeSchema = z.object({
   username: z.string(),
   role: z.array(z.string()).nullable(),
   updatedAt: dateSchema,
+  picture: z.string().nullable(),
 });
 
 export class EmployeeDto extends createZodDto(employeeSchema) {}

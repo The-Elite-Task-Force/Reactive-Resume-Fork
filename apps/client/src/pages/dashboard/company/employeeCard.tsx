@@ -1,8 +1,8 @@
+/* eslint-disable lingui/no-unlocalized-strings */
 /* eslint-disable no-console */
 import type { EmployeeDto } from "@reactive-resume/dto";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
-
 type EmployeeCardProps = {
   employee: EmployeeDto;
 };
@@ -45,7 +45,9 @@ const EmployeeCard: React.FC<EmployeeCardProps> = ({ employee }) => {
       <div className="shrink-0">
         <img
           className="size-10 rounded-full"
-          src={`https://avatars.dicebear.com/api/initials/${employee.username}.svg`}
+          src={
+            employee.picture ?? `https://avatars.dicebear.com/api/initials/${employee.username}.svg`
+          }
           alt={employee.username}
         />
       </div>
