@@ -79,8 +79,9 @@ const Header = () => {
 
 const Summary = () => {
   const section = useArtboardStore((state) => state.resume.sections.summary);
+  const content = section.items.map((item) => item.content).join("\n");
 
-  if (isEmptyString(section.content)) return null;
+  if (isEmptyString(content)) return null;
 
   return (
     <section id={section.id} className="grid grid-cols-5 border-t pt-2.5">
@@ -89,7 +90,7 @@ const Summary = () => {
       </div>
 
       <div
-        dangerouslySetInnerHTML={{ __html: sanitize(section.content) }}
+        dangerouslySetInnerHTML={{ __html: sanitize(content) }}
         style={{ columns: section.columns }}
         className="wysiwyg col-span-4"
       />

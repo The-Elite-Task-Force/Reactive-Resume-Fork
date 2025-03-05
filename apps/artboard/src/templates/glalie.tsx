@@ -88,15 +88,15 @@ const Header = () => {
 
 const Summary = () => {
   const section = useArtboardStore((state) => state.resume.sections.summary);
+  const content = section.items.map((item) => item.content).join("\n");
 
-  if (isEmptyString(section.content)) return null;
+  if (isEmptyString(content)) return null;
 
   return (
     <section id={section.id}>
       <h4 className="mb-2 border-b pb-0.5 text-sm font-bold">{section.name}</h4>
-
       <div
-        dangerouslySetInnerHTML={{ __html: sanitize(section.content) }}
+        dangerouslySetInnerHTML={{ __html: sanitize(content) }}
         style={{ columns: section.columns }}
         className="wysiwyg"
       />

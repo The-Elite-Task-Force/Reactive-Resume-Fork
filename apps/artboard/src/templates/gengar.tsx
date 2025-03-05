@@ -82,14 +82,13 @@ const Header = () => {
 const Summary = () => {
   const section = useArtboardStore((state) => state.resume.sections.summary);
   const primaryColor = useArtboardStore((state) => state.resume.metadata.theme.primary);
-
-  if (isEmptyString(section.content)) return null;
-
+  const content = section.items.map((item) => item.content).join("\n");
+  if (isEmptyString(content)) return null;
   return (
     <div className="p-custom space-y-4" style={{ backgroundColor: hexToRgb(primaryColor, 0.2) }}>
       <section id={section.id}>
         <div
-          dangerouslySetInnerHTML={{ __html: sanitize(section.content) }}
+          dangerouslySetInnerHTML={{ __html: sanitize(content) }}
           style={{ columns: section.columns }}
           className="wysiwyg"
         />
