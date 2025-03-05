@@ -428,53 +428,53 @@ export class SectionItemService {
     }
   }
 
-  async deleteSectionItem(format: SECTION_FORMAT, id: string) {
+  async deleteSectionItem(userId: string, format: SECTION_FORMAT, id: string) {
     try {
       switch (format) {
         case SECTION_FORMAT.Basics: {
-          return await this.prisma.basicsItem.delete({ where: { id } });
+          return await this.prisma.basicsItem.delete({ where: { id, userId } });
         }
         case SECTION_FORMAT.Profiles: {
-          return await this.prisma.profileItem.delete({ where: { id } });
+          return await this.prisma.profileItem.delete({ where: { id, userId } });
         }
         case SECTION_FORMAT.Experience: {
-          return await this.prisma.workItem.delete({ where: { id } });
+          return await this.prisma.workItem.delete({ where: { id, userId } });
         }
         case SECTION_FORMAT.Education: {
-          return await this.prisma.educationItem.delete({ where: { id } });
+          return await this.prisma.educationItem.delete({ where: { id, userId } });
         }
         case SECTION_FORMAT.Skills: {
-          return await this.prisma.skillItem.delete({ where: { id } });
+          return await this.prisma.skillItem.delete({ where: { id, userId } });
         }
         case SECTION_FORMAT.Languages: {
-          return await this.prisma.languageItem.delete({ where: { id } });
+          return await this.prisma.languageItem.delete({ where: { id, userId } });
         }
         case SECTION_FORMAT.Awards: {
-          return await this.prisma.awardItem.delete({ where: { id } });
+          return await this.prisma.awardItem.delete({ where: { id, userId } });
         }
         case SECTION_FORMAT.Certifications: {
-          return await this.prisma.certificationItem.delete({ where: { id } });
+          return await this.prisma.certificationItem.delete({ where: { id, userId } });
         }
         case SECTION_FORMAT.Interests: {
-          return await this.prisma.interestItem.delete({ where: { id } });
+          return await this.prisma.interestItem.delete({ where: { id, userId } });
         }
         case SECTION_FORMAT.Projects: {
-          return await this.prisma.projectItem.delete({ where: { id } });
+          return await this.prisma.projectItem.delete({ where: { id, userId } });
         }
         case SECTION_FORMAT.Publications: {
-          return await this.prisma.publicationItem.delete({ where: { id } });
+          return await this.prisma.publicationItem.delete({ where: { id, userId } });
         }
         case SECTION_FORMAT.Volunteering: {
-          return await this.prisma.volunteerItem.delete({ where: { id } });
+          return await this.prisma.volunteerItem.delete({ where: { id, userId } });
         }
         case SECTION_FORMAT.References: {
-          return await this.prisma.referenceItem.delete({ where: { id } });
+          return await this.prisma.referenceItem.delete({ where: { id, userId } });
         }
         case SECTION_FORMAT.Summary: {
-          return await this.prisma.summaryItem.delete({ where: { id } });
+          return await this.prisma.summaryItem.delete({ where: { id, userId } });
         }
         case SECTION_FORMAT.Custom: {
-          return await this.prisma.customItem.delete({ where: { id } });
+          return await this.prisma.customItem.delete({ where: { id, userId } });
         }
         default: {
           throw new Error("Invalid section type");

@@ -67,11 +67,15 @@ export class SectionItemController {
     }
   }
 
-  @Delete(":id")
+  @Delete(":id/:format")
   @UseGuards(TwoFactorGuard)
-  async delete(@User() user: UserEntity, @Param("id") id: string, @Body() format: SECTION_FORMAT) {
+  async delete(
+    @User() user: UserEntity,
+    @Param("id") id: string,
+    @Param("format") format: SECTION_FORMAT,
+  ) {
     try {
-      return await this.sectionItemService.deleteSectionItem(format, id);
+      return await this.sectionItemService.deleteSectionItem(user.id, format, id);
     } catch (error) {
       Logger.error(error);
       throw new InternalServerErrorException(error);
