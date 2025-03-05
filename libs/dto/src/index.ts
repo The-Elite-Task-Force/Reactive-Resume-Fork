@@ -8,3 +8,4 @@ export * from "./section";
 export * from "./statistics";
 export * from "./user";
 export * from "./company"
+export * from "./section-mapping"

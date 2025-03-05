@@ -81,4 +81,15 @@ export class SectionItemController {
       throw new InternalServerErrorException(error);
     }
   }
+
+  @Get("mappings/:id")
+  @UseGuards(TwoFactorGuard)
+  async mapping(@User() user: UserEntity, @Param("id") id: string) {
+    try {
+      return await this.sectionItemService.getMappings(id);
+    } catch (error) {
+      Logger.error(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
 }

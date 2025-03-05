@@ -30,6 +30,7 @@ import { useResumeStore } from "@/client/stores/resume";
 import { SectionIcon } from "./section-icon";
 import { SectionListItem } from "./section-list-item";
 import { SectionOptions } from "./section-options";
+import { useSectionsStore } from "@/client/stores/section";
 
 type Props<T extends SectionItem> = {
   id: SectionKey;
@@ -39,6 +40,9 @@ type Props<T extends SectionItem> = {
 
 export const SectionBase = <T extends SectionItem>({ id, title, description }: Props<T>) => {
   const { open } = useDialog(id);
+
+  const sections = useSectionsStore((state) => state.sections);
+  const setValues = useSectionsStore((state) => state.setSections);
 
   const setValue = useResumeStore((state) => state.setValue);
   const section = useResumeStore((state) =>
@@ -88,6 +92,8 @@ export const SectionBase = <T extends SectionItem>({ id, title, description }: P
   };
 
   const onToggleVisibility = (index: number) => {
+    console.log("D", sections);
+
     const visible = get(section, `items[${index}].visible`, true);
     setValue(`sections.${id}.items[${index}].visible`, !visible);
   };

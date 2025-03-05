@@ -12,4 +12,6 @@ export const useMapSectionsToResume = () => {
       setValue(`sections.${key}.items`, section);
     }
   }, [sections, setValue]);
+
+  return { sections, setValue };
 };

@@ -1,5 +1,10 @@
 import { Injectable, InternalServerErrorException, Logger } from "@nestjs/common";
-import { CreateSectionItemDto, SECTION_FORMAT, UpdateSectionItemDto } from "@reactive-resume/dto";
+import {
+  CreateSectionItemDto,
+  SECTION_FORMAT,
+  SectionMappingDto,
+  UpdateSectionItemDto,
+} from "@reactive-resume/dto";
 import {
   defaultAward,
   defaultBasics,
@@ -142,6 +147,7 @@ export class SectionItemService {
       throw new InternalServerErrorException(error);
     }
   }
+
   async createSectionItem(userId: string, createSectionDto: CreateSectionItemDto) {
     try {
       const { format, data } = createSectionDto;
@@ -480,6 +486,76 @@ export class SectionItemService {
           throw new Error("Invalid section type");
         }
       }
+    } catch (error) {
+      Logger.error(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async getMappings(resumeId: string) {
+    try {
+      const result: SectionMappingDto = new SectionMappingDto();
+
+      const basics = await this.prisma.resumeBasicsItemMapping.findMany({ where: { resumeId } });
+      result.basics = basics.map((t) => t.basicsItemId);
+
+      const summary = await this.prisma.resumeSummaryItemMapping.findMany({ where: { resumeId } });
+      result.summary = summary.map((t) => t.summaryItemId);
+
+      const experience = await this.prisma.resumeWorkItemMapping.findMany({ where: { resumeId } });
+      result.experience = experience.map((t) => t.workItemId);
+
+      const education = await this.prisma.resumeEducationItemMapping.findMany({
+        where: { resumeId },
+      });
+      result.education = education.map((t) => t.educationItemId);
+
+      const skills = await this.prisma.resumeSkillItemMapping.findMany({ where: { resumeId } });
+      result.skills = skills.map((t) => t.skillItemId);
+
+      const languages = await this.prisma.resumeLanguageItemMapping.findMany({
+        where: { resumeId },
+      });
+      result.languages = languages.map((t) => t.languageItemId);
+
+      const awards = await this.prisma.resumeAwardItemMapping.findMany({ where: { resumeId } });
+      result.awards = awards.map((t) => t.awardItemId);
+
+      const certifications = await this.prisma.resumeCertificationItemMapping.findMany({
+        where: { resumeId },
+      });
+      result.certifications = certifications.map((t) => t.certificationItemId);
+
+      const interests = await this.prisma.resumeInterestItemMapping.findMany({
+        where: { resumeId },
+      });
+      result.interests = interests.map((t) => t.interestItemId);
+
+      const projects = await this.prisma.resumeProjectItemMapping.findMany({ where: { resumeId } });
+      result.projects = projects.map((t) => t.projectItemId);
+
+      const profiles = await this.prisma.resumeProfileItemMapping.findMany({ where: { resumeId } });
+      result.profiles = profiles.map((t) => t.profileItemId);
+
+      const publications = await this.prisma.resumePublicationItemMapping.findMany({
+        where: { resumeId },
+      });
+      result.publications = publications.map((t) => t.publicationItemId);
+
+      const volunteer = await this.prisma.resumeVolunteerItemMapping.findMany({
+        where: { resumeId },
+      });
+      result.volunteer = volunteer.map((t) => t.volunteerItemId);
+
+      const references = await this.prisma.resumeReferenceItemMapping.findMany({
+        where: { resumeId },
+      });
+      result.references = references.map((t) => t.referenceItemId);
+
+      const custom = await this.prisma.resumeCustomItemMapping.findMany({ where: { resumeId } });
+      result.custom = custom.map((t) => t.customItemId);
+
+      return result;
     } catch (error) {
       Logger.error(error);
       throw new InternalServerErrorException(error);

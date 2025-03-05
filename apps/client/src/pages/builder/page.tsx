@@ -1,5 +1,5 @@
 import { t } from "@lingui/macro";
-import type { ResumeDto } from "@reactive-resume/dto";
+import { ResumeDto, SectionMappingDto } from "@reactive-resume/dto";
 import { useCallback, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import type { LoaderFunction } from "react-router";
@@ -8,9 +8,33 @@ import { redirect } from "react-router";
 import { useMapSectionsToResume } from "@/client/hooks/use-map-sections-to-resume";
 import { queryClient } from "@/client/libs/query-client";
 import { findResumeById } from "@/client/services/resume";
-import { useSections } from "@/client/services/section/sections";
+import { useSectionMappings, useSections } from "@/client/services/section/sections";
 import { useBuilderStore } from "@/client/stores/builder";
 import { useResumeStore } from "@/client/stores/resume";
+import { useSectionMappingStore } from "@/client/stores/section";
+import _set from "lodash.set";
+
+const mapSections = (sections, mapping: SectionMappingDto) => {
+  let result = JSON.parse(JSON.stringify(sections));
+
+  const mappingEntries = Object.values(mapping);
+  const sectionEntries = Object.entries(sections);
+  // sectionEntries.forEach(([key, value]) => {
+  for (const [i, mapping] of mappingEntries.entries()) {
+    const key = sectionEntries[i][0];
+    const value = sectionEntries[i][1];
+    result = _set(result, key, {
+      columns: value.columns as number,
+      id: value.id as string,
+      items: sections[key].items.filter((s: { id: string }) => mapping.includes(s.id)) as [],
+      name: value.name as string,
+      seperateLinks: value.seperateLinks as boolean,
+      //sections[key].items = value.filter((s: { id: string }) => mapping.includes(s.id));
+    });
+  }
+  
+  return result;
+};
 
 export const BuilderPage = () => {
   const frameRef = useBuilderStore((state) => state.frame.ref);
@@ -18,15 +42,25 @@ export const BuilderPage = () => {
 
   const resume = useResumeStore((state) => state.resume);
   const title = useResumeStore((state) => state.resume.title);
+  const mappings = useSectionMappingStore((state) => state.mappings);
 
+  useSectionMappings(resume.id);
   useSections();
 
   useMapSectionsToResume();
 
   const syncResumeToArtboard = useCallback(() => {
+    mapSections(resume.data.sections, mappings);
     setImmediate(() => {
       if (!frameRef?.contentWindow) return;
-      const message = { type: "SET_RESUME", payload: resume.data };
+      const message = {
+        type: "SET_RESUME",
+        payload: {
+          basics: resume.data.basics,
+          sections: mapSections(resume.data.sections, mappings),
+          metadata: resume.data.metadata,
+        },
+      };
       frameRef.contentWindow.postMessage(message, "*");
     });
   }, [frameRef?.contentWindow, resume.data]);
