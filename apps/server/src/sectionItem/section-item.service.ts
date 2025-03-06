@@ -1,6 +1,8 @@
 import { Injectable, InternalServerErrorException, Logger } from "@nestjs/common";
 import {
   CreateSectionItemDto,
+  CreateSectionMappingDto,
+  DeleteMappingDto,
   SECTION_FORMAT,
   SectionMappingDto,
   UpdateSectionItemDto,
@@ -556,6 +558,347 @@ export class SectionItemService {
       result.custom = custom.map((t) => t.customItemId);
 
       return result;
+    } catch (error) {
+      Logger.error(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async createMapping(data: CreateSectionMappingDto) {
+    try {
+      switch (data.format) {
+        case "basics": {
+          const item = await this.prisma.resumeBasicsItemMapping.create({
+            data: {
+              resumeId: data.resumeId,
+              basicsItemId: data.itemId,
+              order: 0,
+            },
+          });
+          return { resumeId: item.resumeId, itemId: item.basicsItemId };
+        }
+        case "summary": {
+          const item = await this.prisma.resumeSummaryItemMapping.create({
+            data: {
+              resumeId: data.resumeId,
+              summaryItemId: data.itemId,
+              order: 0,
+            },
+          });
+          return { resumeId: item.resumeId, itemId: item.summaryItemId };
+        }
+        case "profiles": {
+          const item = await this.prisma.resumeProfileItemMapping.create({
+            data: {
+              resumeId: data.resumeId,
+              profileItemId: data.itemId,
+              order: 0,
+            },
+          });
+          return { resumeId: item.resumeId, itemId: item.profileItemId };
+        }
+        case "experience": {
+          const item = await this.prisma.resumeWorkItemMapping.create({
+            data: {
+              resumeId: data.resumeId,
+              workItemId: data.itemId,
+              order: 0,
+            },
+          });
+          return { resumeId: item.resumeId, itemId: item.workItemId };
+        }
+        case "education": {
+          const item = await this.prisma.resumeEducationItemMapping.create({
+            data: {
+              resumeId: data.resumeId,
+              educationItemId: data.itemId,
+              order: 0,
+            },
+          });
+          return { resumeId: item.resumeId, itemId: item.educationItemId };
+        }
+        case "skills": {
+          const item = await this.prisma.resumeSkillItemMapping.create({
+            data: {
+              resumeId: data.resumeId,
+              skillItemId: data.itemId,
+              order: 0,
+            },
+          });
+          return { resumeId: item.resumeId, itemId: item.skillItemId };
+        }
+        case "languages": {
+          const item = await this.prisma.resumeLanguageItemMapping.create({
+            data: {
+              resumeId: data.resumeId,
+              languageItemId: data.itemId,
+              order: 0,
+            },
+          });
+          return { resumeId: item.resumeId, itemId: item.languageItemId };
+        }
+        case "awards": {
+          const item = await this.prisma.resumeAwardItemMapping.create({
+            data: {
+              resumeId: data.resumeId,
+              awardItemId: data.itemId,
+              order: 0,
+            },
+          });
+          return { resumeId: item.resumeId, itemId: item.awardItemId };
+        }
+        case "certifications": {
+          const item = await this.prisma.resumeCertificationItemMapping.create({
+            data: {
+              resumeId: data.resumeId,
+              certificationItemId: data.itemId,
+              order: 0,
+            },
+          });
+          return { resumeId: item.resumeId, itemId: item.certificationItemId };
+        }
+        case "interests": {
+          const item = await this.prisma.resumeInterestItemMapping.create({
+            data: {
+              resumeId: data.resumeId,
+              interestItemId: data.itemId,
+              order: 0,
+            },
+          });
+          return { resumeId: item.resumeId, itemId: item.interestItemId };
+        }
+        case "projects": {
+          const item = await this.prisma.resumeProjectItemMapping.create({
+            data: {
+              resumeId: data.resumeId,
+              projectItemId: data.itemId,
+              order: 0,
+            },
+          });
+          return { resumeId: item.resumeId, itemId: item.projectItemId };
+        }
+        case "publications": {
+          const item = await this.prisma.resumePublicationItemMapping.create({
+            data: {
+              resumeId: data.resumeId,
+              publicationItemId: data.itemId,
+              order: 0,
+            },
+          });
+          return { resumeId: item.resumeId, itemId: item.publicationItemId };
+        }
+        case "volunteer": {
+          const item = await this.prisma.resumeVolunteerItemMapping.create({
+            data: {
+              resumeId: data.resumeId,
+              volunteerItemId: data.itemId,
+              order: 0,
+            },
+          });
+          return { resumeId: item.resumeId, itemId: item.volunteerItemId };
+        }
+        case "references": {
+          const item = await this.prisma.resumeReferenceItemMapping.create({
+            data: {
+              resumeId: data.resumeId,
+              referenceItemId: data.itemId,
+              order: 0,
+            },
+          });
+          return { resumeId: item.resumeId, itemId: item.referenceItemId };
+        }
+        case "custom": {
+          const item = await this.prisma.resumeCustomItemMapping.create({
+            data: {
+              resumeId: data.resumeId,
+              customItemId: data.itemId,
+              order: 0,
+            },
+          });
+          return { resumeId: item.resumeId, itemId: item.customItemId };
+        }
+        default: {
+          throw new InternalServerErrorException(`Unknown format for ${data.format}`);
+        }
+      }
+    } catch (error) {
+      Logger.error(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  async deleteMapping(data: DeleteMappingDto) {
+    try {
+      switch (data.format) {
+        case "basics": {
+          await this.prisma.resumeBasicsItemMapping.delete({
+            where: {
+              resumeId_basicsItemId: {
+                resumeId: data.resumeId,
+                basicsItemId: data.id,
+              },
+            },
+          });
+          break;
+        }
+        case "summary": {
+          await this.prisma.resumeSummaryItemMapping.delete({
+            where: {
+              resumeId_summaryItemId: {
+                resumeId: data.resumeId,
+                summaryItemId: data.id,
+              },
+            },
+          });
+          break;
+        }
+        case "profiles": {
+          await this.prisma.resumeProfileItemMapping.delete({
+            where: {
+              resumeId_profileItemId: {
+                resumeId: data.resumeId,
+                profileItemId: data.id,
+              },
+            },
+          });
+          break;
+        }
+        case "experience": {
+          await this.prisma.resumeWorkItemMapping.delete({
+            where: {
+              resumeId_workItemId: {
+                resumeId: data.resumeId,
+                workItemId: data.id,
+              },
+            },
+          });
+          break;
+        }
+        case "education": {
+          await this.prisma.resumeEducationItemMapping.delete({
+            where: {
+              resumeId_educationItemId: {
+                resumeId: data.resumeId,
+                educationItemId: data.id,
+              },
+            },
+          });
+          break;
+        }
+        case "skills": {
+          await this.prisma.resumeSkillItemMapping.delete({
+            where: {
+              resumeId_skillItemId: {
+                resumeId: data.resumeId,
+                skillItemId: data.id,
+              },
+            },
+          });
+          break;
+        }
+        case "languages": {
+          await this.prisma.resumeLanguageItemMapping.delete({
+            where: {
+              resumeId_languageItemId: {
+                resumeId: data.resumeId,
+                languageItemId: data.id,
+              },
+            },
+          });
+          break;
+        }
+        case "awards": {
+          await this.prisma.resumeAwardItemMapping.delete({
+            where: {
+              resumeId_awardItemId: {
+                resumeId: data.resumeId,
+                awardItemId: data.id,
+              },
+            },
+          });
+          break;
+        }
+        case "certifications": {
+          await this.prisma.resumeCertificationItemMapping.delete({
+            where: {
+              resumeId_certificationItemId: {
+                resumeId: data.resumeId,
+                certificationItemId: data.id,
+              },
+            },
+          });
+          break;
+        }
+        case "interests": {
+          await this.prisma.resumeInterestItemMapping.delete({
+            where: {
+              resumeId_interestItemId: {
+                resumeId: data.resumeId,
+                interestItemId: data.id,
+              },
+            },
+          });
+          break;
+        }
+        case "projects": {
+          await this.prisma.resumeProjectItemMapping.delete({
+            where: {
+              resumeId_projectItemId: {
+                resumeId: data.resumeId,
+                projectItemId: data.id,
+              },
+            },
+          });
+          break;
+        }
+        case "publications": {
+          await this.prisma.resumePublicationItemMapping.delete({
+            where: {
+              resumeId_publicationItemId: {
+                resumeId: data.resumeId,
+                publicationItemId: data.id,
+              },
+            },
+          });
+          break;
+        }
+        case "volunteer": {
+          await this.prisma.resumeVolunteerItemMapping.delete({
+            where: {
+              resumeId_volunteerItemId: {
+                resumeId: data.resumeId,
+                volunteerItemId: data.id,
+              },
+            },
+          });
+          break;
+        }
+        case "references": {
+          await this.prisma.resumeReferenceItemMapping.delete({
+            where: {
+              resumeId_referenceItemId: {
+                resumeId: data.resumeId,
+                referenceItemId: data.id,
+              },
+            },
+          });
+          break;
+        }
+        case "custom": {
+          await this.prisma.resumeCustomItemMapping.delete({
+            where: {
+              resumeId_customItemId: {
+                resumeId: data.resumeId,
+                customItemId: data.id,
+              },
+            },
+          });
+          break;
+        }
+        default: {
+          throw new InternalServerErrorException(`Unknown format for ${data.format}`);
+        }
+      }
     } catch (error) {
       Logger.error(error);
       throw new InternalServerErrorException(error);

@@ -1,3 +1,4 @@
+import { idSchema } from "@reactive-resume/schema";
 import { createZodDto } from "nestjs-zod/dto";
 import { z } from "zod";
 
@@ -20,3 +21,10 @@ export const sectionMappingSchema = z.object({
 });
 
 export class SectionMappingDto extends createZodDto(sectionMappingSchema) {}
+
+export const sectionMappingItemSchema = z.object({
+  itemId: idSchema,
+  resumeId: idSchema,
+});
+
+export class SectionMappingItemDto extends createZodDto(sectionMappingItemSchema) {}

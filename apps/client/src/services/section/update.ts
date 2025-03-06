@@ -1,4 +1,4 @@
-import type { SectionItemDto, UpdateSectionItemDto } from "@reactive-resume/dto";
+import { SectionItemDto, UpdateSectionItemDto } from "@reactive-resume/dto";
 import type { AxiosResponse } from "axios";
 
 import { axios } from "@/client/libs/axios";

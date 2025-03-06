@@ -16,21 +16,21 @@ import {
 } from "@dnd-kit/sortable";
 import { t } from "@lingui/macro";
 import { Plus } from "@phosphor-icons/react";
-//import { SECTION_FORMAT } from "@reactive-resume/dto";
+import type { SectionMappingDto, SectionMappingItemDto } from "@reactive-resume/dto";
 import type { SectionItem, SectionKey, SectionWithItem } from "@reactive-resume/schema";
 import { Button } from "@reactive-resume/ui";
 import { cn } from "@reactive-resume/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import get from "lodash.get";
 
-//import { linkResumeToItem } from "@/client/services/resume";
+import { createSectionMapping, deleteSectionMapping } from "@/client/services/section-mapping";
 import { useDialog } from "@/client/stores/dialog";
 import { useResumeStore } from "@/client/stores/resume";
+import { useSectionMappingStore, useSectionsStore } from "@/client/stores/section";
 
 import { SectionIcon } from "./section-icon";
 import { SectionListItem } from "./section-list-item";
 import { SectionOptions } from "./section-options";
-import { useSectionsStore } from "@/client/stores/section";
 
 type Props<T extends SectionItem> = {
   id: SectionKey;
@@ -38,18 +38,38 @@ type Props<T extends SectionItem> = {
   description?: (item: T) => string | undefined;
 };
 
+const removeFromMapSections = (mapping: SectionMappingDto, format: string, id: string) => {
+  const result = JSON.parse(JSON.stringify(mapping));
+
+  result[format] = result[format].filter((s: string) => s !== id);
+
+  return result;
+};
+
+const addToMapSections = (
+  mapping: SectionMappingDto,
+  format: string,
+  item: SectionMappingItemDto,
+) => {
+  const result = JSON.parse(JSON.stringify(mapping));
+
+  result[format].push(item.itemId);
+
+  return result;
+};
+
 export const SectionBase = <T extends SectionItem>({ id, title, description }: Props<T>) => {
   const { open } = useDialog(id);
 
-  const sections = useSectionsStore((state) => state.sections);
-  const setValues = useSectionsStore((state) => state.setSections);
+  const mappings = useSectionMappingStore((state) => state.mappings);
+  const setMappings = useSectionMappingStore((state) => state.setMappings);
 
   const setValue = useResumeStore((state) => state.setValue);
   const section = useResumeStore((state) =>
     get(state.resume.data.sections, id),
   ) as SectionWithItem<T>;
 
-  //const resumeId = useResumeStore((state) => state.resume.id);
+  const resumeId = useResumeStore((state) => state.resume.id);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -91,11 +111,19 @@ export const SectionBase = <T extends SectionItem>({ id, title, description }: P
     open("delete", { id, item });
   };
 
-  const onToggleVisibility = (index: number) => {
-    console.log("D", sections);
+  const onToggleVisibility = async (item: T, index: number) => {
+    // @ts-expect-error Map
+    if (mappings[id].includes(item.id)) {
+      await deleteSectionMapping({ resumeId: resumeId, id: item.id, format: id });
+      setMappings(removeFromMapSections(mappings, id, item.id));
+      setValue(`sections.${id}.items[${index}].visible`, false);
+    } else {
+      const data = await createSectionMapping({ resumeId: resumeId, itemId: item.id, format: id });
+      setMappings(addToMapSections(mappings, id, data));
+      setValue(`sections.${id}.items[${index}].visible`, true);
+    }
 
-    const visible = get(section, `items[${index}].visible`, true);
-    setValue(`sections.${id}.items[${index}].visible`, !visible);
+    //const visible = get(section, `items[${index}].visible`, true);
   };
 
   /*const onLinkItemToResume = async (item: T) => {
@@ -166,7 +194,7 @@ export const SectionBase = <T extends SectionItem>({ id, title, description }: P
                     onDuplicate(item as T);
                   }}
                   onToggleVisibility={() => {
-                    onToggleVisibility(index);
+                    void onToggleVisibility(item as T, index);
                   }}
                 />
               ))}

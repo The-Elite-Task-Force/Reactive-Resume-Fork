@@ -1,4 +1,4 @@
-import { DeleteDto, SECTION_FORMAT } from "@reactive-resume/dto";
+import type { DeleteDto, SECTION_FORMAT } from "@reactive-resume/dto";
 
 import { axios } from "@/client/libs/axios";
 

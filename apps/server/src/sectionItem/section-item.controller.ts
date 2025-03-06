@@ -12,13 +12,19 @@ import {
 } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { User as UserEntity } from "@prisma/client";
-import { CreateSectionItemDto, SECTION_FORMAT, UpdateSectionItemDto } from "@reactive-resume/dto";
+import {
+  CreateSectionItemDto,
+  CreateSectionMappingDto,
+  SECTION_FORMAT,
+  UpdateSectionItemDto,
+} from "@reactive-resume/dto";
 import { sectionSchemaWithData } from "@reactive-resume/schema";
 import zodToJsonSchema from "zod-to-json-schema";
 
 import { TwoFactorGuard } from "../auth/guards/two-factor.guard";
 import { User } from "../user/decorators/user.decorator";
 import { SectionItemService } from "./section-item.service";
+import { DeleteMappingDto } from "@reactive-resume/dto";
 
 @ApiTags("SectionItem")
 @Controller("sectionItem")
@@ -84,9 +90,31 @@ export class SectionItemController {
 
   @Get("mappings/:id")
   @UseGuards(TwoFactorGuard)
-  async mapping(@User() user: UserEntity, @Param("id") id: string) {
+  async getMappings(@User() user: UserEntity, @Param("id") id: string) {
     try {
       return await this.sectionItemService.getMappings(id);
+    } catch (error) {
+      Logger.error(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  @Post("mappings")
+  @UseGuards(TwoFactorGuard)
+  async createMappings(@User() user: UserEntity, @Body() data: CreateSectionMappingDto) {
+    try {
+      return await this.sectionItemService.createMapping(data);
+    } catch (error) {
+      Logger.error(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  @Delete("mappings")
+  @UseGuards(TwoFactorGuard)
+  async deleteMappings(@User() user: UserEntity, @Body() data: DeleteMappingDto) {
+    try {
+      await this.sectionItemService.deleteMapping(data);
     } catch (error) {
       Logger.error(error);
       throw new InternalServerErrorException(error);

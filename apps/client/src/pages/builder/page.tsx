@@ -1,5 +1,5 @@
 import { t } from "@lingui/macro";
-import { ResumeDto, SectionMappingDto } from "@reactive-resume/dto";
+import type { ResumeDto, SectionMappingDto } from "@reactive-resume/dto";
 import { useCallback, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import type { LoaderFunction } from "react-router";
@@ -8,31 +8,26 @@ import { redirect } from "react-router";
 import { useMapSectionsToResume } from "@/client/hooks/use-map-sections-to-resume";
 import { queryClient } from "@/client/libs/query-client";
 import { findResumeById } from "@/client/services/resume";
-import { useSectionMappings, useSections } from "@/client/services/section/sections";
+import { useSections } from "@/client/services/section/sections";
+import { useSectionMappings } from "@/client/services/section-mapping";
 import { useBuilderStore } from "@/client/stores/builder";
 import { useResumeStore } from "@/client/stores/resume";
 import { useSectionMappingStore } from "@/client/stores/section";
-import _set from "lodash.set";
 
+// @ts-expect-error Any type error
 const mapSections = (sections, mapping: SectionMappingDto) => {
-  let result = JSON.parse(JSON.stringify(sections));
+  const result = JSON.parse(JSON.stringify(sections));
 
-  const mappingEntries = Object.values(mapping);
   const sectionEntries = Object.entries(sections);
-  // sectionEntries.forEach(([key, value]) => {
-  for (const [i, mapping] of mappingEntries.entries()) {
-    const key = sectionEntries[i][0];
-    const value = sectionEntries[i][1];
-    result = _set(result, key, {
-      columns: value.columns as number,
-      id: value.id as string,
-      items: sections[key].items.filter((s: { id: string }) => mapping.includes(s.id)) as [],
-      name: value.name as string,
-      seperateLinks: value.seperateLinks as boolean,
-      //sections[key].items = value.filter((s: { id: string }) => mapping.includes(s.id));
-    });
-  }
-  
+  sectionEntries.forEach((section) => {
+    const key = section[0];
+    // @ts-expect-error Unknown type
+    const value = section[1].items;
+
+    // @ts-expect-error Any type error
+    result[key].items = value.filter((s: { id: string }) => mapping[key].includes(s.id));
+  });
+
   return result;
 };
 
@@ -43,6 +38,7 @@ export const BuilderPage = () => {
   const resume = useResumeStore((state) => state.resume);
   const title = useResumeStore((state) => state.resume.title);
   const mappings = useSectionMappingStore((state) => state.mappings);
+  const setMappings = useSectionMappingStore((state) => state.setMappings);
 
   useSectionMappings(resume.id);
   useSections();
@@ -50,7 +46,10 @@ export const BuilderPage = () => {
   useMapSectionsToResume();
 
   const syncResumeToArtboard = useCallback(() => {
-    mapSections(resume.data.sections, mappings);
+    if (Object.values(mappings).length === 0) {
+      return;
+    }
+
     setImmediate(() => {
       if (!frameRef?.contentWindow) return;
       const message = {
@@ -63,7 +62,7 @@ export const BuilderPage = () => {
       };
       frameRef.contentWindow.postMessage(message, "*");
     });
-  }, [frameRef?.contentWindow, resume.data]);
+  }, [frameRef?.contentWindow, resume.data, mappings, setMappings]);
 
   // Send resume data to iframe on initial load
   useEffect(() => {
@@ -74,7 +73,7 @@ export const BuilderPage = () => {
     return () => {
       frameRef.removeEventListener("load", syncResumeToArtboard);
     };
-  }, [frameRef]);
+  }, [frameRef, mappings, setMappings]);
 
   // Persistently check if iframe has loaded using setInterval
   useEffect(() => {
@@ -88,10 +87,10 @@ export const BuilderPage = () => {
     return () => {
       clearInterval(interval);
     };
-  }, [frameRef]);
+  }, [frameRef, mappings, setMappings]);
 
   // Send resume data to iframe on change of resume data
-  useEffect(syncResumeToArtboard, [resume.data]);
+  useEffect(syncResumeToArtboard, [resume.data, mappings, setMappings]);
 
   return (
     <>

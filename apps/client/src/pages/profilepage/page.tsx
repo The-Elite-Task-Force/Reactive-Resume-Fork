@@ -1,5 +1,6 @@
 import { t } from "@lingui/macro";
 import { CircleNotch, FilePdf } from "@phosphor-icons/react";
+import type { SectionMappingDto } from "@reactive-resume/dto";
 import { Button } from "@reactive-resume/ui";
 import { pageSizeMap } from "@reactive-resume/utils";
 import { useCallback, useEffect, useRef } from "react";
@@ -9,10 +10,30 @@ import { Link, useLoaderData } from "react-router";
 import { Icon } from "@/client/components/icon";
 import { ThemeSwitch } from "@/client/components/theme-switch";
 import { usePrintResume } from "@/client/services/resume";
+import { useSectionMappings } from "@/client/services/section-mapping";
+import { useSectionMappingStore } from "@/client/stores/section";
 
 const openInNewTab = (url: string) => {
   const win = window.open(url, "_blank");
   if (win) win.focus();
+};
+
+// @ts-expect-error Any type error
+const mapSections = (sections, mapping: SectionMappingDto) => {
+  const result = JSON.parse(JSON.stringify(sections));
+
+  const sectionEntries = Object.entries(sections);
+  sectionEntries.forEach((section) => {
+    // @ts-expect-error Unknown type
+    const key = section[0];
+    // @ts-expect-error Unknown type
+    const value = section[1].items;
+
+    // @ts-expect-error Any type error
+    result[key].items = value.filter((s: { id: string }) => mapping[key].includes(s.id));
+  });
+
+  return result;
 };
 
 export const PublicProfilePage = () => {
@@ -23,19 +44,30 @@ export const PublicProfilePage = () => {
   const { id, title, data: resume } = useLoaderData();
   const format = resume.metadata.page.format as keyof typeof pageSizeMap;
 
+  const mappings = useSectionMappingStore((state) => state.mappings);
+  const setMappings = useSectionMappingStore((state) => state.setMappings);
+  useSectionMappings(id);
+
   const updateResumeInFrame = useCallback(() => {
-    const message = { type: "SET_RESUME", payload: resume };
+    const message = {
+      type: "SET_RESUME",
+      payload: {
+        basics: resume.basics,
+        sections: mapSections(resume.sections, mappings),
+        metadata: resume.metadata,
+      },
+    };
 
     setImmediate(() => {
       frameRef.current?.contentWindow?.postMessage(message, "*");
     });
-  }, [frameRef.current, resume]);
+  }, [frameRef.current, resume, mappings, setMappings]);
 
   useEffect(() => {
     if (!frameRef.current) return;
     frameRef.current.addEventListener("load", updateResumeInFrame);
     return () => frameRef.current?.removeEventListener("load", updateResumeInFrame);
-  }, [frameRef]);
+  }, [frameRef, mappings, setMappings]);
 
   useEffect(() => {
     if (!frameRef.current?.contentWindow) return;
@@ -56,7 +88,7 @@ export const PublicProfilePage = () => {
     return () => {
       frameRef.current?.contentWindow?.removeEventListener("message", handleMessage);
     };
-  }, [frameRef]);
+  }, [frameRef, mappings, setMappings]);
 
   const onDownloadPdf = async () => {
     const { url } = await printResume({ id });
