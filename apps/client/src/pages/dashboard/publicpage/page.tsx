@@ -1,17 +1,14 @@
 import { t } from "@lingui/macro";
 import { CircleNotch, FilePdf } from "@phosphor-icons/react";
-import type { ResumeDto } from "@reactive-resume/dto";
 import { Button } from "@reactive-resume/ui";
 import { pageSizeMap } from "@reactive-resume/utils";
 import { useCallback, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
-import type { LoaderFunction } from "react-router";
-import { Link, redirect, useLoaderData } from "react-router";
+import { Link, useLoaderData } from "react-router";
 
 import { Icon } from "@/client/components/icon";
 import { ThemeSwitch } from "@/client/components/theme-switch";
-import { queryClient } from "@/client/libs/query-client";
-import { findResumeByUsernameSlug, usePrintResume } from "@/client/services/resume";
+import { usePrintResume } from "@/client/services/resume";
 
 const openInNewTab = (url: string) => {
   const win = window.open(url, "_blank");

@@ -1,22 +1,5 @@
 import { Injectable, InternalServerErrorException, Logger } from "@nestjs/common";
 import { CreateSectionItemDto, SECTION_FORMAT, UpdateSectionItemDto } from "@reactive-resume/dto";
-import {
-  defaultAward,
-  defaultBasics,
-  defaultCertification,
-  defaultCustomSection,
-  defaultEducation,
-  defaultExperience,
-  defaultInterest,
-  defaultLanguage,
-  defaultProfile,
-  defaultProject,
-  defaultPublication,
-  defaultReference,
-  defaultSkill,
-  defaultSummary,
-  defaultVolunteer,
-} from "@reactive-resume/schema";
 import { PrismaService } from "nestjs-prisma";
 
 import {
@@ -103,22 +86,6 @@ export class SectionItemService {
         where: { userId },
         orderBy: { updatedAt: "desc" },
       });
-
-      if (basics.length === 0) basics.push(defaultBasics);
-      if (summary.length === 0) summary.push(defaultSummary);
-      if (profiles.length === 0) profiles.push(defaultProfile);
-      if (experience.length === 0) experience.push(defaultExperience);
-      if (education.length === 0) education.push(defaultEducation);
-      if (skills.length === 0) skills.push(defaultSkill);
-      if (languages.length === 0) languages.push(defaultLanguage);
-      if (awards.length === 0) awards.push(defaultAward);
-      if (certifications.length === 0) certifications.push(defaultCertification);
-      if (interests.length === 0) interests.push(defaultInterest);
-      if (projects.length === 0) projects.push(defaultProject);
-      if (publications.length === 0) publications.push(defaultPublication);
-      if (volunteer.length === 0) volunteer.push(defaultVolunteer);
-      if (references.length === 0) references.push(defaultReference);
-      if (custom.length === 0) custom.push(defaultCustomSection);
 
       return {
         basics,
