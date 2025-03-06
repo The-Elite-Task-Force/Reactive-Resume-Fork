@@ -31,9 +31,10 @@ model User {
   twoFactorEnabled Boolean  @default(false)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
-  provider         Provider
-  secrets          Secrets?
-  resumes          Resume[]
+
+  provider Provider
+  secrets  Secrets?
+  resumes  Resume[]
 
   TeamsMapping   TeamsMapping[]
   CompanyMapping CompanyMapping[]
@@ -122,15 +123,16 @@ model Statistics {
 }
 
 model WorkItem {
-  id                    String                  @id @default(cuid())
-  userId                String
-  user                  User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name                  String?
-  position              String?
-  url                   Json?
-  summary               String?
-  date                  String?
-  updatedAt             String?
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String?
+  position  String?
+  url       Json?
+  summary   String?
+  date      String?
+  updatedAt DateTime @updatedAt
+
   company               String?
   location              String?
   ResumeWorkItemMapping ResumeWorkItemMapping[]
@@ -140,15 +142,16 @@ model WorkItem {
 }
 
 model AwardItem {
-  id                     String                   @id @default(cuid())
-  userId                 String
-  user                   User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title                  String?
-  awarder                String?
-  url                    Json?
-  summary                String?
-  date                   String?
-  updatedAt              String?
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String?
+  awarder   String?
+  url       Json?
+  summary   String?
+  date      String?
+  updatedAt DateTime @updatedAt
+
   ResumeAwardItemMapping ResumeAwardItemMapping[]
 
   @@unique([userId, id])
@@ -156,15 +159,16 @@ model AwardItem {
 }
 
 model SkillItem {
-  id                     String                   @id @default(cuid())
-  userId                 String
-  user                   User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name                   String?
-  description            String?
-  level                  Int?
-  keywords               Json?
-  levelNum               Int?
-  updatedAt              String?
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String?
+  description String?
+  level       Int?
+  keywords    Json?
+  levelNum    Int?
+  updatedAt   DateTime @updatedAt
+
   ResumeSkillItemMapping ResumeSkillItemMapping[]
 
   @@unique([userId, id])
@@ -172,16 +176,17 @@ model SkillItem {
 }
 
 model ProjectItem {
-  id                       String                     @id @default(cuid())
-  userId                   String
-  user                     User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name                     String?
-  url                      Json?
-  summary                  String?
-  description              String?
-  keywords                 Json?
-  date                     String?
-  updatedAt                String?
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String?
+  url         Json?
+  summary     String?
+  description String?
+  keywords    Json?
+  date        String?
+  updatedAt   DateTime @updatedAt
+
   ResumeProjectItemMapping ResumeProjectItemMapping[]
 
   @@unique([userId, id])
@@ -189,19 +194,20 @@ model ProjectItem {
 }
 
 model EducationItem {
-  id                         String                       @id @default(cuid())
-  userId                     String
-  user                       User                         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  institution                String?
-  area                       String?
-  degree                     String?
-  score                      String?
-  courses                    Json?
-  summary                    String?
-  url                        Json?
-  date                       String?
-  studyType                  String?
-  updatedAt                  String?
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  institution String?
+  area        String?
+  degree      String?
+  score       String?
+  courses     Json?
+  summary     String?
+  url         Json?
+  date        String?
+  studyType   String?
+  updatedAt   DateTime @updatedAt
+
   ResumeEducationItemMapping ResumeEducationItemMapping[]
 
   @@unique([userId, id])
@@ -209,12 +215,13 @@ model EducationItem {
 }
 
 model InterestItem {
-  id                        String                      @id @default(cuid())
-  userId                    String
-  user                      User                        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name                      String?
-  keywords                  Json?
-  updatedAt                 String?
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String?
+  keywords  Json?
+  updatedAt DateTime @updatedAt
+
   ResumeInterestItemMapping ResumeInterestItemMapping[]
 
   @@unique([userId, id])
@@ -222,14 +229,15 @@ model InterestItem {
 }
 
 model LanguageItem {
-  id                        String                      @id @default(cuid())
-  userId                    String
-  user                      User                        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name                      String?
-  description               String?
-  level                     Int?
-  levelNum                  Int?
-  updatedAt                 String?
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String?
+  description String?
+  level       Int?
+  levelNum    Int?
+  updatedAt   DateTime @updatedAt
+
   ResumeLanguageItemMapping ResumeLanguageItemMapping[]
 
   @@unique([userId, id])
@@ -237,16 +245,17 @@ model LanguageItem {
 }
 
 model VolunteerItem {
-  id                         String                       @id @default(cuid())
-  userId                     String
-  user                       User                         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  organization               String?
-  position                   String?
-  url                        Json?
-  summary                    String?
-  date                       String?
-  location                   String?
-  updatedAt                  String?
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization String?
+  position     String?
+  url          Json?
+  summary      String?
+  date         String?
+  location     String?
+  updatedAt    DateTime @updatedAt
+
   ResumeVolunteerItemMapping ResumeVolunteerItemMapping[]
 
   @@unique([userId, id])
@@ -254,17 +263,18 @@ model VolunteerItem {
 }
 
 model ReferenceItem {
-  id                         String                       @id @default(cuid())
-  userId                     String
-  user                       User                         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name                       String?
-  description                String?
-  email                      String?
-  phone                      String?
-  summary                    String?
-  url                        Json?
-  relationship               String?
-  updatedAt                  String?
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String?
+  description  String?
+  email        String?
+  phone        String?
+  summary      String?
+  url          Json?
+  relationship String?
+  updatedAt    DateTime @updatedAt
+
   ResumeReferenceItemMapping ResumeReferenceItemMapping[]
 
   @@unique([userId, id])
@@ -272,15 +282,16 @@ model ReferenceItem {
 }
 
 model PublicationItem {
-  id                           String                         @id @default(cuid())
-  userId                       String
-  user                         User                           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name                         String?
-  publisher                    String?
-  url                          Json?
-  summary                      String?
-  date                         String?
-  updatedAt                    String?
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String?
+  publisher String?
+  url       Json?
+  summary   String?
+  date      String?
+  updatedAt DateTime @updatedAt
+
   ResumePublicationItemMapping ResumePublicationItemMapping[]
 
   @@unique([userId, id])
@@ -288,15 +299,16 @@ model PublicationItem {
 }
 
 model CertificationItem {
-  id                             String                           @id @default(cuid())
-  userId                         String
-  user                           User                             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name                           String?
-  issuer                         String?
-  url                            Json?
-  summary                        String?
-  date                           String?
-  updatedAt                      String?
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String?
+  issuer    String?
+  url       Json?
+  summary   String?
+  date      String?
+  updatedAt DateTime @updatedAt
+
   ResumeCertificationItemMapping ResumeCertificationItemMapping[]
 
   @@unique([userId, id])
@@ -304,13 +316,14 @@ model CertificationItem {
 }
 
 model ProfileItem {
-  id                       String                     @id @default(cuid())
-  userId                   String
-  user                     User                       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  network                  String?
-  url                      Json?
-  username                 String?
-  updatedAt                String?
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  network   String?
+  url       Json?
+  username  String?
+  updatedAt DateTime @updatedAt
+
   icon                     String?
   description              String?
   ResumeProfileItemMapping ResumeProfileItemMapping[]
@@ -320,21 +333,22 @@ model ProfileItem {
 }
 
 model BasicsItem {
-  id                      String                    @id @default(cuid())
-  userId                  String
-  user                    User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name                    String?
-  email                   String?
-  phone                   String?
-  headline                String?
-  summary                 String?
-  birthdate               String?
-  website                 String?
-  profiles                Json?
-  location                String?
-  customFields            Json?
-  picture                 Json?
-  updatedAt               String?
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String?
+  email        String?
+  phone        String?
+  headline     String?
+  summary      String?
+  birthdate    String?
+  website      String?
+  profiles     Json?
+  location     String?
+  customFields Json?
+  picture      Json?
+  updatedAt    DateTime @updatedAt
+
   ResumeBasicsItemMapping ResumeBasicsItemMapping[]
 
   @@unique([userId, id])
@@ -342,11 +356,11 @@ model BasicsItem {
 }
 
 model SummaryItem {
-  id                      String                    @id @default(cuid())
-  userId                  String
-  user                    User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  content                 String?
-  updatedAt               String?
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content   String?
+  updatedAt DateTime @updatedAt
 
   ResumeSummaryItemMapping ResumeSummaryItemMapping[]
 
@@ -355,18 +369,19 @@ model SummaryItem {
 }
 
 model CustomItem {
-  id                      String                    @id @default(cuid())
-  userId                  String
-  user                    User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name                    String?
-  description             String?
-  location                String?
-  date                    String?
-  website                 String?
-  summary                 Json?
-  keywords                Json?
-  url                     Json?
-  updatedAt               String?
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String?
+  description String?
+  location    String?
+  date        String?
+  website     String?
+  summary     Json?
+  keywords    Json?
+  url         Json?
+  updatedAt   DateTime @updatedAt
+
   ResumeCustomItemMapping ResumeCustomItemMapping[]
 
   @@unique([userId, id])
@@ -396,12 +411,12 @@ model ResumeBasicsItemMapping {
 }
 
 model ResumeSummaryItemMapping {
-  id           String     @id @default(cuid())
-  resumeId     String
+  id            String      @id @default(cuid())
+  resumeId      String
   summaryItemId String
-  resume       Resume     @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  resume        Resume      @relation(fields: [resumeId], references: [id], onDelete: Cascade)
   summaryItem   SummaryItem @relation(fields: [summaryItemId], references: [id], onDelete: Cascade)
-  order        Int
+  order         Int
 
   @@unique([resumeId, order])
 }
@@ -543,7 +558,7 @@ model Team {
   name      String
   //Owner of the team
   userId    String
-  updatedAt String? 
+  updatedAt DateTime @updatedAt
 
   TeamsMapping TeamsMapping[]
 
@@ -563,21 +578,21 @@ model TeamsMapping {
 }
 
 model CompanyMapping {
-  id        String  @id @default(cuid())
+  id String @id @default(cuid())
 
-  userId    String
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   companyId String
   company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
-  roleId    String?
-  role      Role?   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  roleId String?
+  role   Role?   @relation(fields: [roleId], references: [id], onDelete: Cascade)
 
-  status          COMPANY_STATUS @default(PENDING)
-  invitedAt       String
-  respondedAt     String?
-  terminatedAt    String?
+  status       COMPANY_STATUS @default(PENDING)
+  invitedAt    String
+  respondedAt  String?
+  terminatedAt String?
 
   @@unique([userId, companyId])
 }
@@ -590,13 +605,14 @@ enum COMPANY_STATUS {
 }
 
 model Company {
-  id             String           @id @default(cuid())
-  name           String           @unique
-  description    String
-  location       String
-  ownerId        String
-  owner          User             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  updatedAt      DateTime         @updatedAt
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String
+  location    String
+  ownerId     String
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  updatedAt   DateTime @updatedAt
+
   picture        String?
   CompanyMapping CompanyMapping[]
 }
@@ -604,7 +620,7 @@ model Company {
 model Role {
   id        String   @id @default(cuid())
   name      String
-  updatedAt String? 
-  
+  updatedAt DateTime @updatedAt
+
   CompanyMapping CompanyMapping[]
 }
