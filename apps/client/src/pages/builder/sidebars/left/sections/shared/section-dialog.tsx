@@ -103,6 +103,7 @@ export const SectionDialog = <T extends SectionItem>({
 
       await updateSectionItem({
         id: values.id,
+        format: sectionFormat,
         data: values,
       });
 
