@@ -14,7 +14,12 @@ import {
 import { ApiTags } from "@nestjs/swagger";
 import { User as UserEntity } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { CreateCompanyDto, CreateCompanyMappingDto, UpdateCompanyDto } from "@reactive-resume/dto";
+import {
+  COMPANY_STATUS,
+  CreateCompanyDto,
+  CreateCompanyMappingDto,
+  UpdateCompanyDto,
+} from "@reactive-resume/dto";
 import { ERROR_MESSAGE } from "@reactive-resume/utils";
 
 import { TwoFactorGuard } from "@/server/auth/guards/two-factor.guard";
@@ -32,6 +37,17 @@ export class CompanyController {
   async getByOwnerId(@User() user: UserEntity) {
     try {
       return await this.companyService.getCompanyByOwnerId(user.id);
+    } catch (error) {
+      Logger.log(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  @Get(":id")
+  @UseGuards(TwoFactorGuard)
+  async getById(@User() user: UserEntity, @Param("id") id: string) {
+    try {
+      return await this.companyService.getCompanyById(id);
     } catch (error) {
       Logger.log(error);
       throw new InternalServerErrorException(error);
@@ -75,6 +91,28 @@ export class CompanyController {
     }
   }
 
+  @Get(":id/employees")
+  @UseGuards(TwoFactorGuard)
+  async getEmployees(@Param("id") companyId: string) {
+    try {
+      return await this.companyService.getEmployees(companyId);
+    } catch (error) {
+      Logger.log(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  @Delete(":id/remove")
+  @UseGuards(TwoFactorGuard)
+  async removeUserFromCompany(@Param("id") companyId: string, @Body("username") username: string) {
+    try {
+      return await this.companyService.removeUserFromCompany(companyId, username);
+    } catch (error) {
+      Logger.log(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   @Post("invite")
   @UseGuards(TwoFactorGuard)
   async linkUserToCompany(@Body() data: CreateCompanyMappingDto) {
@@ -83,6 +121,28 @@ export class CompanyController {
       return { message: "User invited successfully" };
     } catch (error) {
       throw new BadRequestException(error.message);
+    }
+  }
+
+  @Patch("changeEmploymentStatus")
+  @UseGuards(TwoFactorGuard)
+  async changeEmploymentStatus(@Body() data: { companyMappingId: string; status: COMPANY_STATUS }) {
+    try {
+      await this.companyService.changeEmploymentStatus(data.companyMappingId, data.status);
+      return { message: "Employment status updated successfully" };
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  @Get("activeInvitations/:userId")
+  @UseGuards(TwoFactorGuard)
+  async getActiveInvitations(@Param("userId") userId: string) {
+    try {
+      return await this.companyService.getActiveInvitations(userId);
+    } catch (error) {
+      Logger.log(error);
+      throw new InternalServerErrorException(error.message);
     }
   }
 }

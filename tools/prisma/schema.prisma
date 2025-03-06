@@ -342,11 +342,11 @@ model BasicsItem {
 }
 
 model SummaryItem {
-  id        String  @id @default(cuid())
-  userId    String
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  content   String?
-  updatedAt String?
+  id                      String                    @id @default(cuid())
+  userId                  String
+  user                    User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content                 String?
+  updatedAt               String?
 
   ResumeSummaryItemMapping ResumeSummaryItemMapping[]
 
@@ -381,7 +381,7 @@ model ResumeProfileItemMapping {
   profileItem   ProfileItem @relation(fields: [profileItemId], references: [id], onDelete: Cascade)
   order         Int
 
-  @@unique([resumeId, profileItemId])
+  @@unique([resumeId, order])
 }
 
 model ResumeBasicsItemMapping {
@@ -392,18 +392,18 @@ model ResumeBasicsItemMapping {
   basicsItem   BasicsItem @relation(fields: [basicsItemId], references: [id], onDelete: Cascade)
   order        Int
 
-  @@unique([resumeId, basicsItemId])
+  @@unique([resumeId, order])
 }
 
 model ResumeSummaryItemMapping {
-  id            String      @id @default(cuid())
-  resumeId      String
+  id           String     @id @default(cuid())
+  resumeId     String
   summaryItemId String
-  resume        Resume      @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  resume       Resume     @relation(fields: [resumeId], references: [id], onDelete: Cascade)
   summaryItem   SummaryItem @relation(fields: [summaryItemId], references: [id], onDelete: Cascade)
-  order         Int
+  order        Int
 
-  @@unique([resumeId, summaryItemId])
+  @@unique([resumeId, order])
 }
 
 model ResumeWorkItemMapping {
@@ -414,7 +414,7 @@ model ResumeWorkItemMapping {
   workItem   WorkItem @relation(fields: [workItemId], references: [id], onDelete: Cascade)
   order      Int
 
-  @@unique([resumeId, workItemId])
+  @@unique([resumeId, order])
 }
 
 model ResumeAwardItemMapping {
@@ -425,7 +425,7 @@ model ResumeAwardItemMapping {
   awardItem   AwardItem @relation(fields: [awardItemId], references: [id], onDelete: Cascade)
   order       Int
 
-  @@unique([resumeId, awardItemId])
+  @@unique([resumeId, order])
 }
 
 model ResumeSkillItemMapping {
@@ -436,7 +436,7 @@ model ResumeSkillItemMapping {
   skillItem   SkillItem @relation(fields: [skillItemId], references: [id], onDelete: Cascade)
   order       Int
 
-  @@unique([resumeId, skillItemId])
+  @@unique([resumeId, order])
 }
 
 model ResumeProjectItemMapping {
@@ -447,7 +447,7 @@ model ResumeProjectItemMapping {
   projectItem   ProjectItem @relation(fields: [projectItemId], references: [id], onDelete: Cascade)
   order         Int
 
-  @@unique([resumeId, projectItemId])
+  @@unique([resumeId, order])
 }
 
 model ResumeEducationItemMapping {
@@ -458,7 +458,7 @@ model ResumeEducationItemMapping {
   educationItem   EducationItem @relation(fields: [educationItemId], references: [id], onDelete: Cascade)
   order           Int
 
-  @@unique([resumeId, educationItemId])
+  @@unique([resumeId, order])
 }
 
 model ResumeInterestItemMapping {
@@ -469,7 +469,7 @@ model ResumeInterestItemMapping {
   interestItem   InterestItem @relation(fields: [interestItemId], references: [id], onDelete: Cascade)
   order          Int
 
-  @@unique([resumeId, interestItemId])
+  @@unique([resumeId, order])
 }
 
 model ResumeLanguageItemMapping {
@@ -480,7 +480,7 @@ model ResumeLanguageItemMapping {
   languageItem   LanguageItem @relation(fields: [languageItemId], references: [id], onDelete: Cascade)
   order          Int
 
-  @@unique([resumeId, languageItemId])
+  @@unique([resumeId, order])
 }
 
 model ResumeVolunteerItemMapping {
@@ -491,7 +491,7 @@ model ResumeVolunteerItemMapping {
   volunteerItem   VolunteerItem @relation(fields: [volunteerItemId], references: [id], onDelete: Cascade)
   order           Int
 
-  @@unique([resumeId, volunteerItemId])
+  @@unique([resumeId, order])
 }
 
 model ResumeReferenceItemMapping {
@@ -502,7 +502,7 @@ model ResumeReferenceItemMapping {
   referenceItem   ReferenceItem @relation(fields: [referenceItemId], references: [id], onDelete: Cascade)
   order           Int
 
-  @@unique([resumeId, referenceItemId])
+  @@unique([resumeId, order])
 }
 
 model ResumePublicationItemMapping {
@@ -513,7 +513,7 @@ model ResumePublicationItemMapping {
   publicationItem   PublicationItem @relation(fields: [publicationItemId], references: [id], onDelete: Cascade)
   order             Int
 
-  @@unique([resumeId, publicationItemId])
+  @@unique([resumeId, order])
 }
 
 model ResumeCertificationItemMapping {
@@ -524,7 +524,7 @@ model ResumeCertificationItemMapping {
   certificationItem   CertificationItem @relation(fields: [certificationItemId], references: [id], onDelete: Cascade)
   order               Int
 
-  @@unique([resumeId, certificationItemId])
+  @@unique([resumeId, order])
 }
 
 model ResumeCustomItemMapping {
@@ -535,15 +535,15 @@ model ResumeCustomItemMapping {
   customItem   CustomItem @relation(fields: [customItemId], references: [id], onDelete: Cascade)
   order        Int
 
-  @@unique([resumeId, customItemId])
+  @@unique([resumeId, order])
 }
 
 model Team {
-  id        String  @id @default(cuid())
+  id        String   @id @default(cuid())
   name      String
   //Owner of the team
   userId    String
-  updatedAt String?
+  updatedAt String? 
 
   TeamsMapping TeamsMapping[]
 
@@ -563,26 +563,26 @@ model TeamsMapping {
 }
 
 model CompanyMapping {
-  id String @id @default(cuid())
+  id        String  @id @default(cuid())
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   companyId String
   company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
-  roleId String?
-  role   Role?   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  roleId    String?
+  role      Role?   @relation(fields: [roleId], references: [id], onDelete: Cascade)
 
-  status     CompanyMembershipStatus @default(PENDING)
-  invitedAt  String
-  acceptedAt DateTime?
-  quitAt     DateTime?
+  status          COMPANY_STATUS @default(PENDING)
+  invitedAt       String
+  respondedAt     String?
+  terminatedAt    String?
 
   @@unique([userId, companyId])
 }
 
-enum CompanyMembershipStatus {
+enum COMPANY_STATUS {
   PENDING
   ACCEPTED
   REJECTED
@@ -590,19 +590,21 @@ enum CompanyMembershipStatus {
 }
 
 model Company {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  ownerId   String
-  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  updatedAt DateTime @updatedAt
-
+  id             String           @id @default(cuid())
+  name           String           @unique
+  description    String
+  location       String
+  ownerId        String
+  owner          User             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  updatedAt      DateTime         @updatedAt
+  picture        String?
   CompanyMapping CompanyMapping[]
 }
 
 model Role {
-  id        String  @id @default(cuid())
+  id        String   @id @default(cuid())
   name      String
-  updatedAt String?
-
+  updatedAt String? 
+  
   CompanyMapping CompanyMapping[]
 }

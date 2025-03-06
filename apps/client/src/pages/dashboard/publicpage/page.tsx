@@ -109,19 +109,3 @@ export const PublicResumePage = () => {
     </div>
   );
 };
-
-export const publicLoader: LoaderFunction<ResumeDto> = async ({ params }) => {
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const username = params.username!;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const slug = params.slug!;
-
-    return await queryClient.fetchQuery({
-      queryKey: ["resume", { username, slug }],
-      queryFn: () => findResumeByUsernameSlug({ username, slug }),
-    });
-  } catch {
-    return redirect("/");
-  }
-};
