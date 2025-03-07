@@ -104,7 +104,7 @@ const Summary = () => {
   const section = useArtboardStore((state) => state.resume.sections.summary);
 
   // Check if there are any items and if the first item's content is not empty
-  if (section.items.length === 0 || isEmptyString(section.items[0].content)) return null;
+  if (section.items.length === 0) return null;
 
   return (
     <section id={section.id}>
