@@ -23,8 +23,6 @@ import { BrandIcon } from "../components/brand-icon";
 import { Picture } from "../components/picture";
 import { useArtboardStore } from "../store/artboard";
 import type { TemplateProps } from "../types/template";
-import { useSectionMappings } from "@/client/services/section/sections";
-import { useSectionMappingStore } from "@/client/stores/section";
 
 const Header = () => {
   const basics = useArtboardStore((state) => state.resume.basics);
