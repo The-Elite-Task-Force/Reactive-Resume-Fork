@@ -333,22 +333,20 @@ model ProfileItem {
 }
 
 model BasicsItem {
-  id           String   @id @default(cuid())
-  userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name         String?
-  email        String?
-  phone        String?
-  headline     String?
-  summary      String?
-  birthdate    String?
-  website      String?
-  profiles     Json?
-  location     String?
-  customFields Json?
-  picture      Json?
-  updatedAt    DateTime @updatedAt
-
+  id                      String                    @id @default(cuid())
+  userId                  String
+  user                    User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                    String?
+  email                   String?
+  phone                   String?
+  headline                String?
+  summary                 String?
+  birthdate               String?
+  url                     Json?
+  location                String?
+  customFields            Json?
+  picture                 Json?
+  updatedAt               DateTime                  @updatedAt  
   ResumeBasicsItemMapping ResumeBasicsItemMapping[]
 
   @@unique([userId, id])
@@ -356,11 +354,13 @@ model BasicsItem {
 }
 
 model SummaryItem {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  content   String?
-  updatedAt DateTime @updatedAt
+  id                      String                    @id @default(cuid())
+  userId                  String
+  user                    User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                    String?
+  description             String?
+  content                 String?
+  updatedAt               DateTime @updatedAt
 
   ResumeSummaryItemMapping ResumeSummaryItemMapping[]
 

@@ -12,8 +12,6 @@ export const sampleResume: ResumeData = {
     location: "Pleasantville, CA 94588",
     birthdate: "May 11, 1984",
     summary: "SummeryText",
-    profiles: {},
-    website: "https://johndoe.com",
     url: {
       label: "",
       href: "https://johndoe.me/",
@@ -49,8 +47,6 @@ export const sampleResume: ResumeData = {
           location: "Pleasantville, CA 94588",
           birthdate: "May 11, 1984",
           summary: "SummeryText",
-          profiles: {},
-          website: "https://johndoe.com",
           url: {
             label: "",
             href: "https://johndoe.me/",
@@ -79,7 +75,9 @@ export const sampleResume: ResumeData = {
         {
           id: "summary-1",
           userId: "user-123",
-          updatedAt: new Date(), // Ensure this is a valid timestamp
+          name: "Software Engineer - Web Developer",
+          description: "Heartfelt but professional summary about my Web Developer",
+          updatedAt: new Date(),
           content:
             "<p>Innovative Web Developer with 5 years of experience in building impactful and user-friendly websites and applications. Specializes in <strong>front-end technologies</strong> and passionate about modern web standards and cutting-edge development techniques. Proven track record of leading successful projects from concept to deployment.</p>",
         },

@@ -103,17 +103,20 @@ const Header = () => {
 const Summary = () => {
   const section = useArtboardStore((state) => state.resume.sections.summary);
 
-  if (isEmptyString(section.content)) return null;
+  // Check if there are any items and if the first item's content is not empty
+  if (section.items.length === 0 || isEmptyString(section.items[0].content)) return null;
 
   return (
     <section id={section.id}>
       <h4 className="mb-2 border-b border-primary text-base font-bold">{section.name}</h4>
-
-      <div
-        dangerouslySetInnerHTML={{ __html: sanitize(section.content) }}
-        style={{ columns: section.columns }}
-        className="wysiwyg"
-      />
+      {section.items.map((item) => (
+        <div
+          key={item.id}
+          dangerouslySetInnerHTML={{ __html: sanitize(item.content) }}
+          style={{ columns: section.columns }}
+          className="wysiwyg"
+        />
+      ))}
     </section>
   );
 };

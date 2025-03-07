@@ -41,11 +41,13 @@ const Header = () => {
             <div className="text-base font-medium text-primary">{basics.headline}</div>
           </div>
 
-          <div
-            dangerouslySetInnerHTML={{ __html: sanitize(section.content) }}
-            style={{ columns: section.columns }}
-            className="wysiwyg"
-          />
+          {section.items.map((item) => (
+            <div
+              dangerouslySetInnerHTML={{ __html: sanitize(item.content) }}
+              style={{ columns: section.columns }}
+              className="wysiwyg"
+            />
+          ))}
         </div>
 
         <Picture />

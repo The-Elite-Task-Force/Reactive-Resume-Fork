@@ -2,6 +2,7 @@ import { t } from "@lingui/macro";
 import { Plus, PlusCircle } from "@phosphor-icons/react";
 import type {
   Award,
+  Basics,
   Certification,
   CustomSection,
   Education,
@@ -13,6 +14,7 @@ import type {
   Publication,
   Reference,
   Skill,
+  Summary,
   Volunteer,
 } from "@reactive-resume/schema";
 import { Button, ScrollArea, Separator } from "@reactive-resume/ui";
@@ -25,10 +27,8 @@ import { UserOptions } from "@/client/components/user-options";
 import { useMapSectionsToResume } from "@/client/hooks/use-map-sections-to-resume";
 import { useResumeStore } from "@/client/stores/resume";
 
-import { BasicsSection } from "./sections/basics";
 import { SectionBase } from "./sections/shared/section-base";
 import { SectionIcon } from "./sections/shared/section-icon";
-import { SummarySection } from "./sections/summary";
 
 export const LeftSidebar = () => {
   const containterRef = useRef<HTMLDivElement | null>(null);
@@ -165,9 +165,17 @@ export const LeftSidebar = () => {
 
       <ScrollArea orientation="vertical" className="h-screen flex-1 pb-16 lg:pb-0">
         <div ref={containterRef} className="grid gap-y-10 p-6 @container/left">
-          <BasicsSection />
+          <SectionBase<Basics>
+            id="basics"
+            title={(item) => item.name}
+            description={(item) => item.headline}
+          />
           <Separator />
-          <SummarySection />
+          <SectionBase<Summary>
+            id="summary"
+            title={(item) => item.name}
+            description={(item) => item.description}
+          />
           <Separator />
           <SectionBase<Profile>
             id="profiles"

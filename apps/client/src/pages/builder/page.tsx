@@ -44,6 +44,35 @@ export const BuilderPage = () => {
   useSectionMappings(resume.id);
   useSections();
 
+  const defaultBasics = {
+    id: "",
+    userId: "",
+    updatedAt: "",
+    name: "",
+    headline: "",
+    email: "",
+    phone: "",
+    location: "",
+    summary: "",
+    url: {
+      label: "",
+      href: "",
+    },
+    customFields: [],
+    birthdate: "",
+    picture: {
+      url: "",
+      size: 64,
+      aspectRatio: 1,
+      borderRadius: 0,
+      effects: {
+        hidden: false,
+        border: false,
+        grayscale: false,
+      },
+    },
+  };
+
   useMapSectionsToResume();
 
   const syncResumeToArtboard = useCallback(() => {
@@ -56,7 +85,10 @@ export const BuilderPage = () => {
       const message = {
         type: "SET_RESUME",
         payload: {
-          basics: resume.data.basics,
+          basics:
+            resume.data.sections.basics.items.length > 0
+              ? resume.data.sections.basics.items[0]
+              : defaultBasics,
           sections: mapSections(resume.data.sections, mappings),
           metadata: resume.data.metadata,
         },
