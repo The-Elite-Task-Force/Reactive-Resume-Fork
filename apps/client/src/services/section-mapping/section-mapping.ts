@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 import { SECTION_MAPPING_KEY } from "@/client/constants/query-keys";
 import { axios } from "@/client/libs/axios";
-import { useSectionMappingStore } from "@/client/stores/section";
+import { useSectionMappingStore } from "@/client/stores/section-mapping";
 
 export const fetchSectionMappings = async (id: string) => {
   const response = await axios.get<SectionMappingDto, AxiosResponse<SectionMappingDto>>(

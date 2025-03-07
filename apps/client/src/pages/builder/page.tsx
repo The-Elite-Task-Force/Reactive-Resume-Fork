@@ -12,7 +12,7 @@ import { useSections } from "@/client/services/section/sections";
 import { useSectionMappings } from "@/client/services/section-mapping";
 import { useBuilderStore } from "@/client/stores/builder";
 import { useResumeStore } from "@/client/stores/resume";
-import { useSectionMappingStore } from "@/client/stores/section";
+import { useSectionMappingStore } from "@/client/stores/section-mapping";
 
 export const mapSections = (sections, mapping: SectionMappingDto) => {
   const result = JSON.parse(JSON.stringify(sections));

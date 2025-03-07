@@ -24,13 +24,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import get from "lodash.get";
 
 import {
-  createSectionMapping,
-  deleteSectionMapping,
-  useCreateSectionMapping, useDeleteSectionMapping
+  useCreateSectionMapping,
+  useDeleteSectionMapping,
 } from "@/client/services/section-mapping";
 import { useDialog } from "@/client/stores/dialog";
 import { useResumeStore } from "@/client/stores/resume";
-import { useSectionMappingStore } from "@/client/stores/section";
+import { useSectionMappingStore } from "@/client/stores/section-mapping";
 
 import { SectionIcon } from "./section-icon";
 import { SectionListItem } from "./section-list-item";

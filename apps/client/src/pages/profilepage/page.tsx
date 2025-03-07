@@ -1,6 +1,5 @@
 import { t } from "@lingui/macro";
 import { CircleNotch, FilePdf } from "@phosphor-icons/react";
-import type { SectionMappingDto } from "@reactive-resume/dto";
 import { Button } from "@reactive-resume/ui";
 import { pageSizeMap } from "@reactive-resume/utils";
 import { useCallback, useEffect, useRef } from "react";
@@ -9,10 +8,10 @@ import { Link, useLoaderData } from "react-router";
 
 import { Icon } from "@/client/components/icon";
 import { ThemeSwitch } from "@/client/components/theme-switch";
+import { mapSections } from "@/client/pages/builder/page";
 import { usePrintResume } from "@/client/services/resume";
 import { useSectionMappings } from "@/client/services/section-mapping";
-import { useSectionMappingStore } from "@/client/stores/section";
-import { mapSections } from "@/client/pages/builder/page";
+import { useSectionMappingStore } from "@/client/stores/section-mapping";
 
 const openInNewTab = (url: string) => {
   const win = window.open(url, "_blank");
