@@ -28,7 +28,6 @@ export const useSectionMappings = (id: string) => {
   });
 
   useEffect(() => {
-    console.log(mappings);
     if (mappings) {
       setSectionMappings(mappings);
     }
