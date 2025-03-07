@@ -1,7 +1,14 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { t } from "@lingui/macro";
-import { CopySimple, DotsSixVertical, PencilSimple, TrashSimple } from "@phosphor-icons/react";
+import {
+  CopySimple,
+  DotsSixVertical,
+  Eye,
+  EyeClosed,
+  PencilSimple,
+  TrashSimple,
+} from "@phosphor-icons/react";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -30,7 +37,7 @@ export const SectionListItem = ({
   id,
   title,
   description,
-  visible = true,
+  visible,
   onUpdate,
   onDuplicate,
   onDelete,
@@ -73,19 +80,34 @@ export const SectionListItem = ({
           <DropdownMenuTrigger asChild>
             <div
               className={cn(
-                "flex-1 cursor-context-menu p-4 hover:bg-secondary-accent",
+                "flex w-full cursor-context-menu items-center justify-between p-4 hover:bg-secondary-accent",
                 !visible && "opacity-50",
               )}
               onClick={onUpdate}
             >
-              <h4 className="font-medium leading-relaxed">{title}</h4>
-              {description && <p className="text-xs leading-relaxed opacity-50">{description}</p>}
+              <div className="flex-1">
+                <h4 className="font-medium leading-relaxed">{title}</h4>
+                {description && <p className="text-xs leading-relaxed opacity-50">{description}</p>}
+              </div>
+              <div className="flex size-6 items-center justify-center">
+                {visible ? <Eye size={20} /> : <EyeClosed size={20} />}
+              </div>
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuCheckboxItem checked={visible} onCheckedChange={onToggleVisibility}>
-              <span className="-ml-0.5">{t`Visible`}</span>
-            </DropdownMenuCheckboxItem>
+            {visible ? (
+              <DropdownMenuItem onClick={onToggleVisibility}>
+                <EyeClosed size={14} />
+                <span className="ml-2">{t`Set hidden`}</span>
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem onClick={onToggleVisibility}>
+                <Eye size={14} />
+                <span className="ml-2">{t`Set visible`}</span>
+              </DropdownMenuItem>
+            )}
+            {/* <span className="-ml-0.5">{t`Set hidden`}</span> */}
+
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={onUpdate}>
               <PencilSimple size={14} />

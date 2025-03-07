@@ -22,6 +22,8 @@ import { Button } from "@reactive-resume/ui";
 import { cn } from "@reactive-resume/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import get from "lodash.get";
+import { useEffect } from "react";
+import { useState } from "react";
 
 import {
   useCreateSectionMapping,
@@ -66,8 +68,29 @@ export const SectionBase = <T extends SectionItem>({ id, title, description }: P
 
   const { createSectionMapping } = useCreateSectionMapping();
   const { deleteSectionMapping } = useDeleteSectionMapping();
+  const mappingData = useSectionMappingStore((state) => state.mappings);
+  const [mappings, setMappingData] = useState<SectionMappingDto>({
+    basics: [],
+    summary: [],
+    experience: [],
+    education: [],
+    skills: [],
+    languages: [],
+    awards: [],
+    certifications: [],
+    interests: [],
+    projects: [],
+    profiles: [],
+    publications: [],
+    volunteer: [],
+    references: [],
+    custom: [],
+  });
 
-  const mappings = useSectionMappingStore((state) => state.mappings);
+  useEffect(() => {
+    setMappingData(mappingData ?? {});
+  }, [mappingData]);
+
   const setMappings = useSectionMappingStore((state) => state.setMappings);
 
   const setValue = useResumeStore((state) => state.setValue);
@@ -118,8 +141,7 @@ export const SectionBase = <T extends SectionItem>({ id, title, description }: P
   };
 
   const onToggleVisibility = async (item: T, index: number) => {
-    // @ts-expect-error Any type error. Fix later
-    if (mappings[id].includes(item.id)) {
+    if (mappings[id as keyof SectionMappingDto].includes(item.id)) {
       await deleteSectionMapping({ resumeId: resumeId, id: item.id, format: id });
       setMappings(removeFromMapSections(mappings, id, item.id));
       setValue(`sections.${id}.items[${index}].visible`, false);
@@ -128,17 +150,9 @@ export const SectionBase = <T extends SectionItem>({ id, title, description }: P
       setMappings(addToMapSections(mappings, id, data));
       setValue(`sections.${id}.items[${index}].visible`, true);
     }
-
-    //const visible = get(section, `items[${index}].visible`, true);
   };
 
-  /*const onLinkItemToResume = async (item: T) => {
-    await linkResumeToItem(resumeId, {
-      format: SECTION_FORMAT.Education,
-      itemId: item.id,
-      order: 1,
-    });
-  };*/ // Not sure where to use the function
+  if (mappings[id as keyof SectionMappingDto] === undefined) return null;
 
   return (
     <motion.section
@@ -190,7 +204,7 @@ export const SectionBase = <T extends SectionItem>({ id, title, description }: P
                   id={item.id}
                   title={title(item as T)}
                   description={description?.(item as T)}
-                  visible={get(section, `items[${index}].visible`, true)}
+                  visible={mappings[id as keyof SectionMappingDto].includes(item.id)}
                   onUpdate={() => {
                     onUpdate(item as T);
                   }}
