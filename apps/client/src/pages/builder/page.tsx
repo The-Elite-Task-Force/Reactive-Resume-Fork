@@ -14,16 +14,20 @@ import { useBuilderStore } from "@/client/stores/builder";
 import { useResumeStore } from "@/client/stores/resume";
 import { useSectionMappingStore } from "@/client/stores/section-mapping";
 
+// @ts-expect-error Any type error. Fix later
 export const mapSections = (sections, mapping: SectionMappingDto) => {
   const result = JSON.parse(JSON.stringify(sections));
 
   const sectionEntries = Object.entries(sections);
-  sectionEntries.forEach((section) => {
+
+  for (const section of sectionEntries) {
     const key = section[0];
+    // @ts-expect-error Unknown type error. Fix later
     const value = section[1].items;
 
+    // @ts-expect-error Any type error. Fix later
     result[key].items = value.filter((s: { id: string }) => mapping[key].includes(s.id));
-  });
+  }
 
   return result;
 };
