@@ -238,7 +238,7 @@ export const ResumeDialog = () => {
               <div className="flex items-center">
                 <Button
                   type="submit"
-                  disabled={loading}
+                  disabled={loading || isDuplicate}
                   className={cn(isCreate && "rounded-r-none")}
                 >
                   {isCreate && t`Create`}
