@@ -1,10 +1,9 @@
 /* eslint-disable lingui/no-unlocalized-strings */
 import { cn } from "@reactive-resume/utils";
-import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
 
 import { inviteToCompany } from "@/client/services/company/company";
-import { error } from "console";
 
 type InviteUserFormProps = {
   companyId: string;
@@ -75,7 +74,7 @@ const InviteUserForm: React.FC<InviteUserFormProps> = ({ companyId }) => {
         className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
         disabled={mutation.isPending}
       >
-        {mutation.status === "loading" ? "Inviting..." : "Invite User"}
+        {mutation.status === "pending" ? "Inviting..." : "Invite User"}
       </button>
     </form>
   );

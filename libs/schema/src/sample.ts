@@ -77,7 +77,7 @@ export const sampleResume: ResumeData = {
           userId: "user-123",
           name: "Software Engineer - Web Developer",
           description: "Heartfelt but professional summary about my Web Developer",
-          updatedAt: new Date().toISOString(), // Ensure this is a valid timestamp
+          updatedAt: new Date(),
           content:
             "<p>Innovative Web Developer with 5 years of experience in building impactful and user-friendly websites and applications. Specializes in <strong>front-end technologies</strong> and passionate about modern web standards and cutting-edge development techniques. Proven track record of leading successful projects from concept to deployment.</p>",
         },
