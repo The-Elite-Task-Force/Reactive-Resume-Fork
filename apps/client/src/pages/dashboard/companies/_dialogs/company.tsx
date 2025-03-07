@@ -35,6 +35,7 @@ import type { z } from "zod";
 
 import { useCreateCompany, useDeleteCompany, useUpdateCompany } from "@/client/services/company";
 import { useDialog } from "@/client/stores/dialog";
+import { formatErrorMessage } from "@/client/utils/format-error";
 
 const formSchema = createCompanySchema.extend({ id: idSchema.optional() });
 
@@ -48,7 +49,7 @@ export const CompanyDialog = () => {
   const isDelete = mode === "delete";
   const isDuplicate = mode === "duplicate";
 
-  const { createCompany, loading: createLoading } = useCreateCompany();
+  const { createCompany, loading: createLoading, error } = useCreateCompany();
   const { updateCompany, loading: updateLoading } = useUpdateCompany();
   const { deleteCompany, loading: deleteLoading } = useDeleteCompany();
 
@@ -152,6 +153,11 @@ export const CompanyDialog = () => {
                     </div>
                   </FormControl>
                   <FormMessage />
+                  {error && (
+                    <p className="break-words text-sm text-red-500">
+                      {formatErrorMessage(error.message) || t`An unexpected error occurred.`}
+                    </p>
+                  )}
                 </FormItem>
               )}
             />
