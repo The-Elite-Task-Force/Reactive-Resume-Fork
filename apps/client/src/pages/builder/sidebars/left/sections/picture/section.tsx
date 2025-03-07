@@ -13,10 +13,10 @@ import {
 import { cn } from "@reactive-resume/utils";
 import { motion } from "framer-motion";
 import { useMemo, useRef } from "react";
+import { useFormContext } from "react-hook-form";
 import { z } from "zod";
 
 import { useUploadImage } from "@/client/services/storage";
-import { useResumeStore } from "@/client/stores/resume";
 
 import { PictureOptions } from "./options";
 
@@ -24,8 +24,8 @@ export const PictureSection = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { uploadImage } = useUploadImage();
 
-  const setValue = useResumeStore((state) => state.setValue);
-  const picture = useResumeStore((state) => state.resume.data.basics.picture);
+  const { setValue, watch } = useFormContext();
+  const picture = watch("picture");
 
   const isValidUrl = useMemo(() => z.string().url().safeParse(picture.url).success, [picture.url]);
 
@@ -34,14 +34,13 @@ export const PictureSection = () => {
       const file = event.target.files[0];
       const response = await uploadImage(file);
       const url = response.data;
-
-      setValue("basics.picture.url", url);
+      setValue("picture.url", url);
     }
   };
 
   const onAvatarClick = () => {
     if (isValidUrl) {
-      setValue("basics.picture.url", "");
+      setValue("picture.url", "");
     } else {
       inputRef.current?.click();
     }
@@ -66,16 +65,16 @@ export const PictureSection = () => {
       </div>
 
       <div className="flex w-full flex-col gap-y-1.5">
-        <Label htmlFor="basics.picture.url">{t`Picture`}</Label>
+        <Label htmlFor="picture.url">{t`Picture`}</Label>
         <div className="flex items-center gap-x-2">
           <input ref={inputRef} hidden type="file" onChange={onSelectImage} />
 
           <Input
-            id="basics.picture.url"
+            id="picture.url"
             placeholder="https://..."
             value={picture.url}
             onChange={(event) => {
-              setValue("basics.picture.url", event.target.value);
+              setValue("picture.url", event.target.value);
             }}
           />
 

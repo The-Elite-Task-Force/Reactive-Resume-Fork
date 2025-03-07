@@ -12,8 +12,6 @@ export const sampleResume: ResumeData = {
     location: "Pleasantville, CA 94588",
     birthdate: "May 11, 1984",
     summary: "SummeryText",
-    profiles: {},
-    website: "https://johndoe.com",
     url: {
       label: "",
       href: "https://johndoe.me/",
@@ -49,8 +47,6 @@ export const sampleResume: ResumeData = {
           location: "Pleasantville, CA 94588",
           birthdate: "May 11, 1984",
           summary: "SummeryText",
-          profiles: {},
-          website: "https://johndoe.com",
           url: {
             label: "",
             href: "https://johndoe.me/",

@@ -328,12 +328,10 @@ model BasicsItem {
   headline                String?
   summary                 String?
   birthdate               String?
-  website                 String?
-  profiles                Json?
+  url                     Json?
   location                String?
   customFields            Json?
   picture                 Json?
-  url                      Json?
   updatedAt               String?
   ResumeBasicsItemMapping ResumeBasicsItemMapping[]
 

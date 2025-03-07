@@ -8,6 +8,7 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  RichInput,
 } from "@reactive-resume/ui";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
@@ -120,6 +121,40 @@ export const BasicDialog = () => {
                 <FormLabel>{t`Location`}</FormLabel>
                 <FormControl>
                   <Input {...field} id="basics.location" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="birthdate"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem className="space-y-1.5">
+                <FormLabel>{t`Birthdate`}</FormLabel>
+                <FormControl>
+                  <Input {...field} id="basics.birthdate" type="date" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="summary"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem className="space-y-4 sm:col-span-2">
+                <FormLabel>{t`Summary`}</FormLabel>
+                <FormControl>
+                  <RichInput
+                    {...field}
+                    content={field.value}
+                    onChange={(value) => {
+                      field.onChange(value);
+                    }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

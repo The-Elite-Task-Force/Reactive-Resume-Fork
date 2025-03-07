@@ -21,12 +21,51 @@ export const BuilderPage = () => {
 
   useSections();
 
+  const defaultBasics = {
+    id: "",
+    userId: "",
+    updatedAt: "",
+    name: "",
+    headline: "",
+    email: "",
+    phone: "",
+    location: "",
+    summary: "",
+    url: {
+      label: "",
+      href: "",
+    },
+    customFields: [],
+    birthdate: "",
+    picture: {
+      url: "",
+      size: 64,
+      aspectRatio: 1,
+      borderRadius: 0,
+      effects: {
+        hidden: false,
+        border: false,
+        grayscale: false,
+      },
+    },
+  };
+
   useMapSectionsToResume();
 
   const syncResumeToArtboard = useCallback(() => {
     setImmediate(() => {
       if (!frameRef?.contentWindow) return;
-      const message = { type: "SET_RESUME", payload: resume.data };
+      const message = {
+        type: "SET_RESUME",
+        payload: {
+          basics:
+            resume.data.sections.basics.items.length > 0
+              ? resume.data.sections.basics.items[0]
+              : defaultBasics,
+          sections: resume.data.sections,
+          metadata: resume.data.metadata,
+        },
+      };
       frameRef.contentWindow.postMessage(message, "*");
     });
   }, [frameRef?.contentWindow, resume.data]);
