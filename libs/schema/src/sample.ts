@@ -4,7 +4,7 @@ export const sampleResume: ResumeData = {
   basics: {
     id: "ngkjdnfglksjdfnglkjsndfg",
     userId: "ngkjdnfglksjdfnglkjsndfg",
-    updatedAt: "",
+    updatedAt: new Date(),
     name: "John Doe",
     headline: "Creative and Innovative Web Developer",
     email: "john.doe@gmail.com",
@@ -39,7 +39,7 @@ export const sampleResume: ResumeData = {
         {
           id: "ngkjdnfglksjdfnglkjsndfg",
           userId: "ngkjdnfglksjdfnglkjsndfg",
-          updatedAt: "",
+          updatedAt: new Date(),
           name: "John Doe",
           headline: "Creative and Innovative Web Developer",
           email: "john.doe@gmail.com",
@@ -101,7 +101,7 @@ export const sampleResume: ResumeData = {
         {
           id: "spdhh9rrqi1gvj0yqnbqunlo",
           userId: "ngkjdnfglksjdfnglkjsndfg",
-          updatedAt: "",
+          updatedAt: new Date(),
           name: "Full-Stack Web Development",
           issuer: "CodeAcademy",
           date: "2020",
@@ -114,7 +114,7 @@ export const sampleResume: ResumeData = {
         {
           id: "n838rddyqv47zexn6cxauwqp",
           userId: "ngkjdnfglksjdfnglkjsndfg",
-          updatedAt: "",
+          updatedAt: new Date(),
           name: "AWS Certified Developer",
           issuer: "Amazon Web Services",
           date: "2019",
@@ -136,7 +136,7 @@ export const sampleResume: ResumeData = {
         {
           id: "yo3p200zo45c6cdqc6a2vtt3",
           userId: "ngkjdnfglksjdfnglkjsndfg",
-          updatedAt: "",
+          updatedAt: new Date(),
           degree: "Bachelor",
           courses: {},
           institution: "University of California",
@@ -162,7 +162,7 @@ export const sampleResume: ResumeData = {
         {
           id: "lhw25d7gf32wgdfpsktf6e0x",
           userId: "ngkjdnfglksjdfnglkjsndfg",
-          updatedAt: "",
+          updatedAt: new Date(),
           name: "Rodrick",
           company: "Creative Solutions Inc.",
           position: "Senior Web Developer",
@@ -178,7 +178,7 @@ export const sampleResume: ResumeData = {
         {
           id: "r6543lil53ntrxmvel53gbtm",
           userId: "ngkjdnfglksjdfnglkjsndfg",
-          updatedAt: "",
+          updatedAt: new Date(),
           name: "Harry",
 
           company: "TechAdvancers",
@@ -228,7 +228,7 @@ export const sampleResume: ResumeData = {
         {
           id: "cnbk5f0aeqvhx69ebk7hktwd",
           userId: "ngkjdnfglksjdfnglkjsndfg",
-          updatedAt: "",
+          updatedAt: new Date(),
           description: "description",
           network: "LinkedIn",
           username: "johndoe",
@@ -241,7 +241,7 @@ export const sampleResume: ResumeData = {
         {
           id: "ukl0uecvzkgm27mlye0wazlb",
           userId: "ngkjdnfglksjdfnglkjsndfg",
-          updatedAt: "",
+          updatedAt: new Date(),
           description: "description",
           network: "GitHub",
           username: "johndoe",
@@ -263,7 +263,7 @@ export const sampleResume: ResumeData = {
         {
           id: "yw843emozcth8s1ubi1ubvlf",
           userId: "ngkjdnfglksjdfnglkjsndfg",
-          updatedAt: "",
+          updatedAt: new Date(),
           name: "E-Commerce Platform",
           description: "Project Lead",
           date: "",
@@ -278,7 +278,7 @@ export const sampleResume: ResumeData = {
         {
           id: "ncxgdjjky54gh59iz2t1xi1v",
           userId: "ngkjdnfglksjdfnglkjsndfg",
-          updatedAt: "",
+          updatedAt: new Date(),
           name: "Interactive Dashboard",
           description: "Frontend Developer",
           date: "",
@@ -310,7 +310,7 @@ export const sampleResume: ResumeData = {
         {
           id: "f2sv5z0cce6ztjl87yuk8fak",
           userId: "ngkjdnfglksjdfnglkjsndfg",
-          updatedAt: "",
+          updatedAt: new Date(),
           email: "ref@gmail.com",
           phone: "34892378",
           relationship: "kngfdj",
@@ -334,7 +334,7 @@ export const sampleResume: ResumeData = {
         {
           id: "hn0keriukh6c0ojktl9gsgjm",
           userId: "ngkjdnfglksjdfnglkjsndfg",
-          updatedAt: "",
+          updatedAt: new Date(),
           levelNum: 0,
           name: "Web Technologies",
           description: "Advanced",
@@ -344,7 +344,7 @@ export const sampleResume: ResumeData = {
         {
           id: "r8c3y47vykausqrgmzwg5pur",
           userId: "ngkjdnfglksjdfnglkjsndfg",
-          updatedAt: "",
+          updatedAt: new Date(),
           levelNum: 0,
           name: "Web Frameworks",
           description: "Intermediate",
@@ -354,7 +354,7 @@ export const sampleResume: ResumeData = {
         {
           id: "b5l75aseexqv17quvqgh73fe",
           userId: "ngkjdnfglksjdfnglkjsndfg",
-          updatedAt: "",
+          updatedAt: new Date(),
           levelNum: 0,
           name: "Tools",
           description: "Intermediate",

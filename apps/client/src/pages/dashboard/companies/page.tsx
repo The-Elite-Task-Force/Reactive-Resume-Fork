@@ -16,7 +16,7 @@ import Invitation from "../_components/invitation";
 
 type Layout = "grid" | "list";
 
-export const CompanyPage = () => {
+export const CompaniesPage = () => {
   const [layout, setLayout] = useState<Layout>("grid");
   const [invitations, setInvitations] = useState<activeInvitationsDTO[]>();
   const { user } = useAuthStore();

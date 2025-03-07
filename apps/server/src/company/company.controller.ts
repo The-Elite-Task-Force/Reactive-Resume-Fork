@@ -43,6 +43,17 @@ export class CompanyController {
     }
   }
 
+  @Get(":id")
+  @UseGuards(TwoFactorGuard)
+  async getById(@User() user: UserEntity, @Param("id") id: string) {
+    try {
+      return await this.companyService.getCompanyById(id);
+    } catch (error) {
+      Logger.log(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   @Post()
   @UseGuards(TwoFactorGuard)
   async create(@User() user: UserEntity, @Body() createCompanyDto: CreateCompanyDto) {
@@ -74,6 +85,28 @@ export class CompanyController {
   delete(@User() user: UserEntity, @Param("id") id: string) {
     try {
       return this.companyService.delete(user.id, id);
+    } catch (error) {
+      Logger.log(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  @Get(":id/employees")
+  @UseGuards(TwoFactorGuard)
+  async getEmployees(@Param("id") companyId: string) {
+    try {
+      return await this.companyService.getEmployees(companyId);
+    } catch (error) {
+      Logger.log(error);
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  @Delete(":id/remove")
+  @UseGuards(TwoFactorGuard)
+  async removeUserFromCompany(@Param("id") companyId: string, @Body("username") username: string) {
+    try {
+      return await this.companyService.removeUserFromCompany(companyId, username);
     } catch (error) {
       Logger.log(error);
       throw new InternalServerErrorException(error);

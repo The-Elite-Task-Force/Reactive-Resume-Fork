@@ -1,7 +1,9 @@
 import { createBrowserRouter, createRoutesFromElements, Navigate, Route } from "react-router";
 
-import { CompanyPage } from "@/client/pages/dashboard/companies/page";
+import { CompaniesPage } from "@/client/pages/dashboard/companies/page";
+import { CompanyPage } from "@/client/pages/dashboard/company/page";
 import { ErrorPage } from "@/client/pages/dashboard/publicpage/error";
+import { companyLoader } from "@/client/router/loaders/company";
 
 import { BackupOtpPage } from "../pages/auth/backup-otp/page";
 import { ForgotPasswordPage } from "../pages/auth/forgot-password/page";
@@ -67,7 +69,8 @@ export const routes = createRoutesFromElements(
       <Route path="dashboard">
         <Route element={<AuthGuard />}>
           <Route element={<DashboardLayout />}>
-            <Route path="companies" element={<CompanyPage />} />
+            <Route path="company/:id" loader={companyLoader} element={<CompanyPage />} />
+            <Route path="companies" element={<CompaniesPage />} />
             <Route path="resumes" element={<ResumesPage />} />
             <Route path="settings" element={<SettingsPage />} />
             <Route path="search" element={<SearchPage />} /> {/* Add the new search route */}

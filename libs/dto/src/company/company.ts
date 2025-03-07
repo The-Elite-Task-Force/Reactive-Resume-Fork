@@ -1,11 +1,14 @@
 import { idSchema } from "@reactive-resume/schema";
 import { dateSchema } from "@reactive-resume/utils";
 import { createZodDto } from "nestjs-zod/dto";
-import { z } from "zod";
+import { optional, z } from "zod";
 
 export const companySchema = z.object({
   id: idSchema,
   name: z.string(),
+  picture: z.literal("").or(z.null()).or(z.string().url()),
+  description: z.string(),
+  location: z.string(),
   ownerId: idSchema,
   updatedAt: dateSchema,
 });
@@ -19,7 +22,8 @@ export enum COMPANY_STATUS {
 
 export const CreateCompanyMappingSchema = z.object({
   companyId: idSchema,
-  userId: z.string(),
+  userId: z.string().optional(),
+  username: z.string().optional(),
 });
 
 export const activeInvitationsSchema = z.object({

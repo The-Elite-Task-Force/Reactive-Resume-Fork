@@ -17,7 +17,6 @@ import { Icon } from "@/client/components/icon";
 import { UserAvatar } from "@/client/components/user-avatar";
 import { UserOptions } from "@/client/components/user-options";
 import { useUser } from "@/client/services/user";
-import { useAuthStore } from "@/client/stores/auth";
 
 type Props = {
   className?: string;
@@ -47,7 +46,6 @@ type SidebarItemProps = SidebarItem & {
 
 const SidebarItem = ({ path, name, shortcut, icon, onClick }: SidebarItemProps) => {
   const isActive = useLocation().pathname === path;
-  const { user } = useAuthStore();
 
   return (
     <Button

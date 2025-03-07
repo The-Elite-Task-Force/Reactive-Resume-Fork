@@ -28,8 +28,8 @@ import get from "lodash.get";
 import { useEffect } from "react";
 import type { UseFormReturn } from "react-hook-form";
 
-import { deleteSectionItem, updateSectionItem } from "@/client/services/section";
-import { createSectionItem } from "@/client/services/section/create";
+import { useDeleteSectionItem, useUpdateSectionItem } from "@/client/services/section";
+import { useCreateSectionItem } from "@/client/services/section/create";
 import type { DialogName } from "@/client/stores/dialog";
 import { useDialog } from "@/client/stores/dialog";
 import { useResumeStore } from "@/client/stores/resume";
@@ -51,6 +51,9 @@ export const SectionDialog = <T extends SectionItem>({
   children,
 }: Props<T>) => {
   const { isOpen, mode, close, payload } = useDialog<T>(id);
+  const { createSectionItem } = useCreateSectionItem();
+  const { deleteSectionItem } = useDeleteSectionItem();
+  const { updateSectionItem } = useUpdateSectionItem();
 
   const setValue = useResumeStore((state) => state.setValue);
   const section = useResumeStore((state) => {
@@ -104,6 +107,7 @@ export const SectionDialog = <T extends SectionItem>({
       await updateSectionItem({
         id: values.id,
         data: values,
+        format: sectionFormat,
       });
 
       if (pendingKeyword && "keywords" in values) {
@@ -123,12 +127,10 @@ export const SectionDialog = <T extends SectionItem>({
     if (isDelete) {
       if (!payload.item?.id) return;
 
-      await deleteSectionItem(
-        {
-          id: values.id,
-        },
-        sectionFormat,
-      );
+      await deleteSectionItem({
+        data: { id: values.id },
+        format: sectionFormat,
+      });
 
       setValue(
         `sections.${id}.items`,

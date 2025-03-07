@@ -1,3 +1,4 @@
+import { dateSchema } from "@reactive-resume/utils";
 import { z } from "zod";
 
 import { idSchema } from "./id";
@@ -6,7 +7,7 @@ import { idSchema } from "./id";
 export const itemSchema = z.object({
   id: idSchema,
   userId: z.string(),
-  updatedAt: z.string(),
+  updatedAt: dateSchema,
 });
 
 // Type
@@ -16,5 +17,5 @@ export type Item = z.infer<typeof itemSchema>;
 export const defaultItem: Item = {
   id: "",
   userId: "",
-  updatedAt: "",
+  updatedAt: new Date(),
 };
