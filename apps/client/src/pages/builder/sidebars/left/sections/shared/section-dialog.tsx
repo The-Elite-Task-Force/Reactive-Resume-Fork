@@ -81,6 +81,8 @@ export const SectionDialog = <T extends SectionItem>({
     const sectionFormat: SECTION_FORMAT =
       SECTION_FORMAT[sectionName as keyof typeof SECTION_FORMAT];
 
+    values.updatedAt = new Date();
+
     if (isCreate || isDuplicate) {
       const dto = await createSectionItem({
         format: sectionFormat,
