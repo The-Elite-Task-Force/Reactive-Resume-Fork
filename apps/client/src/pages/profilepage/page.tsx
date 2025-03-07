@@ -12,28 +12,11 @@ import { ThemeSwitch } from "@/client/components/theme-switch";
 import { usePrintResume } from "@/client/services/resume";
 import { useSectionMappings } from "@/client/services/section-mapping";
 import { useSectionMappingStore } from "@/client/stores/section";
+import { mapSections } from "@/client/pages/builder/page";
 
 const openInNewTab = (url: string) => {
   const win = window.open(url, "_blank");
   if (win) win.focus();
-};
-
-// @ts-expect-error Any type error
-const mapSections = (sections, mapping: SectionMappingDto) => {
-  const result = JSON.parse(JSON.stringify(sections));
-
-  const sectionEntries = Object.entries(sections);
-  sectionEntries.forEach((section) => {
-    // @ts-expect-error Unknown type
-    const key = section[0];
-    // @ts-expect-error Unknown type
-    const value = section[1].items;
-
-    // @ts-expect-error Any type error
-    result[key].items = value.filter((s: { id: string }) => mapping[key].includes(s.id));
-  });
-
-  return result;
 };
 
 export const PublicProfilePage = () => {

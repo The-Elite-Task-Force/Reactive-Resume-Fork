@@ -1,11 +1,11 @@
-import type { SectionMappingDto, SectionsDto } from "@reactive-resume/dto";
+import type { SectionsDto } from "@reactive-resume/dto";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 import { useEffect } from "react";
 
-import { RESUME_PREVIEW_KEY, SECTION_MAPPING_KEY, SECTIONS_KEY } from "@/client/constants/query-keys";
+import { SECTIONS_KEY } from "@/client/constants/query-keys";
 import { axios } from "@/client/libs/axios";
-import { useSectionMappingStore, useSectionsStore } from "@/client/stores/section";
+import { useSectionsStore } from "@/client/stores/section";
 
 export const fetchSections = async () => {
   const response = await axios.get<SectionsDto, AxiosResponse<SectionsDto>>("/sectionItem");

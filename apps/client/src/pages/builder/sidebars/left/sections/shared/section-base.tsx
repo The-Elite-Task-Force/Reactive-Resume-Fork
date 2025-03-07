@@ -23,10 +23,14 @@ import { cn } from "@reactive-resume/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import get from "lodash.get";
 
-import { createSectionMapping, deleteSectionMapping } from "@/client/services/section-mapping";
+import {
+  createSectionMapping,
+  deleteSectionMapping,
+  useCreateSectionMapping, useDeleteSectionMapping
+} from "@/client/services/section-mapping";
 import { useDialog } from "@/client/stores/dialog";
 import { useResumeStore } from "@/client/stores/resume";
-import { useSectionMappingStore, useSectionsStore } from "@/client/stores/section";
+import { useSectionMappingStore } from "@/client/stores/section";
 
 import { SectionIcon } from "./section-icon";
 import { SectionListItem } from "./section-list-item";
@@ -60,6 +64,9 @@ const addToMapSections = (
 
 export const SectionBase = <T extends SectionItem>({ id, title, description }: Props<T>) => {
   const { open } = useDialog(id);
+
+  const { createSectionMapping } = useCreateSectionMapping();
+  const { deleteSectionMapping } = useDeleteSectionMapping();
 
   const mappings = useSectionMappingStore((state) => state.mappings);
   const setMappings = useSectionMappingStore((state) => state.setMappings);
@@ -112,7 +119,6 @@ export const SectionBase = <T extends SectionItem>({ id, title, description }: P
   };
 
   const onToggleVisibility = async (item: T, index: number) => {
-    // @ts-expect-error Map
     if (mappings[id].includes(item.id)) {
       await deleteSectionMapping({ resumeId: resumeId, id: item.id, format: id });
       setMappings(removeFromMapSections(mappings, id, item.id));

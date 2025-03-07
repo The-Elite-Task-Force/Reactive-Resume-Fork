@@ -2,9 +2,6 @@ import type { SectionMappingDto, SectionsDto } from "@reactive-resume/dto";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import { SECTION_MAPPING_KEY } from "@/client/constants/query-keys";
-import { queryClient } from "@/client/libs/query-client";
-
 type SectionsState = {
   sections: SectionsDto;
 };
@@ -39,8 +36,7 @@ export const useSectionMappingStore = create<MappingState & MappingsActions>()(
       mappings: {} as SectionMappingDto,
       setMappings: (mappings) => {
         set({ mappings });
-        // @ts-expect-error Produce error but works as intented
-        void queryClient.invalidateQueries(SECTION_MAPPING_KEY);
+        //void queryClient.invalidateQueries(SECTION_MAPPING_KEY);
       },
     }),
     { name: "mapping" },
