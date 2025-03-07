@@ -2,7 +2,7 @@ import { t } from "@lingui/macro";
 import { createId } from "@paralleldrive/cuid2";
 import { CopySimple, PencilSimple, Plus } from "@phosphor-icons/react";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { SECTION_FORMAT } from "@reactive-resume/dto";
+import { resumeSchema, SECTION_FORMAT } from "@reactive-resume/dto";
 import type { SectionItem, SectionWithItem } from "@reactive-resume/schema";
 import {
   AlertDialog,
@@ -64,6 +64,7 @@ export const SectionDialog = <T extends SectionItem>({
   const isUpdate = mode === "update";
   const isDelete = mode === "delete";
   const isDuplicate = mode === "duplicate";
+  const resumeId = useResumeStore((state) => state.resume.id);
 
   useEffect(() => {
     if (isOpen) onReset();
@@ -85,6 +86,7 @@ export const SectionDialog = <T extends SectionItem>({
       const dto = await createSectionItem({
         format: sectionFormat,
         data: values,
+        resumeId: resumeId,
       });
 
       values.id = dto.id;
