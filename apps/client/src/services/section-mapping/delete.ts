@@ -10,7 +10,7 @@ export const deleteSectionMapping = async (data: DeleteMappingDto) => {
   return response.data;
 };
 
-export const useDeleteSectionMapping = () => {
+export const useDeleteSectionMapping = (id: string) => {
   const queryClient = useQueryClient();
 
   const {
@@ -20,7 +20,7 @@ export const useDeleteSectionMapping = () => {
   } = useMutation({
     mutationFn: deleteSectionMapping,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: SECTION_MAPPING_KEY });
+      await queryClient.invalidateQueries({ queryKey: [SECTION_MAPPING_KEY, id] });
     },
   });
 

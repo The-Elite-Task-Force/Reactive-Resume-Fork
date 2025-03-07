@@ -66,8 +66,6 @@ const addToMapSections = (
 export const SectionBase = <T extends SectionItem>({ id, title, description }: Props<T>) => {
   const { open } = useDialog(id);
 
-  const { createSectionMapping } = useCreateSectionMapping();
-  const { deleteSectionMapping } = useDeleteSectionMapping();
   const mappingData = useSectionMappingStore((state) => state.mappings);
   const [mappings, setMappingData] = useState<SectionMappingDto>({
     basics: [],
@@ -99,6 +97,9 @@ export const SectionBase = <T extends SectionItem>({ id, title, description }: P
   ) as SectionWithItem<T>;
 
   const resumeId = useResumeStore((state) => state.resume.id);
+
+  const { createSectionMapping } = useCreateSectionMapping(resumeId);
+  const { deleteSectionMapping } = useDeleteSectionMapping(resumeId);
 
   const sensors = useSensors(
     useSensor(PointerSensor),

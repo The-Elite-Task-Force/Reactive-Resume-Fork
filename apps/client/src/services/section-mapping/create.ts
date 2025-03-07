@@ -15,7 +15,7 @@ export const createSectionMapping = async (data: CreateSectionMappingDto) => {
   return response.data;
 };
 
-export const useCreateSectionMapping = () => {
+export const useCreateSectionMapping = (id: string) => {
   const queryClient = useQueryClient();
 
   const {
@@ -25,7 +25,7 @@ export const useCreateSectionMapping = () => {
   } = useMutation({
     mutationFn: createSectionMapping,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: SECTION_MAPPING_KEY });
+      await queryClient.invalidateQueries({ queryKey: [SECTION_MAPPING_KEY, id] });
     },
   });
 
