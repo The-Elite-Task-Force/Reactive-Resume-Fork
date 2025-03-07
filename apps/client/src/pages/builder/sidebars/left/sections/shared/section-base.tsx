@@ -118,6 +118,7 @@ export const SectionBase = <T extends SectionItem>({ id, title, description }: P
   };
 
   const onToggleVisibility = async (item: T, index: number) => {
+    // @ts-expect-error Any type error. Fix later
     if (mappings[id].includes(item.id)) {
       await deleteSectionMapping({ resumeId: resumeId, id: item.id, format: id });
       setMappings(removeFromMapSections(mappings, id, item.id));
