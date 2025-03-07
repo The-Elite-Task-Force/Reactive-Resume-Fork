@@ -1,5 +1,6 @@
 import { t } from "@lingui/macro";
 import type { ResumeDto, SectionMappingDto } from "@reactive-resume/dto";
+import type { SectionWithItem } from "@reactive-resume/schema";
 import { useCallback, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import type { LoaderFunction } from "react-router";
@@ -14,18 +15,15 @@ import { useBuilderStore } from "@/client/stores/builder";
 import { useResumeStore } from "@/client/stores/resume";
 import { useSectionMappingStore } from "@/client/stores/section-mapping";
 
-// @ts-expect-error Any type error. Fix later
-export const mapSections = (sections, mapping: SectionMappingDto) => {
+export const mapSections = (sections: SectionWithItem, mapping: SectionMappingDto) => {
   const result = JSON.parse(JSON.stringify(sections));
 
   const sectionEntries = Object.entries(sections);
 
   for (const section of sectionEntries) {
-    const key = section[0];
-    // @ts-expect-error Unknown type error. Fix later
+    const key = section[0] as keyof SectionMappingDto;
     const value = section[1].items;
 
-    // @ts-expect-error Any type error. Fix later
     result[key].items = value.filter((s: { id: string }) => mapping[key].includes(s.id));
   }
 
@@ -89,7 +87,7 @@ export const BuilderPage = () => {
             resume.data.sections.basics.items.length > 0
               ? resume.data.sections.basics.items[0]
               : defaultBasics,
-          sections: mapSections(resume.data.sections, mappings),
+          sections: mapSections(resume.data.sections as unknown as SectionWithItem, mappings),
           metadata: resume.data.metadata,
         },
       };

@@ -190,6 +190,7 @@ export const SectionBase = <T extends SectionItem>({ id, title, description }: P
                   id={item.id}
                   title={title(item as T)}
                   description={description?.(item as T)}
+                  visible={get(section, `items[${index}].visible`, true)}
                   onUpdate={() => {
                     onUpdate(item as T);
                   }}
