@@ -109,150 +109,302 @@ export class SectionItemService {
       throw new InternalServerErrorException(error);
     }
   }
+
   async createSectionItem(userId: string, createSectionDto: CreateSectionItemDto) {
     try {
-      const { format, data } = createSectionDto;
-
+      const { format, data, resumeId } = createSectionDto;
+      let createdItem;
       switch (format) {
         case SECTION_FORMAT.Basics: {
           const parsedData = parseBasicData(data);
-          return await this.prisma.basicsItem.create({
+          createdItem = await this.prisma.basicsItem.create({
             data: {
               ...parsedData,
               userId: userId,
             },
           });
+          if (resumeId) {
+            await this.prisma.resumeBasicsItemMapping.create({
+              data: {
+                resumeId,
+                basicsItemId: createdItem.id,
+                order: 0, // Set the order as needed
+              },
+            });
+          }
+          break;
         }
         case SECTION_FORMAT.Profiles: {
           const parsedData = parseProfileData(data);
-          return await this.prisma.profileItem.create({
+          createdItem = await this.prisma.profileItem.create({
             data: {
               ...parsedData,
               userId: userId,
             },
           });
+          if (resumeId) {
+            await this.prisma.resumeProfileItemMapping.create({
+              data: {
+                resumeId,
+                profileItemId: createdItem.id,
+                order: 0, // Set the order as needed
+              },
+            });
+          }
+          break;
         }
         case SECTION_FORMAT.Experience: {
           const parsedData = parseExperienceData(data);
-          return await this.prisma.workItem.create({
+          createdItem = await this.prisma.workItem.create({
             data: {
               ...parsedData,
               userId: userId,
             },
           });
+          if (resumeId) {
+            await this.prisma.resumeWorkItemMapping.create({
+              data: {
+                resumeId,
+                workItemId: createdItem.id,
+                order: 0, // Set the order as needed
+              },
+            });
+          }
+          break;
         }
         case SECTION_FORMAT.Education: {
           const parsedData = parseEducationData(data);
-          return await this.prisma.educationItem.create({
+          createdItem = await this.prisma.educationItem.create({
             data: {
               ...parsedData,
               userId: userId,
             },
           });
+          if (resumeId) {
+            await this.prisma.resumeEducationItemMapping.create({
+              data: {
+                resumeId,
+                educationItemId: createdItem.id,
+                order: 0, // Set the order as needed
+              },
+            });
+          }
+          break;
         }
         case SECTION_FORMAT.Skills: {
           const parsedData = parseSkillData(data);
-          return await this.prisma.skillItem.create({
+          createdItem = await this.prisma.skillItem.create({
             data: {
               ...parsedData,
               userId: userId,
             },
           });
+          if (resumeId) {
+            await this.prisma.resumeSkillItemMapping.create({
+              data: {
+                resumeId,
+                skillItemId: createdItem.id,
+                order: 0, // Set the order as needed
+              },
+            });
+          }
+          break;
         }
         case SECTION_FORMAT.Languages: {
           const parsedData = parseLanguageData(data);
-          return await this.prisma.languageItem.create({
+          createdItem = await this.prisma.languageItem.create({
             data: {
               ...parsedData,
               userId: userId,
             },
           });
+          if (resumeId) {
+            await this.prisma.resumeLanguageItemMapping.create({
+              data: {
+                resumeId,
+                languageItemId: createdItem.id,
+                order: 0, // Set the order as needed
+              },
+            });
+          }
+          break;
         }
         case SECTION_FORMAT.Awards: {
           const parsedData = parseAwardData(data);
-          return await this.prisma.awardItem.create({
+          createdItem = await this.prisma.awardItem.create({
             data: {
               ...parsedData,
               userId: userId,
             },
           });
+          if (resumeId) {
+            await this.prisma.resumeAwardItemMapping.create({
+              data: {
+                resumeId,
+                awardItemId: createdItem.id,
+                order: 0, // Set the order as needed
+              },
+            });
+          }
+          break;
         }
         case SECTION_FORMAT.Certifications: {
           const parsedData = parseCertificationData(data);
-          return await this.prisma.certificationItem.create({
+          createdItem = await this.prisma.certificationItem.create({
             data: {
               ...parsedData,
               userId: userId,
             },
           });
+          if (resumeId) {
+            await this.prisma.resumeCertificationItemMapping.create({
+              data: {
+                resumeId,
+                certificationItemId: createdItem.id,
+                order: 0, // Set the order as needed
+              },
+            });
+          }
+          break;
         }
         case SECTION_FORMAT.Interests: {
           const parsedData = parseInterestData(data);
-          return await this.prisma.interestItem.create({
+          createdItem = await this.prisma.interestItem.create({
             data: {
               ...parsedData,
               userId: userId,
             },
           });
+          if (resumeId) {
+            await this.prisma.resumeInterestItemMapping.create({
+              data: {
+                resumeId,
+                interestItemId: createdItem.id,
+                order: 0, // Set the order as needed
+              },
+            });
+          }
+          break;
         }
         case SECTION_FORMAT.Projects: {
           const parsedData = parseProjectData(data);
-          return await this.prisma.projectItem.create({
+          createdItem = await this.prisma.projectItem.create({
             data: {
               ...parsedData,
               userId: userId,
             },
           });
+          if (resumeId) {
+            await this.prisma.resumeProjectItemMapping.create({
+              data: {
+                resumeId,
+                projectItemId: createdItem.id,
+                order: 0, // Set the order as needed
+              },
+            });
+          }
+          break;
         }
         case SECTION_FORMAT.Publications: {
           const parsedData = parsePublicationData(data);
-          return await this.prisma.publicationItem.create({
+          createdItem = await this.prisma.publicationItem.create({
             data: {
               ...parsedData,
               userId: userId,
             },
           });
+          if (resumeId) {
+            await this.prisma.resumePublicationItemMapping.create({
+              data: {
+                resumeId,
+                publicationItemId: createdItem.id,
+                order: 0, // Set the order as needed
+              },
+            });
+          }
+          break;
         }
         case SECTION_FORMAT.Volunteering: {
           const parsedData = parseVolunteerData(data);
-          return await this.prisma.volunteerItem.create({
+          createdItem = await this.prisma.volunteerItem.create({
             data: {
               ...parsedData,
               userId: userId,
             },
           });
+          if (resumeId) {
+            await this.prisma.resumeVolunteerItemMapping.create({
+              data: {
+                resumeId,
+                volunteerItemId: createdItem.id,
+                order: 0, // Set the order as needed
+              },
+            });
+          }
+          break;
         }
         case SECTION_FORMAT.References: {
           const parsedData = parseReferenceData(data);
-          return await this.prisma.referenceItem.create({
+          createdItem = await this.prisma.referenceItem.create({
             data: {
               ...parsedData,
               userId: userId,
             },
           });
+          if (resumeId) {
+            await this.prisma.resumeReferenceItemMapping.create({
+              data: {
+                resumeId,
+                referenceItemId: createdItem.id,
+                order: 0, // Set the order as needed
+              },
+            });
+          }
+          break;
         }
         case SECTION_FORMAT.Summary: {
           const parsedData = parseSummaryData(data);
-          return await this.prisma.summaryItem.create({
+          createdItem = await this.prisma.summaryItem.create({
             data: {
               ...parsedData,
               userId: userId,
             },
           });
+          if (resumeId) {
+            await this.prisma.resumeSummaryItemMapping.create({
+              data: {
+                resumeId,
+                summaryItemId: createdItem.id,
+                order: 0, // Set the order as needed
+              },
+            });
+          }
+          break;
         }
         case SECTION_FORMAT.Custom: {
           const parsedData = parseCustomData(data);
-          return await this.prisma.customItem.create({
+          createdItem = await this.prisma.customItem.create({
             data: {
               ...parsedData,
               userId: userId,
             },
           });
+          if (resumeId) {
+            await this.prisma.resumeCustomItemMapping.create({
+              data: {
+                resumeId,
+                customItemId: createdItem.id,
+                order: 0, // Set the order as needed
+              },
+            });
+          }
+          break;
         }
         default: {
           throw new Error("Invalid section type");
         }
       }
+      return createdItem;
     } catch (error) {
       Logger.error(error);
       throw new InternalServerErrorException(error);

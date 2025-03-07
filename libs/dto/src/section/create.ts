@@ -21,7 +21,7 @@ export const createSectionSchema = z.object({
     SECTION_FORMAT.References,
     SECTION_FORMAT.Custom,
   ]),
-
+  resumeId: z.string().optional(),
   data: AllSectionSchemas,
 });
 
