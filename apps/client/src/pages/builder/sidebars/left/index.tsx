@@ -36,6 +36,8 @@ export const LeftSidebar = () => {
   const addSection = useResumeStore((state) => state.addSection);
   const customSections = useResumeStore((state) => state.resume.data.sections.custom);
 
+  console.log(customSections)
+
   const scrollIntoView = (selector: string) => {
     const section = containterRef.current?.querySelector(selector);
     section?.scrollIntoView({ behavior: "smooth" });
