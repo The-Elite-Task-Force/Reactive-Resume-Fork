@@ -120,6 +120,7 @@ export class SectionItemService {
   async createSectionItem(userId: string, createSectionDto: CreateSectionItemDto) {
     try {
       const { format, data, resumeId } = createSectionDto;
+
       let createdItem;
       switch (format) {
         case SECTION_FORMAT.Basics: {
