@@ -10,6 +10,7 @@ body:
         **What’s the problem?**  
         _Explain the problem clearly. What’s going wrong or not working?_
   - type: dropdown
+    id: criticality
     attributes:
       label: "How serious is this bug?"
       options:
@@ -53,8 +54,10 @@ body:
     id: systemInfo
     attributes:
       label: Which system are you on?
+      description: "If your browser is not listed, please select 'Other' and specify your browser in the next question."
       options:
-        - Windows
+        - Windows 11
+        - Windows 10
         - MacOS
         - Linux
         - IOS
@@ -62,6 +65,31 @@ body:
         - Other
     validations:
       required: true
+  - type: dropdown
+    id: browserInfo
+    attributes:
+      label: Which browser are you on?
+      options:
+        - Chrome
+        - Safari
+        - Edge
+        - Firefox
+        - Opera
+        - Brave
+        - Vivaldi
+        - Tor Browser
+        - Internet Explorer
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: otherBrowser
+    attributes:
+      label: "Specify unlisted browser"
+      description: "If you selected 'Other', please specify your browser here."
+      placeholder: "Enter your browser name"
+    validations:
+      required: false
   - type: dropdown
     id: frequency
     attributes:
