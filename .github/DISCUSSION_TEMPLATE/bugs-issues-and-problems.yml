@@ -65,6 +65,14 @@ body:
         - Other
     validations:
       required: true
+  - type: input
+    id: otherSystem
+    attributes:
+      label: "Specify unlisted system"
+      description: "If you selected 'Other', please specify your system here."
+      placeholder: "Enter the name of your system"
+    validations:
+      required: false
   - type: dropdown
     id: browserInfo
     attributes:
@@ -87,7 +95,7 @@ body:
     attributes:
       label: "Specify unlisted browser"
       description: "If you selected 'Other', please specify your browser here."
-      placeholder: "Enter your browser name"
+      placeholder: "Enter the name of your browser"
     validations:
       required: false
   - type: dropdown
